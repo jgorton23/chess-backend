@@ -17,7 +17,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.hibernate:hibernate-core:6.2.2.Final'
-
+	implementation "commons-codec:commons-codec:1.11"
 	// classpath 'org.openapitools:openapi-generator-gradle-plugin:5.0.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
