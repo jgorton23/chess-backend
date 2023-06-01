@@ -28,4 +28,20 @@ public interface ChessAuthRepositoryInterface {
      * @return true if a user exists, else false
      */
     public boolean userExists(String username);
+
+    /**
+     * returns the password hash for the given user
+     * 
+     * @param username the username of the user whose hash we want
+     * @return the hash
+     */
+    public String getUserHash(String username);
+
+    /**
+     * returns teh password salt for the given user
+     * 
+     * @param username the username of the user whose salt we want
+     * @return the salt
+     */
+    public String getUserSalt(String username);
 }

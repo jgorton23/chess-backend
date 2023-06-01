@@ -22,6 +22,15 @@ public class ChessAuthService {
         }
 
         String pass = cred.getPassword();
+        String salt = authRepo.getUserSalt(username);
+
+        String passwordHashAttempt = getPasswordHash(pass + salt);
+        String passwordHash = authRepo.getUserHash(username);
+
+        if (!passwordHashAttempt.equals(passwordHash)) {
+            return "Invalid password";
+        }
+
         return authRepo.login(username, pass);
     }
 
