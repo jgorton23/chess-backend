@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.CredentialsDTO;
-import com.jacob.backend.repository.ChessAuthRepository;
+import com.jacob.backend.repository.ChessAuthRepositoryInterface;
 
 @Service
 public class ChessAuthService {
 
     @Autowired
-    private ChessAuthRepository authRepo;
+    private ChessAuthRepositoryInterface authRepo;
 
     public String login(CredentialsDTO cred) {
         String username = cred.getUsername();
@@ -31,7 +31,13 @@ public class ChessAuthService {
             return "Invalid password";
         }
 
-        return authRepo.login(username, pass);
+        boolean success = authRepo.login(username, pass);
+
+        if (success) {
+            return "Successfully logged in";
+        } else {
+            return "An error occurred";
+        }
     }
 
     public String register(CredentialsDTO cred) {
@@ -55,7 +61,13 @@ public class ChessAuthService {
 
         String hash = getPasswordHash(pass + salt);
 
-        return authRepo.register(username, email, hash, salt);
+        boolean success = authRepo.register(username, email, hash, salt);
+
+        if (success) {
+            return "Successfully registered";
+        } else {
+            return "An error occurred";
+        }
     }
 
     private String getRandomString(int length) {

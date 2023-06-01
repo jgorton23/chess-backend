@@ -8,7 +8,7 @@ public interface ChessAuthRepositoryInterface {
      * @param pass     the password of the user to log in
      * @return a status message
      */
-    public String login(String username, String pass);
+    public boolean login(String username, String pass);
 
     /**
      * Registers a new user in the database
@@ -19,7 +19,7 @@ public interface ChessAuthRepositoryInterface {
      * @param passSalt the password salt of the new user
      * @return a status message
      */
-    public String register(String username, String email, String passHash, String passSalt);
+    public boolean register(String username, String email, String passHash, String passSalt);
 
     /**
      * Returns whether or not a user exists with the given username

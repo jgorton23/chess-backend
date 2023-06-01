@@ -5,12 +5,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ChessAuthRepository implements ChessAuthRepositoryInterface {
 
-    public String login(String username, String pass) {
-        return String.join(" ", new String[] { username, pass });
+    public boolean login(String username, String pass) {
+        return true;
+        // return String.join(" ", new String[] { username, pass });
     }
 
-    public String register(String username, String email, String passHash, String passSalt) {
-        return String.join(" ", new String[] { username, email, passHash, passSalt });
+    public boolean register(String username, String email, String passHash, String passSalt) {
+        return true;
+        // 
+        // return String.join(" ", new String[] { username, email, passHash, passSalt });
     }
 
     public boolean userExists(String username) {
