@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+
+  postgres:
+    container_name: chessdb
+    image: postgres
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'pass'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - 6543:5432
+
+volumes:
+  pg-data:
