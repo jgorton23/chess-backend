@@ -1,7 +1,5 @@
 package com.jacob.backend.repository;
 
-import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
-
 import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.data.User;
 

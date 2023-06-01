@@ -12,23 +12,25 @@ import jakarta.persistence.PersistenceContext;
 public class ChessAuthRepository implements ChessAuthRepositoryInterface {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public boolean login(CredentialsDTO cred) {
         return true;
     }
 
     public boolean register(User user) {
-        entityManager.getTransaction().begin();
+        // entityManager.getTransaction().begin();
         entityManager.persist(user);
-        entityManager.getTransaction().commit();
+        // entityManager.getTransaction().commit();
         return true;
     }
 
     public boolean userExists(String username) {
-        User u = (User) entityManager.createQuery("SELECT user from users where user.username = ?1")
-                .setParameter(1, username)
-                .getSingleResult();
+
+        // User u = (User) entityManager.createQuery("SELECT user from users where user.username = ?1")
+        //         .setParameter(1, username)
+        //         .getSingleResult();
+        User u = entityManager.find(User.class, username);
         return u != null;
     }
 
