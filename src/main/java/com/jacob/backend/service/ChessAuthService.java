@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.CredentialsDTO;
+import com.jacob.backend.data.User;
 import com.jacob.backend.repository.ChessAuthRepositoryInterface;
 
 @Service
@@ -31,7 +32,7 @@ public class ChessAuthService {
             return "Invalid password";
         }
 
-        boolean success = authRepo.login(username, pass);
+        boolean success = authRepo.login(new CredentialsDTO(username, pass));
 
         if (success) {
             return "Successfully logged in";
@@ -61,7 +62,7 @@ public class ChessAuthService {
 
         String hash = getPasswordHash(pass + salt);
 
-        boolean success = authRepo.register(username, email, hash, salt);
+        boolean success = authRepo.register(new User(username, email, hash, salt));
 
         if (success) {
             return "Successfully registered";

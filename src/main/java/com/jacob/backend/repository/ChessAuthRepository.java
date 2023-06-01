@@ -2,22 +2,34 @@ package com.jacob.backend.repository;
 
 import org.springframework.stereotype.Repository;
 
+import com.jacob.backend.data.CredentialsDTO;
+import com.jacob.backend.data.User;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 @Repository
 public class ChessAuthRepository implements ChessAuthRepositoryInterface {
 
-    public boolean login(String username, String pass) {
+    @PersistenceContext
+    EntityManager entityManager;
+
+    public boolean login(CredentialsDTO cred) {
         return true;
-        // return String.join(" ", new String[] { username, pass });
     }
 
-    public boolean register(String username, String email, String passHash, String passSalt) {
+    public boolean register(User user) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
         return true;
-        // 
-        // return String.join(" ", new String[] { username, email, passHash, passSalt });
     }
 
     public boolean userExists(String username) {
-        return false;
+        User u = (User) entityManager.createQuery("SELECT user from users where user.username = ?1")
+                .setParameter(1, username)
+                .getSingleResult();
+        return u != null;
     }
 
     public String getUserHash(String username) {

@@ -1,0 +1,13 @@
+<persistence-unit name="com.baeldung.movie_catalog">
+    <description>Hibernate EntityManager</description>
+    <class>com.jacob.backend.data.User</class> 
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:6543/postgres"/>
+        <property name="javax.persistence.jdbc.user" value="user"/>
+        <property name="javax.persistence.jdbc.password" value="pass"/>
+    </properties>
+</persistence-unit>

@@ -13,6 +13,11 @@ public class CredentialsDTO {
 
     }
 
+    public CredentialsDTO(String username, String pass) {
+        this.username = username;
+        this.password = pass;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -1,25 +1,26 @@
 package com.jacob.backend.repository;
 
+import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
+
+import com.jacob.backend.data.CredentialsDTO;
+import com.jacob.backend.data.User;
+
 public interface ChessAuthRepositoryInterface {
     /**
      * logs a user in using the given credentials
      * 
-     * @param username the username of the user to log in
-     * @param pass     the password of the user to log in
-     * @return a status message
+     * @param cred the credentials of the user attempting to log in
+     * @return true if the user successfully logs in, otherwise false
      */
-    public boolean login(String username, String pass);
+    public boolean login(CredentialsDTO cred);
 
     /**
      * Registers a new user in the database
      * 
-     * @param username the username of the new user
-     * @param email    the email of the new user
-     * @param passHash the password hash of the new user
-     * @param passSalt the password salt of the new user
-     * @return a status message
+     * @param user the user to be registered
+     * @return true if the user was successfully registered, otherwise false
      */
-    public boolean register(String username, String email, String passHash, String passSalt);
+    public boolean register(User user);
 
     /**
      * Returns whether or not a user exists with the given username
