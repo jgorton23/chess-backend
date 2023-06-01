@@ -10,6 +10,7 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	// maven { url "https://repo1.maven.org/maven2" }
 }
 
 dependencies {
@@ -17,8 +18,12 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.hibernate:hibernate-core:6.2.2.Final'
 
+	// classpath 'org.openapitools:openapi-generator-gradle-plugin:5.0.0'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+// apply plugin: 'org.openapi.generator'
 
 tasks.named('test') {
 	useJUnitPlatform()
