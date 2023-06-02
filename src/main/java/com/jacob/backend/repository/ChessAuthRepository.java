@@ -1,18 +1,13 @@
 package com.jacob.backend.repository;
 
-import java.util.Objects;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.data.User;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -32,10 +27,9 @@ public class ChessAuthRepository implements ChessAuthRepositoryInterface {
     }
 
     public boolean userExists(String username) {
-        User u;
-        u = entityManager.find(User.class, UUID.randomUUID());
-        return u != null;
-
+        TypedQuery<User> query = entityManager.createQuery(
+                "SELECT u FROM Users u WHERE u.username LIKE :username", User.class);
+        return query.setParameter("username", username).getResultList().size() > 0;
     }
 
     public String getUserHash(String username) {
