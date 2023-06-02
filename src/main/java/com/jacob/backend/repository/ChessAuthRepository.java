@@ -28,7 +28,7 @@ public class ChessAuthRepository implements ChessAuthRepositoryInterface {
 
     public boolean userExists(String username) {
         TypedQuery<User> query = entityManager.createQuery(
-                "SELECT u FROM Users u WHERE u.username LIKE :username", User.class);
+                "SELECT u FROM User u WHERE u.username LIKE :username", User.class);
         return query.setParameter("username", username).getResultList().size() > 0;
     }
 

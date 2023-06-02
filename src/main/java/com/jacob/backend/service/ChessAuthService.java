@@ -43,7 +43,8 @@ public class ChessAuthService {
 
     public String register(CredentialsDTO cred) {
         String username = cred.getUsername();
-        if (authRepo.userExists(username)) {
+        boolean exists = authRepo.userExists(username);
+        if (exists) {
             return "User already exists";
         }
 

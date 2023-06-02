@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -22,6 +22,10 @@ public class User {
     private String passwordHash;
 
     private String passwordSalt;
+
+    public User() {
+
+    }
 
     public User(String username, String email, String passHash, String passSalt) {
         this.username = username;
