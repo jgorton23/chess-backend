@@ -1,7 +1,9 @@
 package com.jacob.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,15 +38,14 @@ public class ChessAuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody CredentialsDTO creds) {
         String message;
-        HttpStatus status;
+        ResponseCookie cookie = ResponseCookie.from("user-id", null).build();
         try {
             message = authService.register(creds);
-            status = HttpStatus.OK;
+            cookie = ResponseCookie.from("user-id", "testCookie").build();
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(message);
         } catch (Exception e) {
             message = String.format("Error: $v", e);
-            status = HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(message);
         }
-        ResponseEntity<String> r = new ResponseEntity<String>(message, null, status);
-        return r;
     }
 }
