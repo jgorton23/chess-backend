@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  description: "This is a repository to create, view, edit, and share product and materials certificates"
+  version: 0.0.3
+  title: Online Certificate Repository
+  termsOfService: "temp"
+  contact:
+    email: "s23-cs-srp-gp12@iastate.edu"
+#   license:
+#     name: Apache 2.0
+#     url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: user
+    description: User
+
+   
+#     externalDocs:
+#       description: Find out more
+#       url: http://swagger.io
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Find user by *
+      description: Returns a single user
+      operationId: getUserBy*
+      parameters:
+        - name: userEmail
+          in: query
+          description: email of user to return
+          required: false
+          schema:
+            type: string
+        - name: userUUID
+          in: query
+          description: uuid of user to return
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          $ref: '#/components/responses/DefaultErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'    
+
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: http://swagger.io
+servers:
+  - url: localhost:8082/api/v1
+components:
+  responses:
+    DefaultErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"      
+      description: unexpected error
+    DefaultUnauthenticatedErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"      
+      description: unauthenticated error
+    DefaultUnauthorizedErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"      
+      description: unauthorized error
+  schemas:
+    User:
+      type: object
+      required:
+        - "uuid"
+        - "email"
+        - "created"
+      properties:
+        uuid: 
+          type: string
+          description: uuid of the user
+          pattern: ^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$
+        email:
+          type: string
+          description: email of the user
+        created:
+          type: string
+          description: time user was created at
+          
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code 
+        message:
+          type: string
+          description: Error message
+          pattern: "[A-Za-z0-9_]"
+          maxLength: 128
+      additionalProperties: false

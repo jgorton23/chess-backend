@@ -1,8 +1,20 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    maven { url "https://repo1.maven.org/maven2" }
+  }
+  dependencies {
+    classpath "org.openapitools:openapi-generator-gradle-plugin:6.6.0"
+  }
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
+
+apply plugin: 'org.openapi.generator'
 
 group = 'com.jacob'
 version = '0.0.1-SNAPSHOT'
@@ -10,7 +22,6 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
-	// maven { url "https://repo1.maven.org/maven2" }
 }
 
 dependencies {
@@ -19,13 +30,22 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.hibernate:hibernate-core:6.2.2.Final'
 	implementation "commons-codec:commons-codec:1.11"
-	// classpath 'org.openapitools:openapi-generator-gradle-plugin:5.0.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-// apply plugin: 'org.openapi.generator'
-
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+openApiGenerate {
+    generatorName.set("java")
+    inputSpec.set("src/main/java/com/jacob/backend/openapi.yml")
+    outputDir.set("src/main/java/com/jacob/backend/generated")
+    apiPackage.set("com.jacob.backend.generated.api")
+    invokerPackage.set("com.jacob.backend.generated.invoker")
+    modelPackage.set("com.jacob.backend.generated.model")
+    configOptions.set([
+        dateLibrary: "java8"
+    ])
 }
