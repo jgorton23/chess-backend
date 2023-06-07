@@ -24,7 +24,6 @@ public class User {
     private String passwordSalt;
 
     public User() {
-
     }
 
     public User(String username, String email, String passHash, String passSalt) {

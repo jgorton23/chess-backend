@@ -38,10 +38,10 @@ public class ChessAuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody CredentialsDTO creds) {
         String message;
-        ResponseCookie cookie = ResponseCookie.from("user-id", null).build();
+        ResponseCookie cookie = ResponseCookie.from("user-id", null).maxAge(0).build();
         try {
             message = authService.register(creds);
-            cookie = ResponseCookie.from("user-id", "testCookie").build();
+            cookie = ResponseCookie.from("user-id", "testCookie").maxAge(7200).build();
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(message);
         } catch (Exception e) {
             message = String.format("Error: $v", e);
