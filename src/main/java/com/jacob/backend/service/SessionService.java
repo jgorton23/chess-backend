@@ -5,11 +5,12 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jacob.backend.data.Session;
+import com.jacob.backend.data.Model.Session;
 import com.jacob.backend.repository.SessionRepositoryInterface;
 
 @Service
 public class SessionService {
+
     @Autowired
     private SessionRepositoryInterface sessionRepo;
 

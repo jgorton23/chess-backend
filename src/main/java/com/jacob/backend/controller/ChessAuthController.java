@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.service.ChessAuthService;
 import com.jacob.backend.service.SessionService;
+import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.responses.JSONResponses;
 
 import java.util.UUID;

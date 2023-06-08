@@ -6,8 +6,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jacob.backend.data.CredentialsDTO;
-import com.jacob.backend.data.User;
+import com.jacob.backend.data.DTO.CredentialsDTO;
+import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.ChessAuthRepositoryInterface;
 import com.jacob.backend.responses.AlreadyFoundException;
 import com.jacob.backend.responses.MissingFieldException;

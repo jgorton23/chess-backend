@@ -1,4 +1,4 @@
-package com.jacob.backend.data;
+package com.jacob.backend.data.Model;
 
 import java.sql.Time;
 import java.util.UUID;

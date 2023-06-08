@@ -1,4 +1,4 @@
-package com.jacob.backend.data;
+package com.jacob.backend.data.Model;
 
 import java.util.UUID;
 

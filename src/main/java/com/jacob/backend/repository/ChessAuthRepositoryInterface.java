@@ -1,6 +1,6 @@
 package com.jacob.backend.repository;
 
-import com.jacob.backend.data.User;
+import com.jacob.backend.data.Model.User;
 
 public interface ChessAuthRepositoryInterface {
 

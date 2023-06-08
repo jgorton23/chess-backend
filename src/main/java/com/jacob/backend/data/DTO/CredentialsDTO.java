@@ -1,4 +1,4 @@
-package com.jacob.backend.data;
+package com.jacob.backend.data.DTO;
 
 public class CredentialsDTO {
     private String username;

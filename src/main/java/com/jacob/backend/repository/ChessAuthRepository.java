@@ -2,7 +2,7 @@ package com.jacob.backend.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.jacob.backend.data.User;
+import com.jacob.backend.data.Model.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

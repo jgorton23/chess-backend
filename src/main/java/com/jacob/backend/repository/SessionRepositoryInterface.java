@@ -2,7 +2,7 @@ package com.jacob.backend.repository;
 
 import java.util.UUID;
 
-import com.jacob.backend.data.Session;
+import com.jacob.backend.data.Model.Session;
 
 public interface SessionRepositoryInterface {
     /**
