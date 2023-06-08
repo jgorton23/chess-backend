@@ -47,9 +47,9 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<JsonObject> getProfile(
-            @CookieValue(name = "session-id", defaultValue = "") UUID sessionId) {
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
-            Session s = sessionService.findById(sessionId);
+            Session s = sessionService.findById(UUID.fromString(sessionId));
             return ResponseEntity.ok().body(s.toJson());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));

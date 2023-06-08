@@ -34,6 +34,7 @@ public class ChessAuthController {
         String sessionId;
         ResponseCookie cookie = ResponseCookie
                 .from("session-id", null)
+                .path("/")
                 .maxAge(0)
                 .build();
 
@@ -41,6 +42,7 @@ public class ChessAuthController {
             sessionId = authService.login(creds);
             cookie = ResponseCookie
                     .from("session-id", sessionId)
+                    .path("/")
                     .maxAge(7200).build();
             return ResponseEntity
                     .ok()
@@ -73,7 +75,7 @@ public class ChessAuthController {
         if (sessionId.length() > 0) {
             sessionService.delete(UUID.fromString(sessionId));
         }
-        ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).build();
+        ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).path("/").build();
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
