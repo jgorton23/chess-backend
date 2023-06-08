@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.service.ChessAuthService;
+import com.jacob.backend.service.SessionService;
 import com.jacob.backend.responses.JSONResponses;
+
+import java.util.UUID;
 
 import javax.json.JsonObject;
 
@@ -22,6 +25,9 @@ public class ChessAuthController {
 
     @Autowired
     private ChessAuthService authService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @PostMapping("/login")
     public ResponseEntity<JsonObject> login(@RequestBody CredentialsDTO creds) {
@@ -65,7 +71,7 @@ public class ChessAuthController {
     @PostMapping("/logout")
     public ResponseEntity<JsonObject> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         if (sessionId.length() > 0) {
-            // TODO - remove session from session db
+            sessionService.delete(UUID.fromString(sessionId));
         }
         ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).build();
         return ResponseEntity

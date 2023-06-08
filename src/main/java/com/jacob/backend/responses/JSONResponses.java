@@ -1,11 +1,12 @@
 package com.jacob.backend.responses;
 
+import javax.json.Json;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 public class JSONResponses {
-    private static JsonBuilderFactory builderFactory;
+    private static JsonBuilderFactory builderFactory = Json.createBuilderFactory(null);
 
     public static JsonObject success() {
         return builderFactory.createObjectBuilder().add("msg", "success").build();

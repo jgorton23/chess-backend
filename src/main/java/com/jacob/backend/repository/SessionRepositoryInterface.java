@@ -19,4 +19,11 @@ public interface SessionRepositoryInterface {
      * @param session
      */
     public void save(Session session);
+
+    /**
+     * Deletes the session with the given UUID
+     * 
+     * @param sessionId
+     */
+    public void deleteById(UUID sessionId);
 }

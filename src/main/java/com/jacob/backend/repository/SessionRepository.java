@@ -33,4 +33,17 @@ public class SessionRepository implements SessionRepositoryInterface {
             throw e;
         }
     }
+
+    @Transactional
+    public void deleteById(UUID sessionId) {
+        try {
+            Session s = getById(sessionId);
+            if (s != null) {
+                entityManager.remove(s);
+            }
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
+    }
 }

@@ -21,6 +21,10 @@ public class SessionService {
         Session session = new Session();
         session.setUsername(username);
         sessionRepo.save(session);
-        return session.getUsername();
+        return session.getId();
+    }
+
+    public void delete(UUID sessionId) {
+        sessionRepo.deleteById(sessionId);
     }
 }

@@ -23,6 +23,10 @@ public class Session {
     public Session() {
     }
 
+    public String getId() {
+        return id.toString();
+    }
+
     public String getUsername() {
         return username;
     }
