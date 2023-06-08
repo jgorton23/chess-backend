@@ -17,8 +17,6 @@ import com.jacob.backend.responses.JSONResponses;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
-
 @RestController
 @RequestMapping("/auth")
 public class ChessAuthController {
@@ -30,7 +28,7 @@ public class ChessAuthController {
     private SessionService sessionService;
 
     @PostMapping("/login")
-    public ResponseEntity<JsonObject> login(@RequestBody CredentialsDTO creds) {
+    public ResponseEntity<String> login(@RequestBody CredentialsDTO creds) {
         String sessionId;
         ResponseCookie cookie = ResponseCookie
                 .from("session-id", null)
@@ -47,31 +45,31 @@ public class ChessAuthController {
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(JSONResponses.success());
+                    .body(JSONResponses.success().toString());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(JSONResponses.error(e.getMessage()));
+                    .body(JSONResponses.error(e.getMessage()).toString());
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JsonObject> register(@RequestBody CredentialsDTO creds) {
+    public ResponseEntity<String> register(@RequestBody CredentialsDTO creds) {
         try {
             authService.register(creds);
             return ResponseEntity
                     .ok()
-                    .body(JSONResponses.success());
+                    .body(JSONResponses.success().toString());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(JSONResponses.error(e.getMessage()));
+                    .body(JSONResponses.error(e.getMessage()).toString());
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<JsonObject> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+    public ResponseEntity<String> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         if (sessionId.length() > 0) {
             sessionService.delete(UUID.fromString(sessionId));
         }
@@ -79,6 +77,6 @@ public class ChessAuthController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                .body(JSONResponses.success());
+                .body(JSONResponses.success().toString());
     }
 }

@@ -2,8 +2,6 @@ package com.jacob.backend.controller;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -32,41 +30,41 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/friends")
-    public ResponseEntity<JsonObject> addFriend(
+    public ResponseEntity<String> addFriend(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody UUID friendUUID) {
         return null;
     }
 
     @GetMapping("/friends")
-    public ResponseEntity<JsonObject> getFriends(
+    public ResponseEntity<String> getFriends(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         return null;
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<JsonObject> editProfile(
+    public ResponseEntity<String> editProfile(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody CredentialsDTO creds) {
         return null;
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<JsonObject> getProfile(
+    public ResponseEntity<String> getProfile(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
             User u = userService.findByUsername(username);
             ProfileDTO profile = new ProfileDTO(10, username, u.getEmail());
-            return ResponseEntity.ok().body(profile.toJson());
+            return ResponseEntity.ok().body(profile.toJson().toString());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
         }
     }
 
     @GetMapping("/games")
-    public ResponseEntity<JsonObject> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+    public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         return null;
     }
 }
