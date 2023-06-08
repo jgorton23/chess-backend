@@ -7,6 +7,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,29 +33,38 @@ public class ChessAuthController {
     @PostMapping("/login")
     public ResponseEntity<JsonObject> login(@RequestBody CredentialsDTO creds) {
         String message;
-        HttpStatus status;
         try {
             message = authService.login(creds);
-            status = HttpStatus.OK;
+            return ResponseEntity.ok().body(builderFactory.createObjectBuilder().add("msg", message).build());
         } catch (Exception e) {
             message = String.format("Error: $v", e);
-            status = HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(builderFactory.createObjectBuilder().add("msg", message).build());
         }
-        ResponseEntity<JsonObject> r = new ResponseEntity<JsonObject>(null, null, status);
-        return r;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody CredentialsDTO creds) {
+    public ResponseEntity<JsonObject> register(@RequestBody CredentialsDTO creds) {
         String message;
         ResponseCookie cookie = ResponseCookie.from("user-id", null).maxAge(0).build();
         try {
             message = authService.register(creds);
-            cookie = ResponseCookie.from("user-id", "testCookie").maxAge(7200).build();
-            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(message);
+            cookie = ResponseCookie.from("session-id", "testCookie").maxAge(7200).build();
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(builderFactory.createObjectBuilder().add("msg", message).build());
         } catch (Exception e) {
             message = String.format("Error: $v", e);
-            return ResponseEntity.badRequest().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(message);
+            return ResponseEntity.badRequest().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(builderFactory.createObjectBuilder().add("msg", message).build());
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<JsonObject> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+        if (sessionId.length() > 0) {
+            // TODO - remove session from session db
+        }
+        ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .body(builderFactory.createObjectBuilder().add("msg", "success").build());
     }
 }
