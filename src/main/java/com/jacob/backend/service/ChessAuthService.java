@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.data.User;
 import com.jacob.backend.repository.ChessAuthRepositoryInterface;
+import com.jacob.backend.responses.AlreadyFoundException;
+import com.jacob.backend.responses.MissingFieldException;
+import com.jacob.backend.responses.PasswordMismatchException;
 
 @Service
 public class ChessAuthService {
@@ -40,19 +43,19 @@ public class ChessAuthService {
 
     public void register(CredentialsDTO cred) {
         String username = cred.getUsername();
-        boolean exists = authRepo.userExists(username);
-        // if (exists) {
-        // return "User already exists";
-        // }
+
+        if (authRepo.userExists(username)) {
+            throw new AlreadyFoundException("User", "username: " + username);
+        }
 
         String pass = cred.getPassword();
         String passConfirm = cred.getConfirm();
 
-        // if (pass == null && passConfirm == null) {
-        // return "Missing Password Field";
-        // } else if (pass == null || !pass.equals(passConfirm)) {
-        // return "Passwords Don't Match: " + pass + " " + passConfirm;
-        // }
+        if (pass == null && passConfirm == null) {
+            throw new MissingFieldException("Login Credentials", "Password");
+        } else if (pass == null || !pass.equals(passConfirm)) {
+            throw new PasswordMismatchException(pass, passConfirm);
+        }
 
         String email = cred.getEmail();
 
@@ -61,7 +64,6 @@ public class ChessAuthService {
         String hash = getPasswordHash(pass + salt);
 
         authRepo.save(new User(username, email, hash, salt));
-
     }
 
     private String getRandomString(int length) {
