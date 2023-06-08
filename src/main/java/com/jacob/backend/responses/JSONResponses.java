@@ -13,7 +13,7 @@ public class JSONResponses {
     }
 
     public static JsonObject error(String msg) {
-        return builderFactory.createObjectBuilder().add("msg", String.format("Error: %v", msg)).build();
+        return builderFactory.createObjectBuilder().add("msg", String.format("Error: %s", msg)).build();
     }
 
     public static JsonObjectBuilder objectBuilder() {
