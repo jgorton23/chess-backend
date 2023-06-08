@@ -2,7 +2,6 @@ package com.jacob.backend.repository;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jacob.backend.data.Model.Session;
