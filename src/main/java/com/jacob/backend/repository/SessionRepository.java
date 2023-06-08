@@ -1,6 +1,5 @@
 package com.jacob.backend.repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;

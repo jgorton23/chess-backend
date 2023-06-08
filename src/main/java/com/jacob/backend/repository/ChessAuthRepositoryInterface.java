@@ -1,6 +1,5 @@
 package com.jacob.backend.repository;
 
-import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.data.User;
 
 public interface ChessAuthRepositoryInterface {

@@ -2,7 +2,6 @@ package com.jacob.backend.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.data.User;
 
 import jakarta.persistence.EntityManager;
