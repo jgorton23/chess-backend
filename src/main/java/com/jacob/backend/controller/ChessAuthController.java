@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.jacob.backend.data.CredentialsDTO;
 import com.jacob.backend.service.ChessAuthService;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+
 @RestController
 @RequestMapping("/auth")
 public class ChessAuthController {
@@ -20,8 +27,10 @@ public class ChessAuthController {
     @Autowired
     private ChessAuthService authService;
 
+    private JsonBuilderFactory builderFactory = Json.createBuilderFactory(null);
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody CredentialsDTO creds) {
+    public ResponseEntity<JsonObject> login(@RequestBody CredentialsDTO creds) {
         String message;
         HttpStatus status;
         try {
@@ -31,7 +40,7 @@ public class ChessAuthController {
             message = String.format("Error: $v", e);
             status = HttpStatus.BAD_REQUEST;
         }
-        ResponseEntity<String> r = new ResponseEntity<String>(message, null, status);
+        ResponseEntity<JsonObject> r = new ResponseEntity<JsonObject>(null, null, status);
         return r;
     }
 
