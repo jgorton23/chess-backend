@@ -16,6 +16,9 @@ public class ChessAuthService {
     @Autowired
     private ChessAuthRepositoryInterface authRepo;
 
+    @Autowired
+    private SessionService sessionService;
+
     public String login(CredentialsDTO cred) {
         String username = cred.getUsername();
         if (!authRepo.userExists(username)) {
@@ -32,30 +35,24 @@ public class ChessAuthService {
             return "Invalid password";
         }
 
-        boolean success = authRepo.login(new CredentialsDTO(username, pass));
-
-        if (success) {
-            return "Successfully logged in";
-        } else {
-            return "An error occurred";
-        }
+        return sessionService.create(username);
     }
 
-    public String register(CredentialsDTO cred) {
+    public void register(CredentialsDTO cred) {
         String username = cred.getUsername();
         boolean exists = authRepo.userExists(username);
-        if (exists) {
-            return "User already exists";
-        }
+        // if (exists) {
+        // return "User already exists";
+        // }
 
         String pass = cred.getPassword();
         String passConfirm = cred.getConfirm();
 
-        if (pass == null && passConfirm == null) {
-            return "Missing Password  Field";
-        } else if (pass == null || !pass.equals(passConfirm)) {
-            return "Passwords Don't Match: " + pass + " " + passConfirm;
-        }
+        // if (pass == null && passConfirm == null) {
+        // return "Missing Password Field";
+        // } else if (pass == null || !pass.equals(passConfirm)) {
+        // return "Passwords Don't Match: " + pass + " " + passConfirm;
+        // }
 
         String email = cred.getEmail();
 
@@ -63,13 +60,8 @@ public class ChessAuthService {
 
         String hash = getPasswordHash(pass + salt);
 
-        boolean success = authRepo.register(new User(username, email, hash, salt));
+        authRepo.save(new User(username, email, hash, salt));
 
-        if (success) {
-            return "Successfully registered";
-        } else {
-            return "An error occurred";
-        }
     }
 
     private String getRandomString(int length) {

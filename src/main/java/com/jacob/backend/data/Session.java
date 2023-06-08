@@ -2,7 +2,12 @@ package com.jacob.backend.data;
 
 import java.util.UUID;
 
+import javax.json.JsonObject;
+
+import com.jacob.backend.responses.JSONResponses;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -10,19 +15,12 @@ import jakarta.persistence.Table;
 @Table(name = "sessions")
 public class Session {
     @Id
+    @GeneratedValue
     private UUID id;
 
     private String username;
 
     public Session() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -31,5 +29,9 @@ public class Session {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public JsonObject toJson() {
+        return JSONResponses.objectBuilder().add("id", id.toString()).add("username", username).build();
     }
 }

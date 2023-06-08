@@ -16,28 +16,47 @@ public class ChessAuthRepository implements ChessAuthRepositoryInterface {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public boolean login(CredentialsDTO cred) {
-        return true;
-    }
-
     @Transactional
-    public boolean register(User user) {
-        entityManager.persist(user);
-        return true;
+    public void save(User user) {
+        try {
+            entityManager.persist(user);
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
     }
 
     public boolean userExists(String username) {
-        TypedQuery<User> query = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.username LIKE :username", User.class);
-        return query.setParameter("username", username).getResultList().size() > 0;
+        try {
+            String qString = "SELECT u FROM User u WHERE u.username LIKE :username";
+            TypedQuery<User> query = entityManager.createQuery(qString, User.class);
+            return query.setParameter("username", username).getResultList().size() > 0;
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
     }
 
     public String getUserHash(String username) {
-        return "";
+        try {
+            String qString = "SELECT u.passwordHash FROM User u WHERE u.username LIKE :username";
+            TypedQuery<String> query = entityManager.createQuery(qString, String.class);
+            return query.setParameter("username", username).getSingleResult();
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
     }
 
     public String getUserSalt(String username) {
-        return "";
+        try {
+            String qString = "SELECT u.passwordSalt FROM User u WHERE u.username LIKE :username";
+            TypedQuery<String> query = entityManager.createQuery(qString, String.class);
+            return query.setParameter("username", username).getSingleResult();
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
     }
 
 }
