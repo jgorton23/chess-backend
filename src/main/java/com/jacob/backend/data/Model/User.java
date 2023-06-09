@@ -33,6 +33,10 @@ public class User {
         passwordSalt = passSalt;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -53,8 +57,16 @@ public class User {
         return passwordHash;
     }
 
+    public void setPasswordHash(String hash) {
+        passwordHash = hash;
+    }
+
     public String getPasswordSalt() {
         return passwordSalt;
+    }
+
+    public void setPasswordSalt(String salt) {
+        passwordSalt = salt;
     }
 
 }

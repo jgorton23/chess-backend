@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.Model.User;
-import com.jacob.backend.repository.ChessAuthRepositoryInterface;
+import com.jacob.backend.repository.UserRepositoryInterface;
 import com.jacob.backend.responses.AlreadyFoundException;
 import com.jacob.backend.responses.InvalidCredentialsException;
 import com.jacob.backend.responses.MissingFieldException;
@@ -18,7 +18,7 @@ import com.jacob.backend.responses.PasswordMismatchException;
 public class ChessAuthService {
 
     @Autowired
-    private ChessAuthRepositoryInterface authRepo;
+    private UserRepositoryInterface userRepo;
 
     @Autowired
     private SessionService sessionService;
@@ -32,12 +32,12 @@ public class ChessAuthService {
             throw new MissingFieldException("Login Credentials", "username");
         } else if (pass == null) {
             throw new MissingFieldException("Login Credentials", "password");
-        } else if (!authRepo.userExists(username)) {
+        } else if (!userRepo.userExists(username)) {
             throw new InvalidCredentialsException("username");
         }
 
-        String passwordHash = authRepo.getUserHash(username);
-        String passwordSalt = authRepo.getUserSalt(username);
+        String passwordHash = userRepo.getUserHash(username);
+        String passwordSalt = userRepo.getUserSalt(username);
         String passwordHashAttempt = getPasswordHash(pass + passwordSalt);
 
         if (!passwordHashAttempt.equals(passwordHash)) {
@@ -60,7 +60,7 @@ public class ChessAuthService {
             throw new MissingFieldException("Login Credentials", "password");
         } else if (passConfirm == null) {
             throw new MissingFieldException("Login Credentials", "confirm");
-        } else if (authRepo.userExists(username)) {
+        } else if (userRepo.userExists(username)) {
             throw new AlreadyFoundException("User", "username: " + username);
         } else if (!pass.equals(passConfirm)) {
             throw new PasswordMismatchException(pass, passConfirm);
@@ -69,7 +69,7 @@ public class ChessAuthService {
         String salt = getRandomString(20);
         String hash = getPasswordHash(pass + salt);
 
-        authRepo.save(new User(username, email, hash, salt));
+        userRepo.save(new User(username, email, hash, salt));
     }
 
     private String getRandomString(int length) {

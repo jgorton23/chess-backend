@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.Session;
-import com.jacob.backend.data.Model.User;
 import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.service.SessionService;
 import com.jacob.backend.service.UserService;
@@ -46,7 +45,16 @@ public class UserController {
     public ResponseEntity<String> editProfile(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody CredentialsDTO creds) {
-        return null;
+        try {
+            Session s = sessionService.findById(UUID.fromString(sessionId));
+            String username = s.getUsername();
+
+            userService.update(username, creds);
+
+            return ResponseEntity.ok().body(JSONResponses.success().toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+        }
     }
 
     @GetMapping("/profile")
@@ -55,8 +63,9 @@ public class UserController {
         try {
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
-            User u = userService.findByUsername(username);
-            ProfileDTO profile = new ProfileDTO(10, username, u.getEmail());
+
+            ProfileDTO profile = userService.getProfile(username);
+            
             return ResponseEntity.ok().body(profile.toJson().toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
