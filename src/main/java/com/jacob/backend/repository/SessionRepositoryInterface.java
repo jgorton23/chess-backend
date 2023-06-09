@@ -33,4 +33,11 @@ public interface SessionRepositoryInterface {
      * @param sessionId
      */
     public void deleteById(UUID sessionId);
+
+    /**
+     * Deletes the session corresponding to the given username
+     * 
+     * @param username
+     */
+    public void deleteByUsername(String username);
 }

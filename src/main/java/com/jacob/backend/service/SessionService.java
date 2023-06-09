@@ -19,6 +19,7 @@ public class SessionService {
     }
 
     public String create(String username) {
+        sessionRepo.deleteByUsername(username);
         Session session = new Session();
         session.setUsername(username);
         sessionRepo.save(session);
