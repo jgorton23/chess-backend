@@ -9,7 +9,6 @@ import com.jacob.backend.data.Model.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -30,7 +29,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         try {
             String qString = "SELECT s FROM Session s WHERE s.username LIKE :username";
             TypedQuery<Session> query = entityManager.createQuery(qString, Session.class);
-            return query.setParameter("username", username).getResultStream().findFirst().orElse(null); // .getSingleResult();
+            return query.setParameter("username", username).getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
             // Logger.error(e);
             throw e;

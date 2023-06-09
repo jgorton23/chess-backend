@@ -9,6 +9,7 @@ import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.UserRepositoryInterface;
+import com.jacob.backend.responses.AlreadyFoundException;
 import com.jacob.backend.responses.PasswordMismatchException;
 
 @Service
@@ -43,7 +44,11 @@ public class UserService {
         User user = findByUsername(username);
 
         if (newUsername != null) {
-            user.setUsername(newUsername);
+            if (!userRepo.userExists(newUsername)) {
+                user.setUsername(newUsername);
+            } else {
+                throw new AlreadyFoundException("User", "username: " + newUsername);
+            }
         }
 
         if (email != null) {
