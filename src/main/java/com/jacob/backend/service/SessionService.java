@@ -28,4 +28,10 @@ public class SessionService {
     public void delete(UUID sessionId) {
         sessionRepo.deleteById(sessionId);
     }
+
+    public void update(UUID sessionId, String username) {
+        Session session = sessionRepo.getById(sessionId);
+        session.setUsername(username);
+        sessionRepo.update(session);
+    }
 }

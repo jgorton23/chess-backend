@@ -35,6 +35,16 @@ public class SessionRepository implements SessionRepositoryInterface {
     }
 
     @Transactional
+    public void update(Session session) {
+        try {
+            entityManager.merge(session);
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
+    }
+
+    @Transactional
     public void deleteById(UUID sessionId) {
         try {
             Session s = getById(sessionId);

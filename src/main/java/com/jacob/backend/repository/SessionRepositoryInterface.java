@@ -21,6 +21,13 @@ public interface SessionRepositoryInterface {
     public void save(Session session);
 
     /**
+     * updates the session object
+     * 
+     * @param session
+     */
+    public void update(Session session);
+
+    /**
      * Deletes the session with the given UUID
      * 
      * @param sessionId

@@ -9,12 +9,16 @@ import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.UserRepositoryInterface;
+import com.jacob.backend.responses.PasswordMismatchException;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepositoryInterface userRepo;
+
+    @Autowired
+    private ChessAuthService authService;
 
     public User findById(UUID userId) {
         return userRepo.getById(userId);
@@ -25,7 +29,9 @@ public class UserService {
     }
 
     public ProfileDTO getProfile(String username) {
-        return null;
+        int friends = 11;
+        String email = findByUsername(username).getEmail();
+        return new ProfileDTO(friends, username, email);
     }
 
     public void update(String username, CredentialsDTO creds) {
@@ -34,6 +40,28 @@ public class UserService {
         String password = creds.getPassword();
         String confirm = creds.getConfirm();
 
-        userRepo.update(new User(newUsername, email, "testHash", "testSalt"));
+        User user = findByUsername(username);
+
+        if (newUsername != null) {
+            user.setUsername(newUsername);
+        }
+
+        if (email != null) {
+            user.setEmail(email);
+        }
+
+        if (password != null && confirm != null) {
+            if (password.equals(confirm)) {
+                String salt = authService.getRandomString(20);
+                String hash = authService.getPasswordHash(password + salt);
+
+                user.setPasswordSalt(salt);
+                user.setPasswordHash(hash);
+            } else {
+                throw new PasswordMismatchException(password, confirm);
+            }
+        }
+
+        userRepo.update(user);
     }
 }

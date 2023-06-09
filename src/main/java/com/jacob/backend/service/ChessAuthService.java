@@ -72,7 +72,7 @@ public class ChessAuthService {
         userRepo.save(new User(username, email, hash, salt));
     }
 
-    private String getRandomString(int length) {
+    public String getRandomString(int length) {
         Random rand = new Random();
         String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         char[] salt = new char[length];
@@ -82,7 +82,7 @@ public class ChessAuthService {
         return new String(salt);
     }
 
-    private String getPasswordHash(String saltedPass) {
+    public String getPasswordHash(String saltedPass) {
         return DigestUtils.sha256Hex(saltedPass);
     }
 

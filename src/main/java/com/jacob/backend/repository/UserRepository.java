@@ -30,11 +30,7 @@ public class UserRepository implements UserRepositoryInterface {
     @Transactional
     public void update(User user) {
         try {
-            User old = getByUsername(user.getUsername());
-            old.setEmail(user.getEmail());
-            old.setUsername(user.getUsername());
-            old.setPasswordHash(user.getPasswordHash());
-            old.setPasswordSalt(user.getPasswordSalt());
+            entityManager.merge(user);
         } catch (Exception e) {
             // Logger.error(e);
             throw e;

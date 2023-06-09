@@ -48,8 +48,10 @@ public class UserController {
         try {
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
+            String newUsername = creds.getUsername() != null ? creds.getUsername() : username;
 
             userService.update(username, creds);
+            sessionService.update(UUID.fromString(sessionId), newUsername);
 
             return ResponseEntity.ok().body(JSONResponses.success().toString());
         } catch (Exception e) {
@@ -65,7 +67,7 @@ public class UserController {
             String username = s.getUsername();
 
             ProfileDTO profile = userService.getProfile(username);
-            
+
             return ResponseEntity.ok().body(profile.toJson().toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
