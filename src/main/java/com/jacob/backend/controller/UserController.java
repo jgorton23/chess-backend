@@ -3,7 +3,6 @@ package com.jacob.backend.controller;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
