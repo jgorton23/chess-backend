@@ -3,6 +3,10 @@ package com.jacob.backend.data.Model;
 import java.sql.Time;
 import java.util.UUID;
 
+import javax.json.JsonObject;
+
+import com.jacob.backend.data.JsonConvertible;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "games")
-public class Game {
+public class Game implements JsonConvertible {
     @Id
     @GeneratedValue
     private UUID id;
@@ -87,5 +91,9 @@ public class Game {
 
     public void setBlackPlayerId(UUID id) {
         blackPlayerId = id;
+    }
+
+    public JsonObject toJson() {
+        return null;
     }
 }

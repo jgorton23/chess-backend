@@ -8,21 +8,12 @@ import javax.json.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.jacob.backend.data.DTO.CredentialsDTO;
-import com.jacob.backend.data.DTO.ProfileDTO;
-import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.DTO.*;
+import com.jacob.backend.data.Model.*;
+import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
-import com.jacob.backend.service.FriendService;
-import com.jacob.backend.service.SessionService;
-import com.jacob.backend.service.UserService;
 
 @RestController
 @RequestMapping("/user")
@@ -35,6 +26,9 @@ public class UserController {
 
     @Autowired
     private FriendService friendService;
+
+    @Autowired
+    private GameService gameService;
 
     @PostMapping("/friends")
     public ResponseEntity<String> addFriend(
@@ -106,6 +100,17 @@ public class UserController {
 
     @GetMapping("/games")
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
-        return null;
+        try {
+            Session s = sessionService.findById(UUID.fromString(sessionId));
+            String username = s.getUsername();
+            List<Game> games = gameService.findAllByUsername(username);
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("games", JSONResponses.ListToJsonArray(games))
+                    .build();
+            return ResponseEntity.ok().body(result.toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+        }
     }
 }

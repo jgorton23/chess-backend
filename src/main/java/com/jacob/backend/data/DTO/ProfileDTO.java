@@ -2,9 +2,10 @@ package com.jacob.backend.data.DTO;
 
 import javax.json.JsonObject;
 
+import com.jacob.backend.data.JsonConvertible;
 import com.jacob.backend.responses.JSONResponses;
 
-public class ProfileDTO {
+public class ProfileDTO implements JsonConvertible {
     private int friends;
 
     private String username;
