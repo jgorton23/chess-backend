@@ -1,4 +1,4 @@
-package com.jacob.backend.repository;
+package com.jacob.backend.repository.interfaces;
 
 import java.util.UUID;
 
