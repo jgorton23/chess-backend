@@ -1,6 +1,7 @@
 package com.jacob.backend.responses;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -14,6 +15,10 @@ public class JSONResponses {
 
     public static JsonObject error(String msg) {
         return builderFactory.createObjectBuilder().add("msg", String.format("Error: %s", msg)).build();
+    }
+
+    public static JsonArrayBuilder arrayBuilder() {
+        return builderFactory.createArrayBuilder();
     }
 
     public static JsonObjectBuilder objectBuilder() {

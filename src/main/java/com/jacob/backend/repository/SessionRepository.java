@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public class SessionRepository implements SessionRepositoryInterface {
+
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     public Session getById(UUID sessionId) {
         try {
             return entityManager.find(Session.class, sessionId);
@@ -26,6 +28,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     public Session getByUsername(String username) {
         try {
             String qString = "SELECT s FROM Session s WHERE s.username LIKE :username";
@@ -37,6 +40,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     public boolean sessionExistsForUsername(String username) {
         try {
             String qString = "SELECT s FROM Session s WHERE s.username LIKE :username";
@@ -48,6 +52,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     @Transactional
     public void save(Session session) {
         try {
@@ -58,6 +63,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     @Transactional
     public void update(Session session) {
         try {
@@ -68,6 +74,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     @Transactional
     public void deleteById(UUID sessionId) {
         try {
@@ -81,6 +88,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         }
     }
 
+    @Override
     @Transactional
     public void deleteByUsername(String username) {
         try {

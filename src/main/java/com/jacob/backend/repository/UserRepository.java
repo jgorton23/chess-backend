@@ -18,6 +18,7 @@ public class UserRepository implements UserRepositoryInterface {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     @Transactional
     public void save(User user) {
         try {
@@ -28,6 +29,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     @Transactional
     public void update(User user) {
         try {
@@ -38,6 +40,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     public boolean userExists(String username) {
         try {
             String qString = "SELECT u FROM User u WHERE u.username LIKE :username";
@@ -49,6 +52,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     public User getById(UUID userId) {
         try {
             return entityManager.find(User.class, userId);
@@ -58,6 +62,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     public User getByUsername(String username) {
         try {
             String qString = "SELECT u FROM User u WHERE u.username LIKE :username";
@@ -69,6 +74,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     public String getUserHash(String username) {
         try {
             String qString = "SELECT u.passwordHash FROM User u WHERE u.username LIKE :username";
@@ -80,6 +86,7 @@ public class UserRepository implements UserRepositoryInterface {
         }
     }
 
+    @Override
     public String getUserSalt(String username) {
         try {
             String qString = "SELECT u.passwordSalt FROM User u WHERE u.username LIKE :username";

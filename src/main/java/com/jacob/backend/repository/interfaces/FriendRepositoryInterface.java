@@ -3,11 +3,8 @@ package com.jacob.backend.repository.interfaces;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
 import com.jacob.backend.data.Model.Friend;
 
-@Repository
 public interface FriendRepositoryInterface {
 
     /**

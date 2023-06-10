@@ -15,6 +15,22 @@ public interface SessionRepositoryInterface {
     public Session getById(UUID sessionId);
 
     /**
+     * Get the session associated with the given Username
+     * 
+     * @param username the username associated with the session
+     * @return the Session object
+     */
+    public Session getByUsername(String username);
+
+    /**
+     * Checks if the username is part of an active Session or not
+     * 
+     * @param username the username to check
+     * @return true if the username is stored in a session, false otherwise
+     */
+    public boolean sessionExistsForUsername(String username);
+
+    /**
      * saves the Session object
      * 
      * @param session

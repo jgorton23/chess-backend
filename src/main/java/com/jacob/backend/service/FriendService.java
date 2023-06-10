@@ -27,7 +27,7 @@ public class FriendService {
         List<ProfileDTO> friendProfiles = new ArrayList<ProfileDTO>();
         for (Friend f : friends) {
             if (!f.getPending()) {
-                UUID friendUUID = f.getUserAId() == id ? f.getUserBId() : f.getUserAId();
+                UUID friendUUID = f.getUserAId().equals(id) ? f.getUserBId() : f.getUserAId();
                 User friend = userService.findById(friendUUID);
                 ProfileDTO friendProfile = new ProfileDTO(0, friend.getUsername(), friend.getEmail());
                 friendProfiles.add(friendProfile);
