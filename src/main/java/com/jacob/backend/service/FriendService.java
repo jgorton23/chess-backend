@@ -11,6 +11,7 @@ import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.Friend;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
+import com.jacob.backend.responses.NotFoundException;
 
 @Service
 public class FriendService {
@@ -37,6 +38,9 @@ public class FriendService {
 
     public List<ProfileDTO> findByUsername(String username) {
         User u = userService.findByUsername(username);
+        if (u == null) {
+            throw new NotFoundException("User", "Username: " + username);
+        }
         return findById(u.getId());
     }
 
@@ -59,14 +63,33 @@ public class FriendService {
     }
 
     public void addByUsernames(String userUsername, String friendUsername) {
-
+        User user = userService.findByUsername(userUsername);
+        if (user == null) {
+            throw new NotFoundException("User", "Username: " + userUsername);
+        }
+        User friend = userService.findByUsername(friendUsername);
+        if (friend == null) {
+            throw new NotFoundException("User", "Username: " + friendUsername);
+        }
+        addByIds(user.getId(), friend.getId());
     }
 
     public void deleteByIds(UUID userId, UUID friendId) {
-
+        Friend friendship = findByIds(userId, friendId);
+        if (friendship != null) {
+            friendRepo.delete(friendship);
+        }
     }
 
     public void deleteByUsernames(String userUsername, String friendUsername) {
-
+        User user = userService.findByUsername(userUsername);
+        if (user == null) {
+            throw new NotFoundException("User", "Username: " + userUsername);
+        }
+        User friend = userService.findByUsername(friendUsername);
+        if (friend == null) {
+            throw new NotFoundException("User", "Username: " + friendUsername);
+        }
+        deleteByIds(user.getId(), friend.getId());
     }
 }

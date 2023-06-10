@@ -40,4 +40,11 @@ public interface FriendRepositoryInterface {
      * @param friend the Friend to update
      */
     public void update(Friend friend);
+
+    /**
+     * deletes the given Friend object
+     * 
+     * @param friend the Friend object to delete
+     */
+    public void delete(Friend friend);
 }
