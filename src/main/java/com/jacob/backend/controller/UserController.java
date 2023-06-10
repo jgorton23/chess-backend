@@ -53,9 +53,10 @@ public class UserController {
 
             List<ProfileDTO> friends = friendService.findByUsername(username);
 
-            JsonArrayBuilder profiles = JSONResponses.ListToJsonArray(friends);
-
-            JsonObject result = JSONResponses.objectBuilder().add("friends", profiles).build();
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("friends", JSONResponses.ListToJsonArray(friends))
+                    .build();
             return ResponseEntity.ok().body(result.toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
