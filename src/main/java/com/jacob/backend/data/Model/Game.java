@@ -1,11 +1,12 @@
 package com.jacob.backend.data.Model;
 
-import java.sql.Time;
 import java.util.UUID;
 
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.jacob.backend.data.JsonConvertible;
+import com.jacob.backend.responses.JSONResponses;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,13 +26,17 @@ public class Game implements JsonConvertible {
 
     private int turn;
 
-    private Time whiteTime;
+    private int whiteTime;
 
-    private Time blackTime;
+    private int blackTime;
 
     private UUID whitePlayerId;
 
     private UUID blackPlayerId;
+
+    private String whitePlayerUsername;
+
+    private String blackPlayerUsername;
 
     public Game() {
 
@@ -61,19 +66,19 @@ public class Game implements JsonConvertible {
         this.turn = turn;
     }
 
-    public Time getWhiteTime() {
+    public int getWhiteTime() {
         return whiteTime;
     }
 
-    public void setWhiteTime(Time time) {
+    public void setWhiteTime(int time) {
         whiteTime = time;
     }
 
-    public Time getBlackTime() {
+    public int getBlackTime() {
         return blackTime;
     }
 
-    public void setBlackTime(Time time) {
+    public void setBlackTime(int time) {
         blackTime = time;
     }
 
@@ -93,7 +98,37 @@ public class Game implements JsonConvertible {
         blackPlayerId = id;
     }
 
+    public String getWhitePlayerUsername() {
+        return whitePlayerUsername;
+    }
+
+    public void setWhitePlayerUsername(String username) {
+        whitePlayerUsername = username;
+    }
+
+    public String getBlackPlayerUsername() {
+        return blackPlayerUsername;
+    }
+
+    public void setBlackPlayerUsername(String username) {
+        blackPlayerUsername = username;
+    }
+
     public JsonObject toJson() {
-        return null;
+        JsonArrayBuilder boardArray = JSONResponses.arrayBuilder();
+        for (String row : board) {
+            boardArray.add(row);
+        }
+        return JSONResponses.objectBuilder()
+                .add("board", boardArray.build())
+                .add("moves", moves)
+                .add("turn", turn)
+                .add("whiteTime", whiteTime)
+                .add("blackTime", blackTime)
+                .add("whitePlayerUUID", whitePlayerId.toString())
+                .add("blackPlayerUUID", blackPlayerId.toString())
+                .add("whiteUsername", whitePlayerUsername)
+                .add("blackUsername", blackPlayerUsername)
+                .build();
     }
 }
