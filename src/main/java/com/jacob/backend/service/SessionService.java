@@ -26,7 +26,7 @@ public class SessionService {
         return session.getId();
     }
 
-    public void delete(UUID sessionId) {
+    public void deleteById(UUID sessionId) {
         sessionRepo.deleteById(sessionId);
     }
 

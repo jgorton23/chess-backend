@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.jacob.backend.data.Model.Session;
 
 public interface SessionRepositoryInterface {
+
     /**
      * Get the session associated with the given UUID
      * 

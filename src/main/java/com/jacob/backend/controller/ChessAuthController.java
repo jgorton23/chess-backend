@@ -71,7 +71,7 @@ public class ChessAuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         if (sessionId.length() > 0) {
-            sessionService.delete(UUID.fromString(sessionId));
+            sessionService.deleteById(UUID.fromString(sessionId));
         }
         ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).path("/").build();
         return ResponseEntity
