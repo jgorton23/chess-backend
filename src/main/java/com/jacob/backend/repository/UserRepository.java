@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import com.jacob.backend.data.Model.User;
+import com.jacob.backend.repository.interfaces.UserRepositoryInterface;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
