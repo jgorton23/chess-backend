@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.User;
+import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
 import com.jacob.backend.repository.interfaces.UserRepositoryInterface;
 import com.jacob.backend.responses.AlreadyFoundException;
 import com.jacob.backend.responses.PasswordMismatchException;
@@ -17,6 +18,9 @@ public class UserService {
 
     @Autowired
     private UserRepositoryInterface userRepo;
+
+    @Autowired
+    private FriendRepositoryInterface friendRepo;
 
     @Autowired
     private ChessAuthService authService;
@@ -30,7 +34,9 @@ public class UserService {
     }
 
     public ProfileDTO getProfile(String username) {
-        int friends = 11;
+        User u = findByUsername(username);
+        UUID id = u.getId();
+        int friends = friendRepo.getById(id).size();
         String email = findByUsername(username).getEmail();
         return new ProfileDTO(friends, username, email);
     }
