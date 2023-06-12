@@ -32,7 +32,7 @@ public class GameController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<String> joinGame() {
+    public ResponseEntity<String> joinGame(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
             return ResponseEntity.badRequest().body(JSONResponses.error("unimplemented").toString());
         } catch (Exception e) {
@@ -41,7 +41,16 @@ public class GameController {
     }
 
     @PostMapping("/leave")
-    public ResponseEntity<String> leaveGame() {
+    public ResponseEntity<String> leaveGame(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+        try {
+            return ResponseEntity.badRequest().body(JSONResponses.error("unimplemented").toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+        }
+    }
+
+    @PostMapping("/move")
+    public ResponseEntity<String> move(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
             return ResponseEntity.badRequest().body(JSONResponses.error("unimplemented").toString());
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.json.JsonObject;
 
+import com.jacob.backend.data.JsonConvertible;
 import com.jacob.backend.responses.JSONResponses;
 
 import jakarta.persistence.Entity;
@@ -13,12 +14,14 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sessions")
-public class Session {
+public class Session implements JsonConvertible {
     @Id
     @GeneratedValue
     private UUID id;
 
     private String username;
+
+    private UUID currentGameId;
 
     public Session() {
     }
@@ -35,7 +38,19 @@ public class Session {
         this.username = username;
     }
 
+    public UUID getCurrentGameId() {
+        return currentGameId;
+    }
+
+    public void setCurrentGameId(UUID id) {
+        this.currentGameId = id;
+    }
+
     public JsonObject toJson() {
-        return JSONResponses.objectBuilder().add("id", id.toString()).add("username", username).build();
+        return JSONResponses.objectBuilder()
+                .add("id", id.toString())
+                .add("username", username)
+                .add("currentGame", currentGameId.toString())
+                .build();
     }
 }

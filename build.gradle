@@ -29,14 +29,14 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-openApiGenerate {
-    generatorName.set("java")
-    inputSpec.set("src/main/java/com/jacob/backend/openapi-v3.0.yml")
-    outputDir.set("src/main/java/com/jacob/backend/generated")
-    // apiPackage.set("com.jacob.backend.generated.api")
-    // invokerPackage.set("com.jacob.backend.generated.invoker")
-    // modelPackage.set("com.jacob.backend.generated.model")
-    configOptions.set([
-        dateLibrary: "java8"
-    ])
-}
+// openApiGenerate {
+//     generatorName.set("java")
+//     inputSpec.set("src/main/java/com/jacob/backend/openapi-v3.0.yml")
+//     outputDir.set("src/main/java/com/jacob/backend/generated")
+//     // apiPackage.set("com.jacob.backend.generated.api")
+//     // invokerPackage.set("com.jacob.backend.generated.invoker")
+//     // modelPackage.set("com.jacob.backend.generated.model")
+//     configOptions.set([
+//         dateLibrary: "java8"
+//     ])
+// }
