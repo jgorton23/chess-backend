@@ -4,14 +4,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import com.jacob.backend.data.DTO.MessageDTO;
+import com.jacob.backend.data.Model.Game;
 
 @Controller
 public class GameSocket {
 
-    @MessageMapping("/chat/{gameId}")
-    @SendTo("/topic/messages/{gameId}")
-    public MessageDTO hello(MessageDTO msg) {
+    @MessageMapping("/game/{gameId}")
+    @SendTo("/game/{gameId}")
+    public Game hello(Game msg) {
         return msg;
     }
 }
