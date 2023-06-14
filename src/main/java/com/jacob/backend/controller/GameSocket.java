@@ -9,8 +9,8 @@ import com.jacob.backend.data.DTO.MessageDTO;
 @Controller
 public class GameSocket {
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
+    @MessageMapping("/chat/{gameId}")
+    @SendTo("/topic/messages/{gameId}")
     public MessageDTO hello(MessageDTO msg) {
         return msg;
     }
