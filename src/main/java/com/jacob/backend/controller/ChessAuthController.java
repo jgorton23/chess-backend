@@ -19,7 +19,7 @@ import com.jacob.backend.responses.JSONResponses;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/auth")
 public class ChessAuthController {
 

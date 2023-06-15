@@ -28,4 +28,13 @@ public class GameRepository implements GameRepositoryInterface {
             throw e;
         }
     }
+
+    public void save(Game game) {
+        try {
+            entityManager.persist(game);
+        } catch (Exception e) {
+            // Logger.error(e);
+            throw e;
+        }
+    }
 }

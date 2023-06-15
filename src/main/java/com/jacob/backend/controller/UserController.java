@@ -15,6 +15,7 @@ import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
     @Autowired

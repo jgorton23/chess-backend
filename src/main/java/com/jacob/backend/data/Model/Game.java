@@ -42,6 +42,10 @@ public class Game implements JsonConvertible {
 
     }
 
+    public String getId() {
+        return id.toString();
+    }
+
     public String[] getBoard() {
         return board;
     }

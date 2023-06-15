@@ -7,4 +7,6 @@ import com.jacob.backend.data.Model.Game;
 
 public interface GameRepositoryInterface {
     public List<Game> getAllByUserId(UUID userId);
+
+    public void save(Game game);
 }
