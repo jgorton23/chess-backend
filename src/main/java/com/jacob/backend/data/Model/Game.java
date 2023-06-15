@@ -38,6 +38,12 @@ public class Game implements JsonConvertible {
 
     private String blackPlayerUsername;
 
+    private boolean started;
+
+    private boolean ended;
+
+    private String winner;
+
     public Game() {
 
     }
@@ -116,6 +122,30 @@ public class Game implements JsonConvertible {
 
     public void setBlackPlayerUsername(String username) {
         blackPlayerUsername = username;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public boolean getStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
     }
 
     public JsonObject toJson() {
