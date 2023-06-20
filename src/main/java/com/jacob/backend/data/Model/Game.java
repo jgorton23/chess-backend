@@ -20,7 +20,7 @@ public class Game implements JsonConvertible {
     @GeneratedValue
     private UUID id;
 
-    private String[] board;
+    private String board;
 
     private String moves;
 
@@ -52,11 +52,11 @@ public class Game implements JsonConvertible {
         return id.toString();
     }
 
-    public String[] getBoard() {
+    public String getBoard() {
         return board;
     }
 
-    public void setBoard(String[] board) {
+    public void setBoard(String board) {
         this.board = board;
     }
 
@@ -149,12 +149,8 @@ public class Game implements JsonConvertible {
     }
 
     public JsonObject toJson() {
-        JsonArrayBuilder boardArray = JSONResponses.arrayBuilder();
-        for (String row : board) {
-            boardArray.add(row);
-        }
         return JSONResponses.objectBuilder()
-                .add("board", boardArray.build())
+                .add("board", board)
                 .add("moves", moves)
                 .add("turn", turn)
                 .add("whiteTime", whiteTime)
