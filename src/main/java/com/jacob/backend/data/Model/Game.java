@@ -2,7 +2,6 @@ package com.jacob.backend.data.Model;
 
 import java.util.UUID;
 
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.jacob.backend.data.JsonConvertible;
