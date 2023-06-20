@@ -39,7 +39,7 @@ public class GameController {
             }
             String gameId = gameService.create(game);
 
-            return ResponseEntity.ok().body(JSONResponses.objectBuilder().add("gameId", gameId).toString());
+            return ResponseEntity.ok().body(JSONResponses.objectBuilder().add("gameId", gameId).build().toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
         }

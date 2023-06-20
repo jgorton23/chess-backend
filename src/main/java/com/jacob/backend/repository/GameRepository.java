@@ -11,6 +11,7 @@ import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class GameRepository implements GameRepositoryInterface {
@@ -29,6 +30,7 @@ public class GameRepository implements GameRepositoryInterface {
         }
     }
 
+    @Transactional
     public void save(Game game) {
         try {
             entityManager.persist(game);
