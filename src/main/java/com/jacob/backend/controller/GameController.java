@@ -25,23 +25,3 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private SessionService sessionService;
-
-    @PostMapping("/new")
-    public ResponseEntity<String> newGame(
-            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
-            @RequestBody Game game) {
-        try {
-            Session s = sessionService.findById(UUID.fromString(sessionId));
-            String username = s.getUsername();
-            if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("Unauthorized").toString());
-            }
-            String gameId = gameService.create(game);
-
-            return ResponseEntity.ok().body(JSONResponses.objectBuilder().add("gameId", gameId).build().toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
-        }
-    }
-}
