@@ -36,7 +36,7 @@ public class UserService {
     public ProfileDTO getProfile(String username) {
         User u = findByUsername(username);
         UUID id = u.getId();
-        int friends = friendRepo.getById(id).size();
+        int friends = (int) friendRepo.getById(id).stream().filter(f -> !f.getPending()).count();
         String email = findByUsername(username).getEmail();
         return new ProfileDTO(friends, username, email);
     }
