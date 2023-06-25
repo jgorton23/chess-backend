@@ -52,7 +52,7 @@ public class UserController {
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
 
-            List<ProfileDTO> friends = friendService.findByUsername(username, pending != null && pending);
+            List<FriendDTO> friends = friendService.findByUsername(username, pending != null && pending);
 
             JsonObject result = JSONResponses
                     .objectBuilder()

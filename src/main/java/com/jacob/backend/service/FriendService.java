@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jacob.backend.data.DTO.ProfileDTO;
+import com.jacob.backend.data.DTO.FriendDTO;
 import com.jacob.backend.data.Model.Friend;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
@@ -22,21 +22,22 @@ public class FriendService {
     @Autowired
     private UserService userService;
 
-    public List<ProfileDTO> findById(UUID id, Boolean includePending) {
+    public List<FriendDTO> findById(UUID id, Boolean includePending) {
         List<Friend> friends = friendRepo.getById(id);
-        List<ProfileDTO> friendProfiles = new ArrayList<ProfileDTO>();
+        List<FriendDTO> friendProfiles = new ArrayList<FriendDTO>();
         for (Friend f : friends) {
             if (!f.getPending() || includePending) {
                 UUID friendUUID = f.getUserAId().equals(id) ? f.getUserBId() : f.getUserAId();
                 User friend = userService.findById(friendUUID);
-                ProfileDTO friendProfile = new ProfileDTO(0, friend.getUsername(), friend.getEmail());
+                FriendDTO friendProfile = new FriendDTO(friend.getUsername(), f.getPending(),
+                        f.getPending() && f.getUserAId().equals(friendUUID));
                 friendProfiles.add(friendProfile);
             }
         }
         return friendProfiles;
     }
 
-    public List<ProfileDTO> findByUsername(String username, Boolean includePending) {
+    public List<FriendDTO> findByUsername(String username, Boolean includePending) {
         User u = userService.findByUsername(username);
         if (u == null) {
             throw new NotFoundException("User", "Username: " + username);
