@@ -149,6 +149,7 @@ public class Game implements JsonConvertible {
 
     public JsonObject toJson() {
         return JSONResponses.objectBuilder()
+                .add("id", id.toString())
                 .add("board", board)
                 .add("moves", moves)
                 .add("turn", turn)
