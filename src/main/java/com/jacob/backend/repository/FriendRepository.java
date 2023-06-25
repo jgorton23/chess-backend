@@ -22,7 +22,7 @@ public class FriendRepository implements FriendRepositoryInterface {
     @Override
     public List<Friend> getById(UUID id) {
         try {
-            String qString = "SELECT f FROM Friend f WHERE (f.userAId = :userId OR f.userBId = :userId) AND not f.pending";
+            String qString = "SELECT f FROM Friend f WHERE (f.userAId = :userId OR f.userBId = :userId)";
             TypedQuery<Friend> query = entityManager.createQuery(qString, Friend.class);
             List<Friend> f = query.setParameter("userId", id).getResultList();
             return f;
