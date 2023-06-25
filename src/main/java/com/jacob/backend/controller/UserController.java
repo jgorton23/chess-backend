@@ -46,12 +46,13 @@ public class UserController {
 
     @GetMapping("/friends")
     public ResponseEntity<String> getFriends(
-            @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam(required = false) Boolean pending) {
         try {
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
 
-            List<ProfileDTO> friends = friendService.findByUsername(username);
+            List<ProfileDTO> friends = friendService.findByUsername(username, pending != null && pending);
 
             JsonObject result = JSONResponses
                     .objectBuilder()

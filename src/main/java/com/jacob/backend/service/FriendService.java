@@ -22,11 +22,11 @@ public class FriendService {
     @Autowired
     private UserService userService;
 
-    public List<ProfileDTO> findById(UUID id) {
+    public List<ProfileDTO> findById(UUID id, Boolean includePending) {
         List<Friend> friends = friendRepo.getById(id);
         List<ProfileDTO> friendProfiles = new ArrayList<ProfileDTO>();
         for (Friend f : friends) {
-            if (!f.getPending()) {
+            if (!f.getPending() || includePending) {
                 UUID friendUUID = f.getUserAId().equals(id) ? f.getUserBId() : f.getUserAId();
                 User friend = userService.findById(friendUUID);
                 ProfileDTO friendProfile = new ProfileDTO(0, friend.getUsername(), friend.getEmail());
@@ -36,12 +36,12 @@ public class FriendService {
         return friendProfiles;
     }
 
-    public List<ProfileDTO> findByUsername(String username) {
+    public List<ProfileDTO> findByUsername(String username, Boolean includePending) {
         User u = userService.findByUsername(username);
         if (u == null) {
             throw new NotFoundException("User", "Username: " + username);
         }
-        return findById(u.getId());
+        return findById(u.getId(), includePending);
     }
 
     public Friend findByIds(UUID userId, UUID friendId) {
