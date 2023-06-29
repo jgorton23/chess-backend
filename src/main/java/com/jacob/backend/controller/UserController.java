@@ -44,6 +44,20 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/friends")
+    public ResponseEntity<String> removeFriends(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestBody CredentialsDTO friendUsernameDTO) {
+        try {
+            Session s = sessionService.findById(UUID.fromString(sessionId));
+            String username = s.getUsername();
+            friendService.deleteByUsernames(username, friendUsernameDTO.getUsername());
+            return ResponseEntity.ok().body(JSONResponses.success().toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+        }
+    }
+
     @GetMapping("/friends")
     public ResponseEntity<String> getFriends(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
