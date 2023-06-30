@@ -1,5 +1,6 @@
 package com.jacob.backend.data.Model;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.json.JsonObject;
@@ -42,6 +43,8 @@ public class Game implements JsonConvertible {
     private boolean ended;
 
     private String winner;
+
+    private Date date;
 
     public Game() {
 
@@ -147,6 +150,14 @@ public class Game implements JsonConvertible {
         this.ended = ended;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public JsonObject toJson() {
         return JSONResponses.objectBuilder()
                 .add("id", id.toString())
@@ -159,6 +170,7 @@ public class Game implements JsonConvertible {
                 .add("blackPlayerUUID", blackPlayerId.toString())
                 .add("whiteUsername", whitePlayerUsername)
                 .add("blackUsername", blackPlayerUsername)
+                .add("date", date.toString())
                 .build();
     }
 }
