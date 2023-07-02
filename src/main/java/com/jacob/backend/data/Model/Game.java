@@ -47,7 +47,7 @@ public class Game implements JsonConvertible {
     private Date date;
 
     public Game() {
-
+        date = new Date();
     }
 
     public String getId() {
@@ -168,8 +168,8 @@ public class Game implements JsonConvertible {
                 .add("blackTime", blackTime)
                 .add("whitePlayerUUID", whitePlayerId.toString())
                 .add("blackPlayerUUID", blackPlayerId.toString())
-                .add("whiteUsername", whitePlayerUsername)
-                .add("blackUsername", blackPlayerUsername)
+                .add("whitePlayerUsername", whitePlayerUsername)
+                .add("blackPlayerUsername", blackPlayerUsername)
                 .add("date", date.toString())
                 .build();
     }
