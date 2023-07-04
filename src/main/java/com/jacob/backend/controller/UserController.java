@@ -114,6 +114,7 @@ public class UserController {
     @GetMapping("/games")
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
+            System.out.println("test--------------------------");
             Session s = sessionService.findById(UUID.fromString(sessionId));
             String username = s.getUsername();
             List<Game> games = gameService.findAllByUsername(username);

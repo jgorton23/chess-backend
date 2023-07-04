@@ -9,4 +9,6 @@ public interface GameRepositoryInterface {
     public List<Game> getAllByUserId(UUID userId);
 
     public void save(Game game);
+
+    public void update(Game game);
 }

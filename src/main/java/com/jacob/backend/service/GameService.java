@@ -55,4 +55,8 @@ public class GameService {
         gameRepo.save(game);
         return game.getId();
     }
+
+    public void update(Game game) {
+        gameRepo.update(game);
+    }
 }

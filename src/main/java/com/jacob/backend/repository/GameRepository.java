@@ -39,4 +39,14 @@ public class GameRepository implements GameRepositoryInterface {
             throw e;
         }
     }
+
+    @Transactional
+    public void update(Game game) {
+        try {
+            entityManager.merge(game);
+        } catch (Exception e) {
+            // Logger.error(e)
+            throw e;
+        }
+    }
 }
