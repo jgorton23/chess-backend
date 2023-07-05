@@ -23,13 +23,8 @@ public class GameSocket {
     private SimpMessagingTemplate messaging;
 
     @MessageMapping("/game/{gameId}")
-    // @SendTo("/game/{gameId}")
     public void UpdateGame(@DestinationVariable String gameId, Game game) {
-        System.out.println("update game----------------------");
-        messaging.convertAndSend("/topic/test/" + gameId, game);
+        messaging.convertAndSend("/topic/game/" + gameId, game);
         gameService.update(game);
-        // game.setBoard("testing");
-        // return game;
-        // return null;
     }
 }
