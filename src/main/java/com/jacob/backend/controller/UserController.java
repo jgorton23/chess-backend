@@ -6,6 +6,8 @@ import java.util.UUID;
 import javax.json.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,7 +116,14 @@ public class UserController {
     @GetMapping("/games")
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
+            if (sessionId.equals("") || !sessionId.matches("[0-9a-zA-Z]{8}(-[0-9a-zA-Z]{4}){3}-[0-9a-zA-Z]{12}")) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
+            if (s == null) {
+                return new ResponseEntity<String>(JSONResponses.error("UNAUTHORIZED").toString(),
+                        HttpStatus.UNAUTHORIZED);
+            }
             String username = s.getUsername();
             List<Game> games = gameService.findAllByUsername(username);
             JsonObject result = JSONResponses
