@@ -7,7 +7,6 @@ import javax.json.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +36,17 @@ public class UserController {
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody CredentialsDTO friendUsernameDTO) {
         try {
+            if (!sessionService.isValidUUID(sessionId)) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
+            if (s == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
+            }
+
             String username = s.getUsername();
             friendService.addByUsernames(username, friendUsernameDTO.getUsername());
+
             return ResponseEntity.ok().body(JSONResponses.success().toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
@@ -51,9 +58,17 @@ public class UserController {
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody CredentialsDTO friendUsernameDTO) {
         try {
+            if (!sessionService.isValidUUID(sessionId)) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
+            if (s == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
+            }
+
             String username = s.getUsername();
             friendService.deleteByUsernames(username, friendUsernameDTO.getUsername());
+
             return ResponseEntity.ok().body(JSONResponses.success().toString());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
@@ -65,9 +80,15 @@ public class UserController {
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestParam(required = false) Boolean pending) {
         try {
+            if (!sessionService.isValidUUID(sessionId)) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
-            String username = s.getUsername();
+            if (s == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
+            }
 
+            String username = s.getUsername();
             List<FriendDTO> friends = friendService.findByUsername(username, pending != null && pending);
 
             JsonObject result = JSONResponses
@@ -85,12 +106,20 @@ public class UserController {
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody CredentialsDTO creds) {
         try {
+            if (!sessionService.isValidUUID(sessionId)) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
+            if (s == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
+            }
+
             String username = s.getUsername();
-            String newUsername = creds.getUsername() != null ? creds.getUsername() : username;
+            if (!creds.getUsername().equals(username)) {
+                sessionService.update(UUID.fromString(sessionId), creds.getUsername());
+            }
 
             userService.update(username, creds);
-            sessionService.update(UUID.fromString(sessionId), newUsername);
 
             return ResponseEntity.ok().body(JSONResponses.success().toString());
         } catch (Exception e) {
@@ -102,9 +131,15 @@ public class UserController {
     public ResponseEntity<String> getProfile(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
+            if (!sessionService.isValidUUID(sessionId)) {
+                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+            }
             Session s = sessionService.findById(UUID.fromString(sessionId));
-            String username = s.getUsername();
+            if (s == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
+            }
 
+            String username = s.getUsername();
             ProfileDTO profile = userService.getProfile(username);
 
             return ResponseEntity.ok().body(profile.toJson().toString());
@@ -121,8 +156,7 @@ public class UserController {
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
-                return new ResponseEntity<String>(JSONResponses.error("UNAUTHORIZED").toString(),
-                        HttpStatus.UNAUTHORIZED);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             String username = s.getUsername();
             List<Game> games = gameService.findAllByUsername(username);

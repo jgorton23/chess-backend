@@ -21,6 +21,10 @@ public class JSONResponses {
         return builderFactory.createObjectBuilder().add("msg", String.format("Error: %s", msg)).build();
     }
 
+    public static String unauthorized() {
+        return error("UNAUTHORIZED").toString();
+    }
+
     public static <T extends JsonConvertible> JsonArrayBuilder ListToJsonArray(List<T> list) {
         JsonArrayBuilder arrayBuilder = builderFactory.createArrayBuilder();
         for (T obj : list) {
