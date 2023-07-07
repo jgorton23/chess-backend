@@ -116,7 +116,7 @@ public class UserController {
     @GetMapping("/games")
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
-            if (sessionId.equals("") || !sessionId.matches("[0-9a-zA-Z]{8}(-[0-9a-zA-Z]{4}){3}-[0-9a-zA-Z]{12}")) {
+            if (!sessionService.isValidUUID(sessionId)) {
                 return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
