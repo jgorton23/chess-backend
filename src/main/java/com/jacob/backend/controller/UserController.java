@@ -37,7 +37,7 @@ public class UserController {
             @RequestBody CredentialsDTO friendUsernameDTO) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
@@ -59,7 +59,7 @@ public class UserController {
             @RequestBody CredentialsDTO friendUsernameDTO) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
@@ -81,7 +81,7 @@ public class UserController {
             @RequestParam(required = false) Boolean pending) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
@@ -107,7 +107,7 @@ public class UserController {
             @RequestBody CredentialsDTO creds) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
@@ -132,7 +132,7 @@ public class UserController {
             @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
@@ -152,7 +152,7 @@ public class UserController {
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
             if (!sessionService.isValidUUID(sessionId)) {
-                return ResponseEntity.badRequest().body(JSONResponses.error("invalid sessionId").toString());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JSONResponses.unauthorized());
             }
             Session s = sessionService.findById(UUID.fromString(sessionId));
             if (s == null) {
