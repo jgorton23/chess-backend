@@ -10,7 +10,6 @@ public class CredentialsDTO {
     private String confirm;
 
     public CredentialsDTO() {
-
     }
 
     public CredentialsDTO(String username, String pass) {

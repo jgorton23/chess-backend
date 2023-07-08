@@ -115,7 +115,7 @@ public class UserController {
             }
 
             String username = s.getUsername();
-            if (!creds.getUsername().equals(username)) {
+            if (creds.getUsername() != null && !creds.getUsername().equals(username)) {
                 sessionService.update(UUID.fromString(sessionId), creds.getUsername());
             }
 
