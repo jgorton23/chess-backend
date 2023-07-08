@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -112,7 +113,7 @@ public class ChessAuthController {
      * @param sessionId The UUID of the Session to remove
      * @return successful
      */
-    @PostMapping("/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
 
