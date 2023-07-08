@@ -1,4 +1,4 @@
-package com.jacob.backend.responses;
+package com.jacob.backend.responses.exceptions;
 
 public class PasswordMismatchException extends RuntimeException {
     public PasswordMismatchException(String pass, String passConfirm) {

@@ -1,4 +1,4 @@
-package com.jacob.backend.responses;
+package com.jacob.backend.responses.exceptions;
 
 public class MissingFieldException extends RuntimeException {
     public MissingFieldException(String form, String field) {

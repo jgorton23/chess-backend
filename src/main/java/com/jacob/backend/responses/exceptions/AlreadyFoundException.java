@@ -1,4 +1,4 @@
-package com.jacob.backend.responses;
+package com.jacob.backend.responses.exceptions;
 
 public class AlreadyFoundException extends RuntimeException {
     public AlreadyFoundException(String type, String identifier) {

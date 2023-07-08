@@ -11,7 +11,7 @@ import com.jacob.backend.data.DTO.FriendDTO;
 import com.jacob.backend.data.Model.Friend;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
-import com.jacob.backend.responses.NotFoundException;
+import com.jacob.backend.responses.exceptions.NotFoundException;
 
 @Service
 public class FriendService {

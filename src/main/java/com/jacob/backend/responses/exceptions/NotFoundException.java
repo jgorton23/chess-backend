@@ -1,4 +1,4 @@
-package com.jacob.backend.responses;
+package com.jacob.backend.responses.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String type, String identifier) {

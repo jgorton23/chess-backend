@@ -1,4 +1,4 @@
-package com.jacob.backend.responses;
+package com.jacob.backend.responses.exceptions;
 
 public class InvalidCredentialsException extends RuntimeException {
     public InvalidCredentialsException(String field) {

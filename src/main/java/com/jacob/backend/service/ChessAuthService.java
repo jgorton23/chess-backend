@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.UserRepositoryInterface;
-import com.jacob.backend.responses.AlreadyFoundException;
-import com.jacob.backend.responses.InvalidCredentialsException;
-import com.jacob.backend.responses.MissingFieldException;
-import com.jacob.backend.responses.PasswordMismatchException;
+import com.jacob.backend.responses.exceptions.AlreadyFoundException;
+import com.jacob.backend.responses.exceptions.InvalidCredentialsException;
+import com.jacob.backend.responses.exceptions.MissingFieldException;
+import com.jacob.backend.responses.exceptions.PasswordMismatchException;
 
 @Service
 public class ChessAuthService {

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.jacob.backend.data.Model.Game;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
-import com.jacob.backend.responses.MissingFieldException;
-import com.jacob.backend.responses.NotFoundException;
+import com.jacob.backend.responses.exceptions.MissingFieldException;
+import com.jacob.backend.responses.exceptions.NotFoundException;
 
 @Service
 public class GameService {
