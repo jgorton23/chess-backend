@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.Model.Session;
 import com.jacob.backend.repository.interfaces.SessionRepositoryInterface;
+import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
 @Service
 public class SessionService {
@@ -60,16 +61,22 @@ public class SessionService {
     }
 
     /**
-     * Gets a username for the given sessionId, if the sessionId exists
+     * Gets the username associated with the given sessionId if one exists
      * 
-     * @param sessionId the String UUID to search for
-     * @return the Username corresponding to the given sessionId
+     * @param sessionId the String UUID associated with the Session to get
+     * @return the username assocaiated with the given SessionId if one exists
+     * @throws UnauthorizedException if the given sessionId is not valid
      */
-    public String getUsernameById(String sessionId) {
+    public String getUsernameById(String sessionId) throws UnauthorizedException {
         if (!isValidUUID(sessionId)) {
-            throw new OutOfMemoryError();
+            throw new UnauthorizedException();
         }
-        return null;
+        Session s = findById(UUID.fromString(sessionId));
+        if (s == null) {
+            throw new UnauthorizedException();
+        }
+
+        return s.getUsername();
     }
 
     /**
