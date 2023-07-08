@@ -18,20 +18,36 @@ import com.jacob.backend.responses.JSONResponses;
 
 import java.util.UUID;
 
+/**
+ * Controller with Auth related endpoints
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/auth")
 public class ChessAuthController {
 
+    /**
+     * Service with Auth related logic
+     */
     @Autowired
     private ChessAuthService authService;
 
+    /**
+     * Service with Session related logic
+     */
     @Autowired
     private SessionService sessionService;
 
+    /**
+     * If the given credentials are valid, store new Session in db
+     * 
+     * @param creds the Credentials the user supplied to log in
+     * @return a cookie with the UUID of the newly created Session
+     */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody CredentialsDTO creds) {
-        String sessionId;
+
+        // Build a default cookie with no content
         ResponseCookie cookie = ResponseCookie
                 .from("session-id", null)
                 .path("/")
@@ -39,46 +55,86 @@ public class ChessAuthController {
                 .build();
 
         try {
-            sessionId = authService.login(creds);
+
+            // Perform the login
+            String sessionId = authService.login(creds);
+
+            // update the Cookie with the newly created SessionId
             cookie = ResponseCookie
                     .from("session-id", sessionId)
                     .path("/")
                     .maxAge(7200).build();
+
+            // return successful with the Cookie
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(JSONResponses.success().toString());
+
         } catch (Exception e) {
+
+            // catch generic Exceptions - return badRequest with null Cookie
             return ResponseEntity
                     .badRequest()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(JSONResponses.error(e.getMessage()).toString());
+
         }
     }
 
+    /**
+     * Registers a new User with the given Credentials
+     * 
+     * @param creds the Credentials of the new User
+     * @return success message if the operation is successful, else 4XX
+     */
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody CredentialsDTO creds) {
         try {
+
+            // perform the Register
             authService.register(creds);
-            return ResponseEntity
-                    .ok()
-                    .body(JSONResponses.success().toString());
+
+            // return successful
+            return ResponseEntity.ok().body(JSONResponses.success().toString());
+
         } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(JSONResponses.error(e.getMessage()).toString());
+
+            // catch generic Exception - return badRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
         }
     }
 
+    /**
+     * Removes the Session from the db and empties the Cookie
+     * 
+     * @param sessionId The UUID of the Session to remove
+     * @return successful
+     */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
-        if (sessionId.length() > 0) {
-            sessionService.deleteById(UUID.fromString(sessionId));
+        try {
+
+            // If the SessionId is not empty, remove it from the db
+            if (sessionId.length() > 0) {
+                sessionService.deleteById(UUID.fromString(sessionId));
+            }
+
+            // Empty the cookie
+            ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).path("/").build();
+
+            // Return successful with empty Cookie
+            return ResponseEntity
+                    .ok()
+                    .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                    .body(JSONResponses.success().toString());
+
+        } catch (Exception e) {
+
+            // Catch generic Exception - return badRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
         }
-        ResponseCookie deleteCookie = ResponseCookie.from("session-id", null).path("/").build();
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                .body(JSONResponses.success().toString());
     }
 }
