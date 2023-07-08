@@ -10,8 +10,8 @@ import com.jacob.backend.data.DTO.ProfileDTO;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
 import com.jacob.backend.repository.interfaces.UserRepositoryInterface;
-import com.jacob.backend.responses.AlreadyFoundException;
-import com.jacob.backend.responses.PasswordMismatchException;
+import com.jacob.backend.responses.exceptions.AlreadyFoundException;
+import com.jacob.backend.responses.exceptions.PasswordMismatchException;
 
 @Service
 public class UserService {
