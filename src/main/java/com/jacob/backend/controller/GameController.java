@@ -92,14 +92,26 @@ public class GameController {
     public ResponseEntity<String> getValidMoves(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestParam(required = false) int[] startingSquare,
-            @RequestParam(required = false) String player,
+            @RequestParam(required = false) String playerColor,
             @PathVariable String gameId) {
         try {
-            return ResponseEntity.ok().body(gameId + Optional.ofNullable(player).orElse(""));
+
+            // Get the username - throws unauthorized
+            String username = sessionService.getUsernameById(sessionId);
+
+            // return successful
+            return ResponseEntity.ok().build();
+
         } catch (UnauthorizedException e) {
+
+            // catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
+
         } catch (Exception e) {
+
+            // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().build();
+
         }
     }
 }
