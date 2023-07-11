@@ -1,12 +1,17 @@
 package com.jacob.backend.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jacob.backend.data.Model.*;
@@ -16,7 +21,7 @@ import com.jacob.backend.service.GameService;
 import com.jacob.backend.service.SessionService;
 
 /**
- * Controller containing Game related endpoints
+ * Controller containing endpoints related Games
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
@@ -72,6 +77,29 @@ public class GameController {
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
 
+        }
+    }
+
+    /**
+     * Get the valid moves
+     * 
+     * @param sessionId
+     * @param startingSquare
+     * @param gameId
+     * @return
+     */
+    @GetMapping("/{gameId}/validMoves")
+    public ResponseEntity<String> getValidMoves(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam(required = false) int[] startingSquare,
+            @RequestParam(required = false) String player,
+            @PathVariable String gameId) {
+        try {
+            return ResponseEntity.ok().body(gameId + Optional.ofNullable(player).orElse(""));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(401).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
