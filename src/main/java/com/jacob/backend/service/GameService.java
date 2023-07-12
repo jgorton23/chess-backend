@@ -87,10 +87,20 @@ public class GameService {
         // Create a grid to store the piece occupying each square on the board
         String[][] grid = new String[rows.length][rows[0].length()];
 
+        // Create a list of all possible starting squares
+        List<int[]> startingSquareList = new ArrayList<int[]>();
+
         // Populate the grid
         for (int row = 0; row < rows.length; row++) {
             for (int col = 0; col < rows[0].length(); col++) {
+                char piece = rows[row].charAt(col);
+                if (!Character.isLetter(piece)) {
+                    for (int i = 0; i < grid.length; i++) {
+
+                    }
+                }
                 grid[col][row] = "" + rows[row].charAt(col);
+
             }
         }
 

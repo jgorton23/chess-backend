@@ -20,12 +20,15 @@ public class Game implements JsonConvertible {
     @GeneratedValue
     private UUID id;
 
+    // TODO change to FEN
     private String board;
 
     private String moves;
 
     private int turn;
 
+    // TODO change whiteTime/blackTime to timeFormat and moveTimes corresponding to
+    // moves array
     private int whiteTime;
 
     private int blackTime;
@@ -38,10 +41,13 @@ public class Game implements JsonConvertible {
 
     private String blackPlayerUsername;
 
+    // TODO remove unnecessary
     private boolean started;
 
+    // TODO remove unnecessary
     private boolean ended;
 
+    // TODO change to result - reference pgn
     private String winner;
 
     private Date date;

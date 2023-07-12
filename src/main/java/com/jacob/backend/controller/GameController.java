@@ -109,7 +109,7 @@ public class GameController {
 
             JsonObject result = JSONResponses
                     .objectBuilder()
-                    .add("validMoves", 0)
+                    .add("validMoves", JSONResponses.StringListToJsonArray(moves))
                     .build();
 
             // return successful

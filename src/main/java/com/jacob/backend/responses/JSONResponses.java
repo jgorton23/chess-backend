@@ -33,9 +33,13 @@ public class JSONResponses {
         return arrayBuilder;
     }
 
-    // public static JsonArrayBuilder ListToJsonArray(List<String> list) {
-
-    // }
+    public static JsonArrayBuilder StringListToJsonArray(List<String> list) {
+        JsonArrayBuilder arrayBuilder = builderFactory.createArrayBuilder();
+        for (String s : list) {
+            arrayBuilder.add(s);
+        }
+        return arrayBuilder;
+    }
 
     public static JsonArrayBuilder arrayBuilder() {
         return builderFactory.createArrayBuilder();
