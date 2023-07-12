@@ -1,6 +1,8 @@
 package com.jacob.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,10 @@ public class GameService {
 
     @Autowired
     private UserService userService;
+
+    public Game findById(UUID gameId) {
+        return gameRepo.getById(gameId);
+    }
 
     public List<Game> findAllByUserId(UUID userId) {
         return gameRepo.getAllByUserId(userId);
@@ -58,5 +64,18 @@ public class GameService {
 
     public void update(Game game) {
         gameRepo.update(game);
+    }
+
+    public List<String> getValidMoves(String gameId, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
+        UUID id = UUID.fromString(gameId);
+
+        Game game = findById(id);
+
+        String board = game.getBoard();
+
+        List<String> moves = new ArrayList<String>();
+
+        return moves;
     }
 }

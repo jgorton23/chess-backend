@@ -19,6 +19,15 @@ public class GameRepository implements GameRepositoryInterface {
     @PersistenceContext
     EntityManager entityManager;
 
+    public Game getById(UUID gameId) {
+        try {
+            return entityManager.find(Game.class, gameId);
+        } catch (Exception e) {
+            // Logger.error(e)
+            throw e;
+        }
+    }
+
     public List<Game> getAllByUserId(UUID userId) {
         try {
             String qString = "SELECT g FROM Game g WHERE g.whitePlayerId = :userId OR g.blackPlayerId = :userId";

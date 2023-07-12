@@ -1,5 +1,6 @@
 package com.jacob.backend.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,8 +100,12 @@ public class GameController {
             // Get the username - throws unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
+            // Get the validMoves for the given Game and options
+            List<String> moves = gameService.getValidMoves(gameId, Optional.of(startingSquare),
+                    Optional.of(playerColor));
+
             // return successful
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(username);
 
         } catch (UnauthorizedException e) {
 
