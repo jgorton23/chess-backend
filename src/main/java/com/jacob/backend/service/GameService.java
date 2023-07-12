@@ -88,6 +88,16 @@ public class GameService {
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
+        if (startingSquare.isPresent()) {
+            startingSquareList.add(startingSquare.get());
+        } else {
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    if ()
+                }
+            }
+        }
+
         // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
