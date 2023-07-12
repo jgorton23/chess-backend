@@ -16,167 +16,271 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "games")
 public class Game implements JsonConvertible {
+
+    /**
+     * The UUID identifying this Game
+     */
     @Id
     @GeneratedValue
     private UUID id;
 
-    // TODO change to FEN
-    private String board;
+    /**
+     * The current board in FEN format
+     */
+    private String FEN;
 
+    /**
+     * A space delimited list of moves in SAN format
+     */
     private String moves;
 
-    private int turn;
+    /**
+     * A space delimited list of how many miliseconds each move took
+     */
+    private String moveTimes;
 
-    // TODO change whiteTime/blackTime to timeFormat and moveTimes corresponding to
-    // moves array
-    private int whiteTime;
+    /**
+     * The time format of this Game. Of the format [initialMinutes/increment]:
+     * e.g. '10/5', meaning both players get 10 minutes to start and the clock has a
+     * 5 second increment
+     */
+    private String timeControl;
 
-    private int blackTime;
-
+    /**
+     * The UUID identifying the white player
+     */
     private UUID whitePlayerId;
 
+    /**
+     * The UUID identifying the black player
+     */
     private UUID blackPlayerId;
 
+    /**
+     * The username of the white player
+     */
     private String whitePlayerUsername;
 
+    /**
+     * The username of the black player
+     */
     private String blackPlayerUsername;
 
-    // TODO remove unnecessary
-    private boolean started;
+    /**
+     * The result of the Game in the format is the number of points the white player
+     * got and the number of points the black player got separated by a hyphen if
+     * the Game is over. e.g. '1-0', '1/2-1/2', or '0-1'
+     * 
+     * If the Game is not over then it will be '*'
+     */
+    private String result;
 
-    // TODO remove unnecessary
-    private boolean ended;
-
-    // TODO change to result - reference pgn
-    private String winner;
-
+    /**
+     * The date which the Game was created
+     */
     private Date date;
 
+    /**
+     * Created a new Game object
+     */
     public Game() {
         date = new Date();
+        result = "*";
     }
 
+    // #region getters/setters
+
+    /**
+     * @return The UUID of this Game as a String
+     */
     public String getId() {
         return id.toString();
     }
 
-    public String getBoard() {
-        return board;
+    /**
+     * @return The FEN of this Game
+     */
+    public String getFEN() {
+        return FEN;
     }
 
-    public void setBoard(String board) {
-        this.board = board;
+    /**
+     * Updates the FEN of this Game
+     * 
+     * @param FEN the new FEN to store
+     */
+    public void setFEN(String FEN) {
+        this.FEN = FEN;
     }
 
+    /**
+     * Gets the moves of this Game as a space delimited list of SAN formatted moves
+     * 
+     * @return The moves String
+     */
     public String getMoves() {
         return moves;
     }
 
+    /**
+     * Updates the moves String of this Game
+     * 
+     * @param moves the new moves String to store
+     */
     public void setMoves(String moves) {
         this.moves = moves;
     }
 
-    public int getTurn() {
-        return turn;
+    /**
+     * Gets a space delimited list of how long each move took in miliseconds
+     * 
+     * @return the list of moveTimes
+     */
+    public String getMoveTimes() {
+        return moveTimes;
     }
 
-    public void setTurn(int turn) {
-        this.turn = turn;
+    /**
+     * Updates the moveTimes String of this Game
+     * 
+     * @param moveTimes the new moveTimes String to store
+     */
+    public void setMoveTimes(String moveTimes) {
+        this.moveTimes = moveTimes;
     }
 
-    public int getWhiteTime() {
-        return whiteTime;
+    /**
+     * @return the time format of the Game, in the format
+     *         [initialMinutes/increment].
+     *         E.g. '10/5'
+     */
+    public String getTimeControl() {
+        return timeControl;
     }
 
-    public void setWhiteTime(int time) {
-        whiteTime = time;
+    /**
+     * Updates the TimeControl of this Game
+     * 
+     * @param timeControl the new TimeControl to use
+     */
+    public void setTimeControl(String timeControl) {
+        this.timeControl = timeControl;
     }
 
-    public int getBlackTime() {
-        return blackTime;
+    /**
+     * @return the result of this Game
+     */
+    public String getResult() {
+        return result;
     }
 
-    public void setBlackTime(int time) {
-        blackTime = time;
+    /**
+     * Updates the result of this Game
+     * 
+     * @param result the new result
+     */
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public UUID getWhitePlayerId() {
-        return whitePlayerId;
-    }
-
-    public void setWhitePlayerId(UUID id) {
-        whitePlayerId = id;
-    }
-
-    public UUID getBlackPlayerId() {
-        return blackPlayerId;
-    }
-
-    public void setBlackPlayerId(UUID id) {
-        blackPlayerId = id;
-    }
-
-    public String getWhitePlayerUsername() {
-        return whitePlayerUsername;
-    }
-
-    public void setWhitePlayerUsername(String username) {
-        whitePlayerUsername = username;
-    }
-
-    public String getBlackPlayerUsername() {
-        return blackPlayerUsername;
-    }
-
-    public void setBlackPlayerUsername(String username) {
-        blackPlayerUsername = username;
-    }
-
-    public String getWinner() {
-        return winner;
-    }
-
-    public void setWinner(String winner) {
-        this.winner = winner;
-    }
-
-    public boolean getStarted() {
-        return started;
-    }
-
-    public void setStarted(boolean started) {
-        this.started = started;
-    }
-
-    public boolean getEnded() {
-        return ended;
-    }
-
-    public void setEnded(boolean ended) {
-        this.ended = ended;
-    }
-
+    /**
+     * @return the date this game was created
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Updates the date this game was created
+     * 
+     * @param date the new Date to store
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * @return the UUID of the white player
+     */
+    public UUID getWhitePlayerId() {
+        return whitePlayerId;
+    }
+
+    /**
+     * Updates the UUID of the white player of this Game
+     * 
+     * @param id the new UUID of the white player
+     */
+    public void setWhitePlayerId(UUID id) {
+        whitePlayerId = id;
+    }
+
+    /**
+     * @return the UUID of the black player of this Game
+     */
+    public UUID getBlackPlayerId() {
+        return blackPlayerId;
+    }
+
+    /**
+     * Updates the UUID of the black player of this Game
+     * 
+     * @param id the new UUID of the black player
+     */
+    public void setBlackPlayerId(UUID id) {
+        blackPlayerId = id;
+    }
+
+    /**
+     * @return the username of the white player of this Game
+     */
+    public String getWhitePlayerUsername() {
+        return whitePlayerUsername;
+    }
+
+    /**
+     * Updates the username of the white player of this Game
+     * 
+     * @param username the new username of the white player
+     */
+    public void setWhitePlayerUsername(String username) {
+        whitePlayerUsername = username;
+    }
+
+    /**
+     * @return the username of the black player of this Game
+     */
+    public String getBlackPlayerUsername() {
+        return blackPlayerUsername;
+    }
+
+    /**
+     * Updates the username of the black player of this Game
+     * 
+     * @param username the new username of the black player
+     */
+    public void setBlackPlayerUsername(String username) {
+        blackPlayerUsername = username;
+    }
+
+    // #endregion
+
+    /**
+     * Turns this Game object into a JsonObject
+     */
     public JsonObject toJson() {
         return JSONResponses.objectBuilder()
                 .add("id", id.toString())
-                .add("board", board)
+                .add("date", date.toString())
+                .add("FEN", FEN)
                 .add("moves", moves)
-                .add("turn", turn)
-                .add("whiteTime", whiteTime)
-                .add("blackTime", blackTime)
+                .add("moveTimes", moveTimes)
+                .add("timeControl", timeControl)
+                .add("result", result)
                 .add("whitePlayerId", whitePlayerId.toString())
                 .add("blackPlayerId", blackPlayerId.toString())
                 .add("whitePlayerUsername", whitePlayerUsername)
                 .add("blackPlayerUsername", blackPlayerUsername)
-                .add("date", date.toString())
                 .build();
     }
 }

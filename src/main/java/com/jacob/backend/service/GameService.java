@@ -1,6 +1,7 @@
 package com.jacob.backend.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -79,33 +80,25 @@ public class GameService {
         }
 
         // Get the board from the game
-        String board = game.getBoard();
-
-        // Split the board into rows
-        String[] rows = board.split("/");
+        String FEN = game.getFEN();
 
         // Create a grid to store the piece occupying each square on the board
-        String[][] grid = new String[rows.length][rows[0].length()];
+        String[][] grid = FENToGrid(FEN);
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
-        // Populate the grid
-        for (int row = 0; row < rows.length; row++) {
-            for (int col = 0; col < rows[0].length(); col++) {
-                char piece = rows[row].charAt(col);
-                if (!Character.isLetter(piece)) {
-                    for (int i = 0; i < grid.length; i++) {
-
-                    }
-                }
-                grid[col][row] = "" + rows[row].charAt(col);
-
-            }
-        }
-
+        // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
         return moves;
+    }
+
+    private String[][] FENToGrid(String FEN) {
+        // in order to allow for bigger board sizes this needs to be revised
+        for (int index = 1; index <= 9; index++) {
+            FEN.replace(Integer.toString(index), " ".repeat(index));
+        }
+        return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
     }
 }
