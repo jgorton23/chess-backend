@@ -93,13 +93,13 @@ public class GameService {
         } else {
             for (int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[0].length; j++) {
-                    if (!grid[i][j].equals(" ")) {
-                        if (playerColor.isPresent()) {
-                            if ((grid[i][j].equals(grid[i][j].toUpperCase()) && playerColor.get().equals("w"))
-                                    || (grid[i][j].equals(grid[i][j].toLowerCase()) && playerColor.get().equals("b"))) {
-                                startingSquareList.add(new int[] { i, j });
-                            }
-                        }
+                    if (grid[i][j].equals(" ")) {
+                        continue;
+                    } else if (!playerColor.isPresent()) {
+                        startingSquareList.add(new int[] { i, j });
+                    } else if ((grid[i][j].equals(grid[i][j].toUpperCase()) && playerColor.get().equals("w"))
+                            || (grid[i][j].equals(grid[i][j].toLowerCase()) && playerColor.get().equals("b"))) {
+                        startingSquareList.add(new int[] { i, j });
                     }
                 }
             }
