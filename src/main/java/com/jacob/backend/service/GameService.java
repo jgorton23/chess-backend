@@ -68,11 +68,30 @@ public class GameService {
 
     public List<String> getValidMoves(String gameId, Optional<int[]> startingSquare, Optional<String> playerColor) {
 
+        // Get the UUID of the Game
+        // TODO: check for valid UUID
         UUID id = UUID.fromString(gameId);
 
+        // Get the game by the UUID
         Game game = findById(id);
+        if (game == null) {
+            throw new NotFoundException("Game", String.format("GameId: %s", gameId));
+        }
 
+        // Get the board from the game
         String board = game.getBoard();
+
+        // Split the board into rows
+        String[] rows = board.split("/");
+
+        // Split the rows into a grid
+        String[][] grid = new String[rows.length][rows[0].length()];
+
+        for (int row = 0; row < rows.length; row++) {
+            for (int col = 0; col < rows[0].length(); col++) {
+                grid[col][row] = "" + rows[row].charAt(col);
+            }
+        }
 
         List<String> moves = new ArrayList<String>();
 
