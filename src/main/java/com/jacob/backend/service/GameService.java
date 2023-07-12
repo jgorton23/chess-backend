@@ -105,6 +105,8 @@ public class GameService {
             }
         }
 
+        // TODO get possible moves from possible starts
+
         // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
