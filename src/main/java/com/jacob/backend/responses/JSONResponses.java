@@ -33,6 +33,10 @@ public class JSONResponses {
         return arrayBuilder;
     }
 
+    // public static JsonArrayBuilder ListToJsonArray(List<String> list) {
+
+    // }
+
     public static JsonArrayBuilder arrayBuilder() {
         return builderFactory.createArrayBuilder();
     }

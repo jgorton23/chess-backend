@@ -84,9 +84,10 @@ public class GameService {
         // Split the board into rows
         String[] rows = board.split("/");
 
-        // Split the rows into a grid
+        // Create a grid to store the piece occupying each square on the board
         String[][] grid = new String[rows.length][rows[0].length()];
 
+        // Populate the grid
         for (int row = 0; row < rows.length; row++) {
             for (int col = 0; col < rows[0].length(); col++) {
                 grid[col][row] = "" + rows[row].charAt(col);

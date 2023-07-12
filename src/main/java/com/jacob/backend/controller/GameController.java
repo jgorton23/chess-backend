@@ -3,6 +3,8 @@ package com.jacob.backend.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.json.JsonObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jacob.backend.data.Model.*;
 import com.jacob.backend.responses.JSONResponses;
+import com.jacob.backend.responses.exceptions.NotFoundException;
 import com.jacob.backend.responses.exceptions.UnauthorizedException;
 import com.jacob.backend.service.GameService;
 import com.jacob.backend.service.SessionService;
@@ -104,13 +107,23 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(gameId, Optional.of(startingSquare),
                     Optional.of(playerColor));
 
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("validMoves", 0)
+                    .build();
+
             // return successful
-            return ResponseEntity.ok().body(username);
+            return ResponseEntity.ok().body(result.toString());
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
+
+        } catch (NotFoundException e) {
+
+            // catch NotFound - return 404
+            return ResponseEntity.notFound().build();
 
         } catch (Exception e) {
 
