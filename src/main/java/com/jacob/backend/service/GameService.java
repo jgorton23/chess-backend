@@ -91,27 +91,57 @@ public class GameService {
         if (startingSquare.isPresent()) {
             startingSquareList.add(startingSquare.get());
         } else {
-            for (int i = 0; i < grid.length; i++) {
-                for (int j = 0; j < grid[0].length; j++) {
-                    if (grid[i][j].equals(" ")) {
+            for (int y = 0; y < grid.length; y++) {
+                for (int x = 0; x < grid[0].length; x++) {
+                    if (grid[y][x].equals(" ")) {
                         continue;
                     } else if (!playerColor.isPresent()) {
-                        startingSquareList.add(new int[] { i, j });
-                    } else if ((grid[i][j].equals(grid[i][j].toUpperCase()) && playerColor.get().equals("w"))
-                            || (grid[i][j].equals(grid[i][j].toLowerCase()) && playerColor.get().equals("b"))) {
-                        startingSquareList.add(new int[] { i, j });
+                        startingSquareList.add(new int[] { x, y });
+                    } else if ((grid[y][x].equals(grid[y][x].toUpperCase()) && playerColor.get().equals("w"))
+                            || (grid[y][x].equals(grid[y][x].toLowerCase()) && playerColor.get().equals("b"))) {
+                        startingSquareList.add(new int[] { x, y });
                     }
                 }
             }
         }
 
-        // TODO get possible moves from possible starts
-
         // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
+        for (int[] start : startingSquareList) {
+            List<String> pieceMoves = findValidMoves(grid, start);
+            moves.addAll(pieceMoves);
+        }
+
         return moves;
     }
+
+    // #region findValidMoves
+
+    private List<String> findValidMoves(String[][] grid, int[] start) {
+        int x = start[0], y = start[1];
+
+        ArrayList<String> validMoves = new ArrayList<String>();
+
+        switch (grid[y][x]) {
+            case "R", "r":
+                break;
+            case "N", "n":
+                break;
+            case "B", "b":
+                break;
+            case "K", "k":
+                break;
+            case "Q", "q":
+                break;
+            case "P", "p":
+                break;
+        }
+
+        return validMoves;
+    }
+
+    // #endregion
 
     private String[][] FENToGrid(String FEN) {
         // in order to allow for bigger board sizes this needs to be revised
