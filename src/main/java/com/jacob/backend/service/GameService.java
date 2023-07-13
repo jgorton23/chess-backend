@@ -116,32 +116,72 @@ public class GameService {
         return moves;
     }
 
+    // #region private helper
+
     // #region findValidMoves
 
     private List<String> findValidMoves(String[][] grid, int[] start) {
         int x = start[0], y = start[1];
 
-        ArrayList<String> validMoves = new ArrayList<String>();
+        List<String> validMoves = new ArrayList<String>();
 
         switch (grid[y][x]) {
             case "R", "r":
+                validMoves = findValidRookMoves(grid, start);
                 break;
             case "N", "n":
+                validMoves = findValidKnightMoves(grid, start);
                 break;
             case "B", "b":
+                validMoves = findValidBishopMoves(grid, start);
                 break;
             case "K", "k":
+                validMoves = findValidKingMoves(grid, start);
                 break;
             case "Q", "q":
+                validMoves = findValidQueenMoves(grid, start);
                 break;
             case "P", "p":
+                validMoves = findValidPawnMoves(grid, start);
                 break;
         }
 
         return validMoves;
     }
 
+    private List<String> findValidRookMoves(String[][] grid, int[] start) {
+
+        return null;
+    }
+
+    private List<String> findValidKnightMoves(String[][] grid, int[] start) {
+        return null;
+    }
+
+    private List<String> findValidBishopMoves(String[][] grid, int[] start) {
+        return null;
+    }
+
+    private List<String> findValidKingMoves(String[][] grid, int[] start) {
+        return null;
+    }
+
+    private List<String> findValidQueenMoves(String[][] grid, int[] start) {
+        List<String> result = new ArrayList<String>();
+        result.addAll(findValidRookMoves(grid, start));
+        result.addAll(findValidBishopMoves(grid, start));
+        return result;
+    }
+
+    private List<String> findValidPawnMoves(String[][] grid, int[] start) {
+        return null;
+    }
+
     // #endregion
+
+    private boolean isAttacked(String[][] grid, int[] piece) {
+        return false;
+    }
 
     private String[][] FENToGrid(String FEN) {
         // in order to allow for bigger board sizes this needs to be revised
@@ -150,4 +190,7 @@ public class GameService {
         }
         return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
     }
+
+    // #endregion
+
 }
