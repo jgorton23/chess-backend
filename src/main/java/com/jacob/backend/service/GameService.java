@@ -151,6 +151,39 @@ public class GameService {
 
     private List<String> findValidRookMoves(String[][] grid, int[] start) {
 
+        int x = start[0], y = start[1];
+
+        List<String> movesList = new ArrayList<String>();
+
+        for (int[] dir : new int[][] {
+                new int[] { 0, 1 }, // horizontal, vertical increment
+                new int[] { 0, -1 },
+                new int[] { 1, 0 },
+                new int[] { -1, 0 } }) {
+
+            int x2 = x + dir[0], y2 = y + dir[1];
+            while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
+                // if this square is the same color as the rook, break while
+                if (isSameColorPiece(grid, x, y, x2, y2)) {
+                    break;
+                }
+
+                String[][] gridAfterMove = grid;
+                int[] kingPos = new int[2];
+                // if moving to this square leaves the king checked, skip while iteration
+                if (isCheck(gridAfterMove, kingPos)) {
+                    continue;
+                }
+
+                movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+
+                // if this square is not empty, it must be an opposing piece that we capture
+                if (!grid[y2][x2].equals(" ")) {
+                    break;
+                }
+            }
+        }
+
         return null;
     }
 
@@ -179,7 +212,7 @@ public class GameService {
 
     // #endregion
 
-    private boolean isAttacked(String[][] grid, int[] piece) {
+    private boolean isCheck(String[][] grid, int[] king) {
         return false;
     }
 
@@ -189,6 +222,11 @@ public class GameService {
             FEN.replace(Integer.toString(index), " ".repeat(index));
         }
         return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
+    }
+
+    private boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {
+        return (("RNBKQP".contains(grid[y1][x1]) && "RNBKQP".contains(grid[y2][x2]))
+                || ("rnbkqp".contains(grid[y1][x1]) && "rnbkqp".contains(grid[y2][x2])));
     }
 
     // #endregion
