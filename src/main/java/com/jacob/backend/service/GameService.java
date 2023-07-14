@@ -112,10 +112,23 @@ public class GameService {
 
     // #region findValidMoves
 
+    /**
+     * @see GameService#findValidPieceMoves(String[][], int[], boolean)
+     * @param grid
+     * @param start
+     * @return
+     */
     private List<String> findValidPieceMoves(String[][] grid, int[] start) {
         return findValidPieceMoves(grid, start, false);
     }
 
+    /**
+     * 
+     * @param grid
+     * @param start
+     * @param ignoreCheck
+     * @return
+     */
     private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck) {
         int x = start[0], y = start[1];
 
