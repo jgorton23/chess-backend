@@ -90,26 +90,18 @@ public class GameService {
 
         if (startingSquare.isPresent()) {
             startingSquareList.add(startingSquare.get());
+        } else if (playerColor.isPresent()) {
+            startingSquareList.addAll(findPlayerPieces(grid, playerColor.get()));
         } else {
-            for (int y = 0; y < grid.length; y++) {
-                for (int x = 0; x < grid[0].length; x++) {
-                    if (grid[y][x].equals(" ")) {
-                        continue;
-                    } else if (!playerColor.isPresent()) {
-                        startingSquareList.add(new int[] { x, y });
-                    } else if ((grid[y][x].equals(grid[y][x].toUpperCase()) && playerColor.get().equals("w"))
-                            || (grid[y][x].equals(grid[y][x].toLowerCase()) && playerColor.get().equals("b"))) {
-                        startingSquareList.add(new int[] { x, y });
-                    }
-                }
-            }
+            startingSquareList.addAll(findPlayerPieces(grid, "w"));
+            startingSquareList.addAll(findPlayerPieces(grid, "b"));
         }
 
         // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
         for (int[] start : startingSquareList) {
-            List<String> pieceMoves = findValidMoves(grid, start);
+            List<String> pieceMoves = findValidPieceMoves(grid, start);
             moves.addAll(pieceMoves);
         }
 
@@ -120,14 +112,18 @@ public class GameService {
 
     // #region findValidMoves
 
-    private List<String> findValidMoves(String[][] grid, int[] start) {
+    private List<String> findValidPieceMoves(String[][] grid, int[] start) {
+        return findValidPieceMoves(grid, start, false);
+    }
+
+    private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck) {
         int x = start[0], y = start[1];
 
         List<String> validMoves = new ArrayList<String>();
 
         switch (grid[y][x]) {
             case "R", "r":
-                validMoves = findValidRookMoves(grid, start);
+                validMoves = findValidRookMoves(grid, start, ignoreCheck);
                 break;
             case "N", "n":
                 validMoves = findValidKnightMoves(grid, start);
@@ -150,6 +146,10 @@ public class GameService {
     }
 
     private List<String> findValidRookMoves(String[][] grid, int[] start) {
+        return findValidRookMoves(grid, start, false);
+    }
+
+    private List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck) {
 
         int x = start[0], y = start[1];
 
@@ -168,10 +168,15 @@ public class GameService {
                     break;
                 }
 
-                String[][] gridAfterMove = grid;
-                int[] kingPos = new int[2];
+                // copy the array - updating the pieces to resemble the attempted move
+                String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
+                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y][x] = " ";
+
+                String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+
                 // if moving to this square leaves the king checked, skip while iteration
-                if (isCheck(gridAfterMove, kingPos)) {
+                if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
                     continue;
                 }
 
@@ -181,6 +186,9 @@ public class GameService {
                 if (!grid[y2][x2].equals(" ")) {
                     break;
                 }
+
+                x2 += dir[0];
+                y2 += dir[1];
             }
         }
 
@@ -212,8 +220,54 @@ public class GameService {
 
     // #endregion
 
-    private boolean isCheck(String[][] grid, int[] king) {
+    private boolean isInCheck(String[][] grid, String playerColor) {
+
+        List<int[]> opponentPieces = findPlayerPieces(grid, playerColor.equals("w") ? "b" : "w");
+
+        List<String> opponentValidMoves = new ArrayList<String>();
+
+        for (int[] opponentPiece : opponentPieces) {
+            opponentValidMoves.addAll(findValidPieceMoves(grid, opponentPiece, true));
+        }
+
+        String kingLocation = "";
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (playerColor.equals("w") && grid[i][j].equals(grid[i][j].toUpperCase())) {
+                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
+                }
+                if (playerColor.equals("b") && grid[i][j].equals(grid[i][j].toLowerCase())) {
+                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
+                }
+            }
+        }
+
+        for (String move : opponentValidMoves) {
+            if (move.endsWith(kingLocation)) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    private List<int[]> findPlayerPieces(String[][] grid, String playerColor) {
+
+        List<int[]> pieces = new ArrayList<int[]>();
+
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[0].length; x++) {
+                if (grid[y][x].equals(" ")) {
+                    continue;
+                } else if ((grid[y][x].equals(grid[y][x].toUpperCase()) && playerColor.equals("w"))
+                        || (grid[y][x].equals(grid[y][x].toLowerCase()) && playerColor.equals("b"))) {
+                    pieces.add(new int[] { x, y });
+                }
+            }
+        }
+
+        return pieces;
+
     }
 
     private String[][] FENToGrid(String FEN) {
