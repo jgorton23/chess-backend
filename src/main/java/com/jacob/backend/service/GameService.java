@@ -206,6 +206,7 @@ public class GameService {
         }
 
         return movesList;
+
     }
 
     private List<String> findValidKnightMoves(String[][] grid, int[] start, boolean ignoreCheck) {
@@ -261,7 +262,58 @@ public class GameService {
     }
 
     private List<String> findValidBishopMoves(String[][] grid, int[] start, boolean ignoreCheck) {
-        return null;
+
+        int x = start[0], y = start[1];
+
+        List<String> movesList = new ArrayList<String>();
+
+        String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
+
+        for (int[] dir : new int[][] {
+                new int[] { 1, 1 },
+                new int[] { -1, -1 },
+                new int[] { 1, -1 },
+                new int[] { -1, 1 } }) {
+
+            int x2 = x + dir[0], y2 = y + dir[1];
+
+            String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+
+            while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
+                // if this square is the same color as the rook, break while
+                if (isSameColorPiece(grid, x, y, x2, y2)) {
+                    break;
+                }
+
+                // update the pieces to resemble the attempted move
+                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y2 - dir[1]][x2 - dir[0]] = " ";
+
+                // if moving to this square leaves the king checked, skip while iteration
+                if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                    continue;
+                }
+
+                movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+
+                // if this square is not empty, it must be an opposing piece that we capture
+                if (!grid[y2][x2].equals(" ")) {
+                    break;
+                }
+
+                x2 += dir[0];
+                y2 += dir[1];
+            }
+
+            // TODO: this could be different depending on why the while loop terminated
+            gridAfterMove[y2 - dir[1]][x2 - dir[0]] = grid[y2 - dir[1]][x2 - dir[0]];
+
+            gridAfterMove[y][x] = grid[y][x];
+
+        }
+
+        return movesList;
+
     }
 
     private List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck) {
