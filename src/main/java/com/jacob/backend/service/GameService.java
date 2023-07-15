@@ -24,6 +24,8 @@ public class GameService {
     @Autowired
     private UserService userService;
 
+    // #region CRUD
+
     public Game findById(UUID gameId) {
         return gameRepo.getById(gameId);
     }
@@ -107,6 +109,8 @@ public class GameService {
 
         return moves;
     }
+
+    // #endregion
 
     // #region private helper
 
@@ -217,6 +221,10 @@ public class GameService {
 
             int x2 = x + dir[0], y2 = y + dir[1];
 
+            if (0 > x2 || x2 >= grid[0].length || 0 > y2 || y2 >= grid.length) {
+                continue;
+            }
+
             if (isSameColorPiece(grid, x, y, x2, y2)) {
                 continue;
             }
@@ -253,8 +261,6 @@ public class GameService {
 
         List<String> movesList = new ArrayList<String>();
 
-        String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
-
         String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
 
         for (int[] dir : new int[][] {
@@ -263,6 +269,7 @@ public class GameService {
                 new int[] { 1, -1 },
                 new int[] { -1, 1 } }) {
 
+            String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
             int x2 = x + dir[0], y2 = y + dir[1];
 
             while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
@@ -292,9 +299,9 @@ public class GameService {
             }
 
             // TODO: this could be different depending on why the while loop terminated
-            gridAfterMove[y2 - dir[1]][x2 - dir[0]] = grid[y2 - dir[1]][x2 - dir[0]];
+            // gridAfterMove[y2 - dir[1]][x2 - dir[0]] = grid[y2 - dir[1]][x2 - dir[0]];
 
-            gridAfterMove[y][x] = grid[y][x];
+            // gridAfterMove[y][x] = grid[y][x];
 
         }
 
@@ -323,6 +330,10 @@ public class GameService {
                 new int[] { 0, 1 } }) {
 
             int x2 = x + dir[0], y2 = y + dir[1];
+
+            if (0 > x2 || x2 >= grid[0].length || 0 > y2 || y2 >= grid.length) {
+                continue;
+            }
 
             if (isSameColorPiece(grid, x, y, x2, y2)) {
                 continue;
