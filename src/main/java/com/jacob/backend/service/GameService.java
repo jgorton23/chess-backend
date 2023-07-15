@@ -101,7 +101,7 @@ public class GameService {
         List<String> moves = new ArrayList<String>();
 
         for (int[] start : startingSquareList) {
-            List<String> pieceMoves = findValidPieceMoves(grid, start);
+            List<String> pieceMoves = findValidPieceMoves(grid, start, false);
             moves.addAll(pieceMoves);
         }
 
@@ -111,16 +111,6 @@ public class GameService {
     // #region private helper
 
     // #region findValidMoves
-
-    /**
-     * @see GameService#findValidPieceMoves(String[][], int[], boolean)
-     * @param grid
-     * @param start
-     * @return
-     */
-    private List<String> findValidPieceMoves(String[][] grid, int[] start) {
-        return findValidPieceMoves(grid, start, false);
-    }
 
     /**
      * 
@@ -157,10 +147,6 @@ public class GameService {
 
         return validMoves;
     }
-
-    // private List<String> findValidRookMoves(String[][] grid, int[] start) {
-    // return findValidRookMoves(grid, start, false);
-    // }
 
     private List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck) {
 
@@ -376,7 +362,57 @@ public class GameService {
     }
 
     private List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck) {
-        return null;
+
+        int x = start[0], y = start[1];
+
+        List<String> movesList = new ArrayList<String>();
+
+        String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
+
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+
+        int[] increment = playerColor.equals("w") ? new int[] { 0, -1 } : new int[] { 0, 1 };
+
+        for (int[] dir : new int[][] {
+                new int[] { 1, 1 * increment[1] },
+                new int[] { -1, 1 * increment[1] },
+                new int[] { 0, 1 * increment[1] },
+                new int[] { 0, 2 * increment[1] } }) {
+
+            int x2 = x + dir[0], y2 = y + dir[0];
+
+            if (0 > x2 || x2 >= grid[0].length || 0 > y2 || y2 >= grid.length) {
+                continue;
+            }
+
+            if (isSameColorPiece(grid, x, y, x2, y2)) {
+                continue;
+            }
+
+            if (dir[0] != 0 && grid[y][x].equals(" ")) {
+                continue;
+            }
+
+            if (dir[1] > 1 && !(0 > y - (2 * increment[1]) || y - (2 * increment[1]) >= grid.length)) {
+                continue;
+            }
+
+            gridAfterMove[y2][x2] = grid[y][x];
+            gridAfterMove[y][x] = " ";
+
+            if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                continue;
+            }
+
+            movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+
+            gridAfterMove[y][x] = grid[y][x];
+            gridAfterMove[y2][x2] = grid[y2][x2];
+
+        }
+
+        return movesList;
+
     }
 
     // #endregion
