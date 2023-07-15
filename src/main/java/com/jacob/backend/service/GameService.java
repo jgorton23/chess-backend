@@ -269,6 +269,8 @@ public class GameService {
 
         String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
 
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+
         for (int[] dir : new int[][] {
                 new int[] { 1, 1 },
                 new int[] { -1, -1 },
@@ -276,8 +278,6 @@ public class GameService {
                 new int[] { -1, 1 } }) {
 
             int x2 = x + dir[0], y2 = y + dir[1];
-
-            String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
 
             while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
                 // if this square is the same color as the rook, break while
@@ -317,7 +317,55 @@ public class GameService {
     }
 
     private List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck) {
-        return null;
+
+        int x = start[0], y = start[1];
+
+        List<String> movesList = new ArrayList<String>();
+
+        String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
+
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+
+        for (int[] dir : new int[][] {
+                new int[] { 1, 1 },
+                new int[] { -1, -1 },
+                new int[] { 1, -1 },
+                new int[] { -1, 1 },
+                new int[] { -1, 0 },
+                new int[] { 0, -1 },
+                new int[] { 1, 0 },
+                new int[] { 0, 1 } }) {
+
+            int x2 = x + dir[0], y2 = y + dir[1];
+
+            if (isSameColorPiece(grid, x, y, x2, y2)) {
+                continue;
+            }
+
+            // simulate move
+            gridAfterMove[y][x] = " ";
+            gridAfterMove[y2][x2] = grid[y][x];
+
+            // if moving to this square leaves the king checked, skip while iteration
+            if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                continue;
+            }
+
+            movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+
+            // return grid to regular state, ready for next move
+            gridAfterMove[y][x] = grid[y][x];
+            gridAfterMove[y2][x2] = grid[y2][x2];
+
+            // if this square is not empty, it must be an opposing piece that we capture
+            if (!grid[y2][x2].equals(" ")) {
+                break;
+            }
+
+        }
+
+        return movesList;
+
     }
 
     private List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck) {
