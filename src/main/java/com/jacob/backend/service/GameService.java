@@ -380,7 +380,7 @@ public class GameService {
 
         String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
 
-        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
 
         int[] increment = playerColor.equals("w") ? new int[] { 0, -1 } : new int[] { 0, 1 };
 
