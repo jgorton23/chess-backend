@@ -390,7 +390,7 @@ public class GameService {
                 new int[] { 0, 1 * increment[1] },
                 new int[] { 0, 2 * increment[1] } }) {
 
-            int x2 = x + dir[0], y2 = y + dir[0];
+            int x2 = x + dir[0], y2 = y + dir[1];
 
             if (0 > x2 || x2 >= grid[0].length || 0 > y2 || y2 >= grid.length) {
                 continue;
