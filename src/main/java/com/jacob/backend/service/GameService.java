@@ -415,7 +415,7 @@ public class GameService {
                 continue;
             }
 
-            movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+            movesList.add(grid[y][x] + (char) (x + 'a') + (y + 1) + (char) (x2 + 'a') + (y2 + 1));
 
             gridAfterMove[y][x] = grid[y][x];
             gridAfterMove[y2][x2] = grid[y2][x2];
