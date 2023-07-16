@@ -183,7 +183,7 @@ public class GameService {
                     continue;
                 }
 
-                movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+                movesList.add(grid[y][x] + (char) (x + 'a') + (y + 1) + (char) (x2 + 'a') + (y2 + 1));
 
                 // if this square is not empty, it must be an opposing piece that we capture
                 if (!grid[y2][x2].equals(" ")) {
@@ -238,7 +238,7 @@ public class GameService {
                 continue;
             }
 
-            movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+            movesList.add(grid[y][x] + (char) (x + 'a') + (y + 1) + (char) (x2 + 'a') + (y2 + 1));
 
             // return grid to regular state, ready for next move
             gridAfterMove[y][x] = grid[y][x];
@@ -287,7 +287,7 @@ public class GameService {
                     continue;
                 }
 
-                movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+                movesList.add(grid[y][x] + (char) (x + 'a') + (y + 1) + (char) (x2 + 'a') + (y2 + 1));
 
                 // if this square is not empty, it must be an opposing piece that we capture
                 if (!grid[y2][x2].equals(" ")) {
@@ -348,7 +348,7 @@ public class GameService {
                 continue;
             }
 
-            movesList.add(grid[y][x] + (char) (x + 'a') + (char) (y + 'a') + (char) (x2 + 'a') + (char) (y2 + 'a'));
+            movesList.add(grid[y][x] + (char) (x + 'a') + (y + 1) + (char) (x2 + 'a') + (y2 + 1));
 
             // return grid to regular state, ready for next move
             gridAfterMove[y][x] = grid[y][x];
