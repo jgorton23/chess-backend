@@ -481,7 +481,7 @@ public class GameService {
     private String[][] FENToGrid(String FEN) {
         // in order to allow for bigger board sizes this needs to be revised
         for (int index = 1; index <= 9; index++) {
-            FEN.replace(Integer.toString(index), " ".repeat(index));
+            FEN = FEN.replace(Integer.toString(index), " ".repeat(index));
         }
         return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
     }

@@ -104,8 +104,8 @@ public class GameController {
             // String username = sessionService.getUsernameById(sessionId);
 
             // Get the validMoves for the given Game and options
-            List<String> moves = gameService.getValidMoves(gameId, Optional.of(startingSquare),
-                    Optional.of(playerColor));
+            List<String> moves = gameService.getValidMoves(gameId, Optional.ofNullable(startingSquare),
+                    Optional.ofNullable(playerColor));
 
             JsonObject result = JSONResponses
                     .objectBuilder()
