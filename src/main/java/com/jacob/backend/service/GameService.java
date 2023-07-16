@@ -166,7 +166,7 @@ public class GameService {
 
             int x2 = x + dir[0], y2 = y + dir[1];
             String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
-            String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+            String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
 
             while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
                 // if this square is the same color as the rook, break while
@@ -207,7 +207,7 @@ public class GameService {
 
         String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
 
-        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
 
         for (int[] dir : new int[][] {
                 new int[] { -1, 2 },
@@ -261,7 +261,7 @@ public class GameService {
 
         List<String> movesList = new ArrayList<String>();
 
-        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
 
         for (int[] dir : new int[][] {
                 new int[] { 1, 1 },
@@ -317,7 +317,7 @@ public class GameService {
 
         String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
 
-        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
+        String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
 
         for (int[] dir : new int[][] {
                 new int[] { 1, 1 },
