@@ -400,7 +400,7 @@ public class GameService {
                 continue;
             }
 
-            if (dir[0] != 0 && grid[y][x].equals(" ")) {
+            if (dir[0] != 0 && grid[y2][x2].equals(" ")) {
                 continue;
             }
 
