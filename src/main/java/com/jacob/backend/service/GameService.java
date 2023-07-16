@@ -392,18 +392,22 @@ public class GameService {
 
             int x2 = x + dir[0], y2 = y + dir[1];
 
+            // If the dest is out of bounds
             if (0 > x2 || x2 >= grid[0].length || 0 > y2 || y2 >= grid.length) {
                 continue;
             }
 
+            // If the dest is occupied by another piece of the same color
             if (isSameColorPiece(grid, x, y, x2, y2)) {
                 continue;
             }
 
+            // If the move is diagonal, but the dest is empty
             if (dir[0] != 0 && grid[y2][x2].equals(" ")) {
                 continue;
             }
 
+            // If the move is forward 2, but the pawn isn't on its starting rank
             if (dir[1] > 1 && !(0 > y - (2 * increment[1]) || y - (2 * increment[1]) >= grid.length)) {
                 continue;
             }
@@ -411,6 +415,7 @@ public class GameService {
             gridAfterMove[y2][x2] = grid[y][x];
             gridAfterMove[y][x] = " ";
 
+            // If the move leaves the king in check
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
                 continue;
             }
