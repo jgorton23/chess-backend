@@ -43,26 +43,37 @@ public class GameService {
     }
 
     public String create(Game game) {
+
         String whitePlayerUsername = game.getWhitePlayerUsername();
         if (whitePlayerUsername == null) {
             throw new MissingFieldException("New Game Form", "White Player Username");
         }
+
         String blackPlayerUsername = game.getBlackPlayerUsername();
         if (blackPlayerUsername == null) {
             throw new MissingFieldException("New Game Form", "Black Player Username");
         }
+
         User whitePlayer = userService.findByUsername(whitePlayerUsername);
         if (whitePlayer == null) {
             throw new NotFoundException("User", "Username: " + whitePlayerUsername);
         }
+
         User blackPlayer = userService.findByUsername(blackPlayerUsername);
         if (blackPlayer == null) {
             throw new NotFoundException("User", "Username: " + blackPlayerUsername);
         }
+
         game.setBlackPlayerId(blackPlayer.getId());
         game.setWhitePlayerId(whitePlayer.getId());
+        game.setResult("*");
+        game.setMoveTimes("");
+        game.setMoves("");
+
         gameRepo.save(game);
+
         return game.getId();
+
     }
 
     public void update(Game game) {
