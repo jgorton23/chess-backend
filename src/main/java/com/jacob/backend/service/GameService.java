@@ -15,25 +15,52 @@ import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
 import com.jacob.backend.responses.exceptions.MissingFieldException;
 import com.jacob.backend.responses.exceptions.NotFoundException;
 
+/**
+ * Service containing Game related logic
+ */
 @Service
 public class GameService {
 
+    /**
+     * Repo for Game persistence
+     */
     @Autowired
     private GameRepositoryInterface gameRepo;
 
+    /**
+     * Service for User related logic
+     */
     @Autowired
     private UserService userService;
 
     // #region CRUD
 
+    /**
+     * Gets the Game with the given UUID
+     * 
+     * @param gameId the UUID of the Game to get
+     * @return the Game with the given UUID
+     */
     public Game findById(UUID gameId) {
         return gameRepo.getById(gameId);
     }
 
+    /**
+     * Gets all Games for the user with the given UUID
+     * 
+     * @param userId the UUID of the user for which to get Games
+     * @return a list of the Users Games
+     */
     public List<Game> findAllByUserId(UUID userId) {
         return gameRepo.getAllByUserId(userId);
     }
 
+    /**
+     * Gets all Games for the User with the given Username
+     * 
+     * @param username the Username of the user for which to get Games
+     * @return a list of the Users Gaems
+     */
     public List<Game> findAllByUsername(String username) {
         User u = userService.findByUsername(username);
         if (u == null) {
@@ -42,6 +69,12 @@ public class GameService {
         return findAllByUserId(u.getId());
     }
 
+    /**
+     * Creates a new Game and persists it in the database
+     * 
+     * @param game the Game to create
+     * @return the newly created Games UUID
+     */
     public String create(Game game) {
 
         String whitePlayerUsername = game.getWhitePlayerUsername();
@@ -76,10 +109,25 @@ public class GameService {
 
     }
 
+    /**
+     * Updates the given Game in the database
+     * 
+     * @param game the Game to update
+     */
     public void update(Game game) {
         gameRepo.update(game);
     }
 
+    /**
+     * Gets all the valid moves for the curent position of the Game with the given
+     * UUID
+     * 
+     * @param gameId         the UUID of the Game to get valid moves for
+     * @param startingSquare the optional (x, y) coordinates, with the origin at the
+     *                       top-left, of the square to find valid moves from
+     * @param playerColor    the optional player color to find valid moves for
+     * @return a list of valid moves in modified SAN
+     */
     public List<String> getValidMoves(String gameId, Optional<int[]> startingSquare, Optional<String> playerColor) {
 
         // Get the UUID of the Game
