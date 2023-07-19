@@ -136,7 +136,9 @@ public class GameController {
 
     @PutMapping("/{gameId}/move")
     public ResponseEntity<String> performMove(
-            @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestBody int[][] move,
+            @PathVariable String gameId) {
         try {
             return ResponseEntity.ok().build();
         } catch (UnauthorizedException e) {
