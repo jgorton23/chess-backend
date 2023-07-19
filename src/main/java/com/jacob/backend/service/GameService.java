@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.Model.Game;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
@@ -116,6 +117,10 @@ public class GameService {
      */
     public void update(Game game) {
         gameRepo.update(game);
+    }
+
+    public void performMove(String username, String gameId, MoveDTO move) {
+
     }
 
     /**

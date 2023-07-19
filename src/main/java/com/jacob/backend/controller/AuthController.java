@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.jacob.backend.service.ChessAuthService;
+import com.jacob.backend.service.AuthService;
 import com.jacob.backend.service.SessionService;
 import com.jacob.backend.data.DTO.CredentialsDTO;
 import com.jacob.backend.responses.JSONResponses;
@@ -25,13 +25,13 @@ import java.util.UUID;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/auth")
-public class ChessAuthController {
+public class AuthController {
 
     /**
      * Service with Auth related logic
      */
     @Autowired
-    private ChessAuthService authService;
+    private AuthService authService;
 
     /**
      * Service with Session related logic

@@ -15,7 +15,7 @@ import com.jacob.backend.responses.exceptions.MissingFieldException;
 import com.jacob.backend.responses.exceptions.PasswordMismatchException;
 
 @Service
-public class ChessAuthService {
+public class AuthService {
 
     @Autowired
     private UserRepositoryInterface userRepo;

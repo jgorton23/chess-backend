@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.Model.*;
 import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.responses.exceptions.NotFoundException;
@@ -137,14 +138,27 @@ public class GameController {
     @PutMapping("/{gameId}/move")
     public ResponseEntity<String> performMove(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
-            @RequestBody int[][] move,
+            @RequestBody MoveDTO move,
             @PathVariable String gameId) {
         try {
+
+            // Get Username - throws Unauthorized
+            String username = sessionService.getUsernameById(sessionId);
+
+            gameService.performMove(username, gameId, move);
+
             return ResponseEntity.ok().build();
+
         } catch (UnauthorizedException e) {
+
+            // Catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+
         } catch (Exception e) {
+
+            // Catch generic Exception - return BadRequest
             return ResponseEntity.badRequest().build();
+
         }
     }
 }

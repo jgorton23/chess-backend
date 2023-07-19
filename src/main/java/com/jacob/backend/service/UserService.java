@@ -23,7 +23,7 @@ public class UserService {
     private FriendRepositoryInterface friendRepo;
 
     @Autowired
-    private ChessAuthService authService;
+    private AuthService authService;
 
     public User findById(UUID userId) {
         return userRepo.getById(userId);
