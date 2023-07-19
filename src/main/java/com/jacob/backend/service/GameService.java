@@ -119,7 +119,7 @@ public class GameService {
         gameRepo.update(game);
     }
 
-    public void performMove(String username, String gameId, MoveDTO move) {
+    public void doMove(String username, String gameId, MoveDTO move) {
 
     }
 
@@ -133,7 +133,8 @@ public class GameService {
      * @param playerColor    the optional player color to find valid moves for
      * @return a list of valid moves in modified SAN
      */
-    public List<String> getValidMoves(String gameId, Optional<int[]> startingSquare, Optional<String> playerColor) {
+    public List<String> getValidMoves(String username, String gameId, Optional<int[]> startingSquare,
+            Optional<String> playerColor) {
 
         // Get the UUID of the Game
         // TODO: check for valid UUID

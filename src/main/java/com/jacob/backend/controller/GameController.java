@@ -103,10 +103,10 @@ public class GameController {
         try {
 
             // Get the username - throws unauthorized
-            // String username = sessionService.getUsernameById(sessionId);
+            String username = sessionService.getUsernameById(sessionId);
 
             // Get the validMoves for the given Game and options
-            List<String> moves = gameService.getValidMoves(gameId, Optional.ofNullable(startingSquare),
+            List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
             JsonObject result = JSONResponses
@@ -136,7 +136,7 @@ public class GameController {
     }
 
     @PutMapping("/{gameId}/move")
-    public ResponseEntity<String> performMove(
+    public ResponseEntity<String> doMove(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestBody MoveDTO move,
             @PathVariable String gameId) {
@@ -145,7 +145,7 @@ public class GameController {
             // Get Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
-            gameService.performMove(username, gameId, move);
+            gameService.doMove(username, gameId, move);
 
             return ResponseEntity.ok().build();
 
