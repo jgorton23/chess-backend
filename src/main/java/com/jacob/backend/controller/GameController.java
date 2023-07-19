@@ -109,28 +109,29 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
+            // Build resulting moves Array
             JsonObject result = JSONResponses
                     .objectBuilder()
                     .add("validMoves", JSONResponses.StringListToJsonArray(moves))
                     .build();
 
-            // return successful
+            // Return successful
             return ResponseEntity.ok().body(result.toString());
 
         } catch (UnauthorizedException e) {
 
-            // catch Unauthorized - return 401
+            // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
 
         } catch (NotFoundException e) {
 
-            // catch NotFound - return 404
+            // Catch NotFound - return 404
             return ResponseEntity.notFound().build();
 
         } catch (Exception e) {
 
-            // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().build();
+            // Catch Generic Exception - return BadRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
 
         }
     }
@@ -145,8 +146,10 @@ public class GameController {
             // Get Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
+            // Attempt to do the move
             gameService.doMove(username, gameId, move);
 
+            // Return successful
             return ResponseEntity.ok().build();
 
         } catch (UnauthorizedException e) {
@@ -156,8 +159,8 @@ public class GameController {
 
         } catch (Exception e) {
 
-            // Catch generic Exception - return BadRequest
-            return ResponseEntity.badRequest().build();
+            // Catch Generic Exception - return BadRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
 
         }
     }
