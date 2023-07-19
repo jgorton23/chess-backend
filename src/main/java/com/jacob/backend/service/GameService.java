@@ -175,13 +175,6 @@ public class GameService {
 
     // #region findValidMoves
 
-    /**
-     * 
-     * @param grid
-     * @param start
-     * @param ignoreCheck
-     * @return
-     */
     private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck) {
         int x = start[0], y = start[1];
 

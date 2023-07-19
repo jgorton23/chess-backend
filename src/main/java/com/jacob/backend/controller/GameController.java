@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -130,6 +131,18 @@ public class GameController {
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().build();
 
+        }
+    }
+
+    @PutMapping("/{gameId}/move")
+    public ResponseEntity<String> performMove(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+        try {
+            return ResponseEntity.ok().build();
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
