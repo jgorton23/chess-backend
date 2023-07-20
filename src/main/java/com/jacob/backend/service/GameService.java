@@ -127,7 +127,13 @@ public class GameService {
      * @param game the Game to update
      */
     public void update(String username, Game game) {
+
+        if (username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+            throw new UnauthorizedException();
+        }
+
         gameRepo.update(game);
+
     }
 
     public void doMove(String username, String gameId, MoveDTO move) {
