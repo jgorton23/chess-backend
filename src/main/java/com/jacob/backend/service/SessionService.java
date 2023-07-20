@@ -68,15 +68,24 @@ public class SessionService {
      * @throws UnauthorizedException if the given sessionId is not valid
      */
     public String getUsernameById(String sessionId) throws UnauthorizedException {
+
         if (!isValidUUID(sessionId)) {
             throw new UnauthorizedException();
         }
+
         Session s = findById(UUID.fromString(sessionId));
+
         if (s == null) {
             throw new UnauthorizedException();
         }
 
-        return s.getUsername();
+        String username = s.getUsername();
+
+        if (username == null || username.isEmpty()) {
+            throw new UnauthorizedException();
+        }
+
+        return username;
     }
 
     /**

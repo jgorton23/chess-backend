@@ -17,11 +17,11 @@ import com.jacob.backend.service.GameService;
 @CrossOrigin
 public class GameSocket {
 
-    /**
-     * Service containing Game related logic
-     */
-    @Autowired
-    private GameService gameService;
+    // /**
+    // * Service containing Game related logic
+    // */
+    // @Autowired
+    // private GameService gameService;
 
     /**
      * Service containing Message related logic
@@ -41,9 +41,6 @@ public class GameSocket {
 
         // send the game to the other users
         messaging.convertAndSend("/topic/game/" + gameId, game);
-
-        // persist the gameState in the db
-        // gameService.update(game);
 
     }
 }

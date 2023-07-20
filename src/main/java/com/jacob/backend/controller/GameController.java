@@ -68,7 +68,7 @@ public class GameController {
             }
 
             // perform Create
-            String gameId = gameService.create(game);
+            String gameId = gameService.create(username, game);
 
             // return gameId
             return ResponseEntity.ok().body(JSONResponses.objectBuilder().add("gameId", gameId).build().toString());
