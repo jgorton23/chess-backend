@@ -185,7 +185,13 @@ public class GameService {
             throw new UnauthorizedException();
         }
 
-        // TODO : move logic
+        // Get all possible moves
+        List<String> validMoves = getValidMoves(username, gameId, null, null);
+
+        // Ensure the attempted move is valid
+        if (!validMoves.contains(move.toString())) {
+            // throw new InvalidMoveException()
+        }
 
     }
 

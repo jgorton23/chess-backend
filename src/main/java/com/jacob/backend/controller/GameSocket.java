@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jacob.backend.data.Model.Game;
-import com.jacob.backend.service.GameService;
+// import com.jacob.backend.service.GameService;
 
 /**
  * Controller containing endpoints for the WebSocket
