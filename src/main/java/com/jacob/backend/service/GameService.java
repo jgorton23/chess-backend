@@ -15,6 +15,7 @@ import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
 import com.jacob.backend.responses.exceptions.MissingFieldException;
 import com.jacob.backend.responses.exceptions.NotFoundException;
+import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
 /**
  * Service containing Game related logic
@@ -76,28 +77,38 @@ public class GameService {
      * @param game the Game to create
      * @return the newly created Games UUID
      */
-    public String create(Game game) {
+    public String create(String username, Game game) {
 
+        // Get the whitePlayerUsername
         String whitePlayerUsername = game.getWhitePlayerUsername();
         if (whitePlayerUsername == null) {
             throw new MissingFieldException("New Game Form", "White Player Username");
         }
 
+        // Get the blackPlayerUsername
         String blackPlayerUsername = game.getBlackPlayerUsername();
         if (blackPlayerUsername == null) {
             throw new MissingFieldException("New Game Form", "Black Player Username");
         }
 
+        // Ensure the User creating the Game is one of the players
+        if (!whitePlayerUsername.equals(username) && !blackPlayerUsername.equals(username)) {
+            throw new UnauthorizedException();
+        }
+
+        // Ensure the whitePlayer exists
         User whitePlayer = userService.findByUsername(whitePlayerUsername);
         if (whitePlayer == null) {
             throw new NotFoundException("User", "Username: " + whitePlayerUsername);
         }
 
+        // Ensure the blackPlayer exists
         User blackPlayer = userService.findByUsername(blackPlayerUsername);
         if (blackPlayer == null) {
             throw new NotFoundException("User", "Username: " + blackPlayerUsername);
         }
 
+        // Set default values
         game.setBlackPlayerId(blackPlayer.getId());
         game.setWhitePlayerId(whitePlayer.getId());
         game.setResult("*");
@@ -115,7 +126,7 @@ public class GameService {
      * 
      * @param game the Game to update
      */
-    public void update(Game game) {
+    public void update(String username, Game game) {
         gameRepo.update(game);
     }
 

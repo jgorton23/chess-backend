@@ -43,7 +43,7 @@ public class GameSocket {
         messaging.convertAndSend("/topic/game/" + gameId, game);
 
         // persist the gameState in the db
-        gameService.update(game);
+        // gameService.update(game);
 
     }
 }
