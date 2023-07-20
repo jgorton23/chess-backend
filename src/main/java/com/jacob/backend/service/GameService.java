@@ -158,19 +158,35 @@ public class GameService {
 
     }
 
+    /**
+     * performs a given move on a given Game
+     * 
+     * @param username the Username of the User performing the move
+     * @param gameId   the UUID of the Game on which to perform the move
+     * @param move     the move to perform
+     */
     public void doMove(String username, String gameId, MoveDTO move) {
 
         // Ensure the given gameId is a valid UUID
-        if (sessionService.isValidUUID(gameId)) {
+        if (!sessionService.isValidUUID(gameId)) {
             throw new NotFoundException("Game", "ID: " + gameId);
         }
 
         // Get the Game with the given UUID
         Game game = findById(UUID.fromString(gameId));
 
+        // Ensure the Game exists
+        if (game == null) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        // Ensure the User doing the move is one of the players
         if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
             throw new UnauthorizedException();
         }
+
+        // TODO : move logic
+
     }
 
     /**
@@ -187,12 +203,21 @@ public class GameService {
             Optional<String> playerColor) {
 
         // Get the UUID of the Game
-        UUID id = UUID.fromString(gameId);
+        if (!sessionService.isValidUUID(gameId)) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
 
-        // Get the game by the UUID
-        Game game = findById(id);
+        // Get the Game with the given the UUID
+        Game game = findById(UUID.fromString(gameId));
+
+        // Ensure the Game exists
         if (game == null) {
             throw new NotFoundException("Game", String.format("GameId: %s", gameId));
+        }
+
+        // Ensure the User making the request is one of the players
+        if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+            throw new UnauthorizedException();
         }
 
         // Get the board from the game
@@ -204,6 +229,7 @@ public class GameService {
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
+        // Add only the relevant starting squares
         if (startingSquare.isPresent()) {
             startingSquareList.add(startingSquare.get());
         } else if (playerColor.isPresent()) {
@@ -216,6 +242,7 @@ public class GameService {
         // List of all possible moves
         List<String> moves = new ArrayList<String>();
 
+        // Add the moves from each starting position
         for (int[] start : startingSquareList) {
             List<String> pieceMoves = findValidPieceMoves(grid, start, false);
             moves.addAll(pieceMoves);
