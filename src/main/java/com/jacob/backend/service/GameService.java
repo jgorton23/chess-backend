@@ -35,6 +35,13 @@ public class GameService {
     @Autowired
     private UserService userService;
 
+    /**
+     * Service containing session related logic
+     * Only needed for UUID validation - move to HelperService someday
+     */
+    @Autowired
+    private SessionService sessionService;
+
     // #region CRUD
 
     /**
@@ -44,7 +51,10 @@ public class GameService {
      * @return the Game with the given UUID
      */
     public Game findById(UUID gameId) {
+
+        // Find and return the Game with the given UUID
         return gameRepo.getById(gameId);
+
     }
 
     /**
@@ -54,7 +64,10 @@ public class GameService {
      * @return a list of the Users Games
      */
     public List<Game> findAllByUserId(UUID userId) {
+
+        // Find and return all Games where one of the players UUIDs is the given UUID
         return gameRepo.getAllByUserId(userId);
+
     }
 
     /**
@@ -64,11 +77,18 @@ public class GameService {
      * @return a list of the Users Gaems
      */
     public List<Game> findAllByUsername(String username) {
+
+        // Get the User with the given Username
         User u = userService.findByUsername(username);
+
+        // Ensure the User was found
         if (u == null) {
             throw new NotFoundException("User", "username: " + username);
         }
+
+        // Return find the Users Games by User UUID
         return findAllByUserId(u.getId());
+
     }
 
     /**
@@ -128,16 +148,29 @@ public class GameService {
      */
     public void update(String username, Game game) {
 
+        // Ensure the User updating the Game is one of the players
         if (username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
             throw new UnauthorizedException();
         }
 
+        // Update the Game
         gameRepo.update(game);
 
     }
 
     public void doMove(String username, String gameId, MoveDTO move) {
 
+        // Ensure the given gameId is a valid UUID
+        if (sessionService.isValidUUID(gameId)) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        // Get the Game with the given UUID
+        Game game = findById(UUID.fromString(gameId));
+
+        if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+            throw new UnauthorizedException();
+        }
     }
 
     /**
@@ -154,7 +187,6 @@ public class GameService {
             Optional<String> playerColor) {
 
         // Get the UUID of the Game
-        // TODO: check for valid UUID
         UUID id = UUID.fromString(gameId);
 
         // Get the game by the UUID
