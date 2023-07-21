@@ -199,17 +199,21 @@ public class GameService {
         int[] start = move.getStartSquare();
         int[] end = move.getDestSquare();
 
+        // Perform the move on the Grid
         grid[end[1]][end[0]] = grid[start[1]][start[0]];
         grid[start[1]][start[0]] = " ";
 
+        // Set the Games FEN to match the board state after the move
         game.setFEN(gridToFEN(grid));
 
+        // Add the move to the list of mvoes
         game.setMoves(game.getMoves() + " " + move.toString());
 
         // game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
 
         // game.setResult(); TODO fill in result
 
+        // Update the Game in the db
         update(username, game);
 
     }
