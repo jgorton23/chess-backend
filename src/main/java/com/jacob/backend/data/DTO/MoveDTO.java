@@ -18,6 +18,21 @@ public class MoveDTO {
     private String piece;
 
     /**
+     * if the move puts the opponent in check
+     */
+    private boolean isCheck;
+
+    /**
+     * if the move puts the opponent in mate
+     */
+    private boolean isMate;
+
+    /**
+     * if the move captures an opposing piece
+     */
+    private boolean isCapture;
+
+    /**
      * Creates a new MoveDTO object
      */
     public MoveDTO() {
