@@ -206,7 +206,8 @@ public class GameService {
         // Set the Games FEN to match the board state after the move
         game.setFEN(gridToFEN(grid));
 
-        // Add the move to the list of mvoes
+        // Add the move to the list of moves
+        // TODO instead of just space separated list, number moves
         game.setMoves(game.getMoves() + " " + move.toString());
 
         // game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
