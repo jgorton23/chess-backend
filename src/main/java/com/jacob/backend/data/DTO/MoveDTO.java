@@ -105,6 +105,7 @@ public class MoveDTO {
      */
     @Override
     public String toString() {
-        return piece + (char) (startSquare[0] + 'a') + startSquare[1] + (char) (destSquare[0] + 'a') + destSquare[1];
+        return piece + (char) (startSquare[0] + 'a') + Math.abs(startSquare[1] - 8) + (char) (destSquare[0] + 'a')
+                + Math.abs(destSquare[1] - 8);
     }
 }

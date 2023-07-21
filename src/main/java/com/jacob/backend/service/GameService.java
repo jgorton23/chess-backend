@@ -186,7 +186,7 @@ public class GameService {
         }
 
         // Get all possible moves
-        List<String> validMoves = getValidMoves(username, gameId, null, null);
+        List<String> validMoves = getValidMoves(username, gameId, Optional.ofNullable(null), Optional.ofNullable(null));
 
         // Ensure the attempted move is valid
         if (!validMoves.contains(move.toString())) {
