@@ -190,8 +190,27 @@ public class GameService {
 
         // Ensure the attempted move is valid
         if (!validMoves.contains(move.toString())) {
-            // throw new InvalidMoveException()
+            throw new RuntimeException("Attempting to perform an Invalid Move");
         }
+
+        // Get the grid to perform the move on
+        String[][] grid = FENToGrid(game.getFEN());
+
+        int[] start = move.getStartSquare();
+        int[] end = move.getDestSquare();
+
+        grid[end[1]][end[0]] = grid[start[1]][start[0]];
+        grid[start[1]][start[0]] = " ";
+
+        game.setFEN(gridToFEN(grid));
+
+        game.setMoves(game.getMoves() + " " + move.toString());
+
+        // game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
+
+        // game.setResult(); TODO fill in result
+
+        update(username, game);
 
     }
 
@@ -631,6 +650,19 @@ public class GameService {
             FEN = FEN.replace(Integer.toString(index), " ".repeat(index));
         }
         return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
+    }
+
+    private String gridToFEN(String[][] grid) {
+        String result = "";
+        for (String[] row : grid) {
+            String rowFEN = String.join("", row);
+            for (int i = 8; i >= 1; i--) {
+                rowFEN = rowFEN.replace(" ".repeat(i), "" + i);
+            }
+            result += rowFEN;
+            result += "/";
+        }
+        return result;
     }
 
     private boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {

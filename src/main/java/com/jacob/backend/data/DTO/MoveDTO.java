@@ -33,6 +33,11 @@ public class MoveDTO {
     private boolean isCapture;
 
     /**
+     * the amount of time the move took in miliseconds
+     */
+    private int miliseconds;
+
+    /**
      * Creates a new MoveDTO object
      */
     public MoveDTO() {
