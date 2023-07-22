@@ -125,6 +125,20 @@ public class GameController {
         }
     }
 
+    @GetMapping("/{gameId}")
+    public ResponseEntity<String> getGame(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @PathVariable String gameId) {
+        try {
+
+        } catch (UnauthorizedException e) {
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
     /**
      * Get the valid moves
      * 
