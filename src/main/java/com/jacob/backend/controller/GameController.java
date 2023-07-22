@@ -223,7 +223,8 @@ public class GameController {
 
             String username = sessionService.getUsernameById(sessionId);
 
-            List<String> moves = gameService.getValidMoves();
+            List<String> moves = gameService.getValidMoves(grid, Optional.ofNullable(startingSquare),
+                    Optional.ofNullable(playerColor));
 
             // Build resulting moves Array
             JsonObject result = JSONResponses

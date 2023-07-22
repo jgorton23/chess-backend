@@ -89,6 +89,36 @@ public class SessionService {
     }
 
     /**
+     * Validates the given String to ensure that it is the id of a valid session.
+     * Useful if the Username is not required but session authorization is still
+     * needed
+     * 
+     * @param sessionId A string representing the UUID of a session
+     * @return True if the given sessionId is valid
+     * @throws UnauthorizedException if the given sessionId is not valid
+     */
+    public boolean validateSessionId(String sessionId) throws UnauthorizedException {
+
+        if (!isValidUUID(sessionId)) {
+            throw new UnauthorizedException();
+        }
+
+        Session s = findById(UUID.fromString(sessionId));
+
+        if (s == null) {
+            throw new UnauthorizedException();
+        }
+
+        String username = s.getUsername();
+
+        if (username == null || username.isEmpty()) {
+            throw new UnauthorizedException();
+        }
+
+        return true;
+    }
+
+    /**
      * Enforces UUID formatting via regex matching
      * 
      * @param uuid the String UUID to test

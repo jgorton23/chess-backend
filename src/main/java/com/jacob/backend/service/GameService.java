@@ -281,6 +281,10 @@ public class GameService {
         return moves;
     }
 
+    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
+    }
+
     // #endregion
 
     // #region private helper
