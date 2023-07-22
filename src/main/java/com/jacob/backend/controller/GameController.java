@@ -2,6 +2,7 @@ package com.jacob.backend.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.json.JsonObject;
 
@@ -131,9 +132,24 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            String username = sessionService.getUsernameById(sessionId);
+
+            Game game = gameService.findById(UUID.fromString(gameId));
+
+            return ResponseEntity.ok().body(
+                    JSONResponses
+                            .objectBuilder()
+                            .add("game", game.toJson())
+                            .build()
+                            .toString());
+
         } catch (UnauthorizedException e) {
 
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
+
         } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
 
         }
 
