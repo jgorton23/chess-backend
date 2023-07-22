@@ -2,6 +2,8 @@ package com.jacob.backend.data.DTO;
 
 public class MoveDTO {
 
+    // region variables
+
     /**
      * x, y coordinates of the initial square
      */
@@ -37,11 +39,15 @@ public class MoveDTO {
      */
     private int miliseconds;
 
+    // endregion
+
     /**
      * Creates a new MoveDTO object
      */
     public MoveDTO() {
     }
+
+    // region getters/setters
 
     /**
      * Gets the starting square of this Move
@@ -171,6 +177,8 @@ public class MoveDTO {
     public void setMiliseconds(int miliseconds) {
         this.miliseconds = miliseconds;
     }
+
+    // endregion
 
     /**
      * convert the move to SAN format
