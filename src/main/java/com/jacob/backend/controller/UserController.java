@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.jacob.backend.data.DTO.*;
-import com.jacob.backend.data.Model.*;
 import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.responses.exceptions.UnauthorizedException;
@@ -41,12 +40,6 @@ public class UserController {
      */
     @Autowired
     private FriendService friendService;
-
-    /**
-     * Service containing Game related logic
-     */
-    @Autowired
-    private GameService gameService;
 
     /**
      * Add or Confirm the Friend relation between the current User and the given
@@ -219,45 +212,6 @@ public class UserController {
 
             // build the result object and return successful
             return ResponseEntity.ok().body(profile.toJson().toString());
-
-        } catch (UnauthorizedException e) {
-
-            // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
-
-        } catch (Exception e) {
-
-            // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
-
-        }
-    }
-
-    /**
-     * Get all Games that the current User has played
-     * 
-     * @param sessionId the sessionId to identify the current User
-     * @return JSON String with the list of Games if the operation was successful,
-     *         else 4XX
-     */
-    @GetMapping("/games")
-    public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
-        try {
-
-            // get the Username - throws Unauthorized
-            String username = sessionService.getUsernameById(sessionId);
-
-            // perform the Get
-            List<Game> games = gameService.findAllByUsername(username);
-
-            // build the result object
-            JsonObject result = JSONResponses
-                    .objectBuilder()
-                    .add("games", JSONResponses.ListToJsonArray(games))
-                    .build();
-
-            // return successful
-            return ResponseEntity.ok().body(result.toString());
 
         } catch (UnauthorizedException e) {
 

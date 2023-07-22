@@ -31,7 +31,7 @@ import com.jacob.backend.service.SessionService;
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
-@RequestMapping("/game")
+@RequestMapping("/games")
 public class GameController {
 
     /**
@@ -77,6 +77,45 @@ public class GameController {
 
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+
+        } catch (Exception e) {
+
+            // catch generic Exception - return badRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
+        }
+    }
+
+    /**
+     * Get all Games that the current User has played
+     * 
+     * @param sessionId the sessionId to identify the current User
+     * @return JSON String with the list of Games if the operation was successful,
+     *         else 4XX
+     */
+    @GetMapping
+    public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+        try {
+
+            // get the Username - throws Unauthorized
+            String username = sessionService.getUsernameById(sessionId);
+
+            // perform the Get
+            List<Game> games = gameService.findAllByUsername(username);
+
+            // build the result object
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("games", JSONResponses.ListToJsonArray(games))
+                    .build();
+
+            // return successful
+            return ResponseEntity.ok().body(result.toString());
+
+        } catch (UnauthorizedException e) {
+
+            // catch Unauthorized - return 401
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
 
         } catch (Exception e) {
 

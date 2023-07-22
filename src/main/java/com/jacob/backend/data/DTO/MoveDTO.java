@@ -2,6 +2,8 @@ package com.jacob.backend.data.DTO;
 
 public class MoveDTO {
 
+    // region variables
+
     /**
      * x, y coordinates of the initial square
      */
@@ -37,11 +39,15 @@ public class MoveDTO {
      */
     private int miliseconds;
 
+    // endregion
+
     /**
      * Creates a new MoveDTO object
      */
     public MoveDTO() {
     }
+
+    // region getters/setters
 
     /**
      * Gets the starting square of this Move
@@ -99,6 +105,80 @@ public class MoveDTO {
     public void setPiece(String newPiece) {
         piece = newPiece;
     }
+
+    /**
+     * Gets whether or not the move captures an opposing piece
+     * 
+     * @return True if the move was a capture, else False
+     */
+    public boolean getIsCapture() {
+        return isCapture;
+    }
+
+    /**
+     * Sets whether or not the move is a capture
+     * 
+     * @param isCapture if the move is a capture or not
+     */
+    public void setIsCapture(boolean isCapture) {
+        this.isCapture = isCapture;
+    }
+
+    /**
+     * Gets whether or not the move checks the opponent
+     * 
+     * @return True if the move puts the opponent in check, else False
+     */
+    public boolean getIsCheck() {
+        return isCheck;
+    }
+
+    /**
+     * Sets if the move checks the opponent or not
+     * 
+     * @param isCheck if the move checks the opponent
+     */
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    /**
+     * Gets if the move check mates the opponent
+     * 
+     * @return True if the move is Checkmate, else false
+     */
+    public boolean getIsMate() {
+        return isMate;
+    }
+
+    /**
+     * Sets if the move check mates the opponent or not
+     * 
+     * @param isMate if the move is checkmate
+     */
+    public void setIsMate(boolean isMate) {
+        this.isMate = isMate;
+    }
+
+    /**
+     * Gets how long the move took in miliseconds
+     * 
+     * @return how many miliseconds the move took
+     */
+    public int getMiliseconds() {
+        return miliseconds;
+    }
+
+    /**
+     * Sets how many miliseconds the move took
+     * 
+     * @param miliseconds how many miliseconds the move took
+     */
+    public void setMiliseconds(int miliseconds) {
+        this.miliseconds = miliseconds;
+    }
+
+    // endregion
 
     /**
      * convert the move to SAN format
