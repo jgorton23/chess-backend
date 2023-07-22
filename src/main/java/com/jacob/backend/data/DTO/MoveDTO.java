@@ -100,6 +100,30 @@ public class MoveDTO {
         piece = newPiece;
     }
 
+    public boolean getIsCapture() {
+        return isCapture;
+    }
+
+    public void setIsCapture(boolean isCapture) {
+        this.isCapture = isCapture;
+    }
+
+    public boolean isCheck() {
+        return isCheck();
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public int getMiliseconds() {
+        return miliseconds;
+    }
+
+    public void setMiliseconds(int miliseconds) {
+        this.miliseconds = miliseconds;
+    }
+
     /**
      * convert the move to SAN format
      */
