@@ -99,23 +99,10 @@ public class SessionService {
      */
     public boolean validateSessionId(String sessionId) throws UnauthorizedException {
 
-        if (!isValidUUID(sessionId)) {
-            throw new UnauthorizedException();
-        }
+        String username = getUsernameById(sessionId);
 
-        Session s = findById(UUID.fromString(sessionId));
+        return username != null;
 
-        if (s == null) {
-            throw new UnauthorizedException();
-        }
-
-        String username = s.getUsername();
-
-        if (username == null || username.isEmpty()) {
-            throw new UnauthorizedException();
-        }
-
-        return true;
     }
 
     /**

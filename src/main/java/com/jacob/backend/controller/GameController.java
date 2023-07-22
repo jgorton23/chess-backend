@@ -132,7 +132,7 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
-            String username = sessionService.getUsernameById(sessionId);
+            sessionService.validateSessionId(sessionId);
 
             Game game = gameService.findById(UUID.fromString(gameId));
 
@@ -221,7 +221,7 @@ public class GameController {
             @RequestBody String[][] grid) {
         try {
 
-            String username = sessionService.getUsernameById(sessionId);
+            sessionService.validateSessionId(sessionId);
 
             List<String> moves = gameService.getValidMoves(grid, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
