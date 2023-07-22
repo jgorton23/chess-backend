@@ -256,17 +256,19 @@ public class GameService {
         // Create a grid to store the piece occupying each square on the board
         String[][] grid = FENToGrid(FEN);
 
+        return getValidMoves(grid, startingSquare, playerColor);
+    }
+
+    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
         // Add only the relevant starting squares
         if (startingSquare.isPresent()) {
             startingSquareList.add(startingSquare.get());
-        } else if (playerColor.isPresent()) {
-            startingSquareList.addAll(findPlayerPieces(grid, playerColor.get()));
         } else {
-            startingSquareList.addAll(findPlayerPieces(grid, "w"));
-            startingSquareList.addAll(findPlayerPieces(grid, "b"));
+            startingSquareList = getStartingSquaresFromGrid(grid, playerColor);
         }
 
         // List of all possible moves
@@ -279,10 +281,6 @@ public class GameService {
         }
 
         return moves;
-    }
-
-    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
-
     }
 
     // #endregion
@@ -677,6 +675,22 @@ public class GameService {
     private boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {
         return (("RNBKQP".contains(grid[y1][x1]) && "RNBKQP".contains(grid[y2][x2]))
                 || ("rnbkqp".contains(grid[y1][x1]) && "rnbkqp".contains(grid[y2][x2])));
+    }
+
+    private List<int[]> getStartingSquaresFromGrid(String[][] grid, Optional<String> playerColor) {
+
+        List<int[]> startingSquareList = new ArrayList<int[]>();
+
+        // Add only the relevant starting squares
+        if (playerColor.isPresent()) {
+            startingSquareList.addAll(findPlayerPieces(grid, playerColor.get()));
+        } else {
+            startingSquareList.addAll(findPlayerPieces(grid, "w"));
+            startingSquareList.addAll(findPlayerPieces(grid, "b"));
+        }
+
+        return startingSquareList;
+
     }
 
     // #endregion
