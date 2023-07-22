@@ -100,26 +100,56 @@ public class MoveDTO {
         piece = newPiece;
     }
 
+    /**
+     * Gets whether or not the move captures an opposing piece
+     * 
+     * @return True if the move was a capture, else False
+     */
     public boolean getIsCapture() {
         return isCapture;
     }
 
+    /**
+     * Sets whether or not the move is a capture
+     * 
+     * @param isCapture if the move is a capture or not
+     */
     public void setIsCapture(boolean isCapture) {
         this.isCapture = isCapture;
     }
 
+    /**
+     * Gets whether or not the move checks the opponent
+     * 
+     * @return True if the move puts the opponent in check, else False
+     */
     public boolean isCheck() {
         return isCheck();
     }
 
+    /**
+     * Sets if the move checks the opponent or not
+     * 
+     * @param isCheck if the move checks the opponent
+     */
     public void setIsCheck(boolean isCheck) {
         this.isCheck = isCheck;
     }
 
+    /**
+     * Gets how long the move took in miliseconds
+     * 
+     * @return how many miliseconds the move took
+     */
     public int getMiliseconds() {
         return miliseconds;
     }
 
+    /**
+     * Sets how many miliseconds the move took
+     * 
+     * @param miliseconds how many miliseconds the move took
+     */
     public void setMiliseconds(int miliseconds) {
         this.miliseconds = miliseconds;
     }
