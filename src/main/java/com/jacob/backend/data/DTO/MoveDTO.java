@@ -123,8 +123,8 @@ public class MoveDTO {
      * 
      * @return True if the move puts the opponent in check, else False
      */
-    public boolean isCheck() {
-        return isCheck();
+    public boolean getIsCheck() {
+        return isCheck;
     }
 
     /**
@@ -134,6 +134,24 @@ public class MoveDTO {
      */
     public void setIsCheck(boolean isCheck) {
         this.isCheck = isCheck;
+    }
+
+    /**
+     * Gets if the move check mates the opponent
+     * 
+     * @return True if the move is Checkmate, else false
+     */
+    public boolean getIsMate() {
+        return isMate;
+    }
+
+    /**
+     * Sets if the move check mates the opponent or not
+     * 
+     * @param isMate if the move is checkmate
+     */
+    public void setIsMate(boolean isMate) {
+        this.isMate = isMate;
     }
 
     /**
