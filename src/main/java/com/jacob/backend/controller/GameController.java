@@ -136,6 +136,10 @@ public class GameController {
 
             Game game = gameService.findById(UUID.fromString(gameId));
 
+            if (game == null) {
+                throw new NotFoundException("Game", "ID: " + gameId);
+            }
+
             return ResponseEntity.ok().body(
                     JSONResponses
                             .objectBuilder()
@@ -146,6 +150,10 @@ public class GameController {
         } catch (UnauthorizedException e) {
 
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
+
+        } catch (NotFoundException e) {
+
+            return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()).toString());
 
         } catch (Exception e) {
 
@@ -205,6 +213,40 @@ public class GameController {
         }
     }
 
+    @GetMapping("/board/validMoves")
+    public ResponseEntity<String> getValidMoves(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam(required = false) int[] startingSquare,
+            @RequestParam(required = false) String playerColor,
+            @RequestBody String[][] grid) {
+        try {
+
+            String username = sessionService.getUsernameById(sessionId);
+
+            List<String> moves = gameService.getValidMoves();
+
+            // Build resulting moves Array
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("validMoves", JSONResponses.StringListToJsonArray(moves))
+                    .build();
+
+            // Return successful
+            return ResponseEntity.ok().body(result.toString());
+
+        } catch (UnauthorizedException e) {
+
+            // Catch Unauthorized - return 401
+            return ResponseEntity.status(401).build();
+
+        } catch (Exception e) {
+
+            // Catch Generic Exception - return BadRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
+        }
+    }
+
     @PutMapping("/{gameId}/move")
     public ResponseEntity<String> doMove(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
@@ -225,6 +267,11 @@ public class GameController {
 
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+
+        } catch (NotFoundException e) {
+
+            // Catch Not Found - return 404
+            return ResponseEntity.status(404).body(JSONResponses.unauthorized().toString());
 
         } catch (Exception e) {
 
