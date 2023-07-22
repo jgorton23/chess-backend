@@ -253,13 +253,12 @@ public class GameService {
         // Get the board from the game
         String FEN = game.getFEN();
 
-        // Create a grid to store the piece occupying each square on the board
-        String[][] grid = FENToGrid(FEN);
-
-        return getValidMoves(grid, startingSquare, playerColor);
+        return getValidMoves(FEN, startingSquare, playerColor);
     }
 
-    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
+    public List<String> getValidMoves(String fen, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
+        String[][] grid = FENToGrid(fen);
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();

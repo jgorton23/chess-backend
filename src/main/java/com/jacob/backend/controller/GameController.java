@@ -214,16 +214,16 @@ public class GameController {
     }
 
     @GetMapping("/board/validMoves")
-    public ResponseEntity<String> getValidMoves(
+    public ResponseEntity<String> getValidMovesFromFen(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestParam(required = false) int[] startingSquare,
             @RequestParam(required = false) String playerColor,
-            @RequestBody String[][] grid) {
+            @RequestParam String fen) {
         try {
 
             sessionService.validateSessionId(sessionId);
 
-            List<String> moves = gameService.getValidMoves(grid, Optional.ofNullable(startingSquare),
+            List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
             // Build resulting moves Array
