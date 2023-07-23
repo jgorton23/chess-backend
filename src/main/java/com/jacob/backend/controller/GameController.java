@@ -2,6 +2,7 @@ package com.jacob.backend.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.json.JsonObject;
 
@@ -125,6 +126,43 @@ public class GameController {
         }
     }
 
+    @GetMapping("/{gameId}")
+    public ResponseEntity<String> getGame(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @PathVariable String gameId) {
+        try {
+
+            sessionService.validateSessionId(sessionId);
+
+            Game game = gameService.findById(UUID.fromString(gameId));
+
+            if (game == null) {
+                throw new NotFoundException("Game", "ID: " + gameId);
+            }
+
+            return ResponseEntity.ok().body(
+                    JSONResponses
+                            .objectBuilder()
+                            .add("game", game.toJson())
+                            .build()
+                            .toString());
+
+        } catch (UnauthorizedException e) {
+
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
+
+        } catch (NotFoundException e) {
+
+            return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()).toString());
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
+        }
+
+    }
+
     /**
      * Get the valid moves
      * 
@@ -175,6 +213,41 @@ public class GameController {
         }
     }
 
+    @GetMapping("/board/validMoves")
+    public ResponseEntity<String> getValidMovesFromFen(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam(required = false) int[] startingSquare,
+            @RequestParam(required = false) String playerColor,
+            @RequestParam String fen) {
+        try {
+
+            sessionService.validateSessionId(sessionId);
+
+            List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(startingSquare),
+                    Optional.ofNullable(playerColor));
+
+            // Build resulting moves Array
+            JsonObject result = JSONResponses
+                    .objectBuilder()
+                    .add("validMoves", JSONResponses.StringListToJsonArray(moves))
+                    .build();
+
+            // Return successful
+            return ResponseEntity.ok().body(result.toString());
+
+        } catch (UnauthorizedException e) {
+
+            // Catch Unauthorized - return 401
+            return ResponseEntity.status(401).build();
+
+        } catch (Exception e) {
+
+            // Catch Generic Exception - return BadRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+
+        }
+    }
+
     @PutMapping("/{gameId}/move")
     public ResponseEntity<String> doMove(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
@@ -189,12 +262,17 @@ public class GameController {
             gameService.doMove(username, gameId, move);
 
             // Return successful
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(JSONResponses.success().toString());
 
         } catch (UnauthorizedException e) {
 
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+
+        } catch (NotFoundException e) {
+
+            // Catch Not Found - return 404
+            return ResponseEntity.status(404).body(JSONResponses.unauthorized().toString());
 
         } catch (Exception e) {
 

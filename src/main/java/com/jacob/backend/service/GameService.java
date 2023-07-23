@@ -149,7 +149,7 @@ public class GameService {
     public void update(String username, Game game) {
 
         // Ensure the User updating the Game is one of the players
-        if (username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+        if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
             throw new UnauthorizedException();
         }
 
@@ -253,8 +253,12 @@ public class GameService {
         // Get the board from the game
         String FEN = game.getFEN();
 
-        // Create a grid to store the piece occupying each square on the board
-        String[][] grid = FENToGrid(FEN);
+        return getValidMoves(FEN, startingSquare, playerColor);
+    }
+
+    public List<String> getValidMoves(String fen, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
+        String[][] grid = FENToGrid(fen);
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
@@ -262,11 +266,8 @@ public class GameService {
         // Add only the relevant starting squares
         if (startingSquare.isPresent()) {
             startingSquareList.add(startingSquare.get());
-        } else if (playerColor.isPresent()) {
-            startingSquareList.addAll(findPlayerPieces(grid, playerColor.get()));
         } else {
-            startingSquareList.addAll(findPlayerPieces(grid, "w"));
-            startingSquareList.addAll(findPlayerPieces(grid, "b"));
+            startingSquareList = getStartingSquaresFromGrid(grid, playerColor);
         }
 
         // List of all possible moves
@@ -673,6 +674,22 @@ public class GameService {
     private boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {
         return (("RNBKQP".contains(grid[y1][x1]) && "RNBKQP".contains(grid[y2][x2]))
                 || ("rnbkqp".contains(grid[y1][x1]) && "rnbkqp".contains(grid[y2][x2])));
+    }
+
+    private List<int[]> getStartingSquaresFromGrid(String[][] grid, Optional<String> playerColor) {
+
+        List<int[]> startingSquareList = new ArrayList<int[]>();
+
+        // Add only the relevant starting squares
+        if (playerColor.isPresent()) {
+            startingSquareList.addAll(findPlayerPieces(grid, playerColor.get()));
+        } else {
+            startingSquareList.addAll(findPlayerPieces(grid, "w"));
+            startingSquareList.addAll(findPlayerPieces(grid, "b"));
+        }
+
+        return startingSquareList;
+
     }
 
     // #endregion
