@@ -149,7 +149,7 @@ public class GameService {
     public void update(String username, Game game) {
 
         // Ensure the User updating the Game is one of the players
-        if (username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+        if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
             throw new UnauthorizedException();
         }
 

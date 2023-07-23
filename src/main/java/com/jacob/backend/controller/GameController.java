@@ -262,7 +262,7 @@ public class GameController {
             gameService.doMove(username, gameId, move);
 
             // Return successful
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(JSONResponses.success().toString());
 
         } catch (UnauthorizedException e) {
 

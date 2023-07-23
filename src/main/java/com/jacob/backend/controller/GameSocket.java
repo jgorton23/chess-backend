@@ -7,8 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacob.backend.data.Model.Game;
-// import com.jacob.backend.service.GameService;
+import com.jacob.backend.data.DTO.MoveDTO;
 
 /**
  * Controller containing endpoints for the WebSocket
@@ -16,12 +15,6 @@ import com.jacob.backend.data.Model.Game;
 @RestController
 @CrossOrigin
 public class GameSocket {
-
-    // /**
-    // * Service containing Game related logic
-    // */
-    // @Autowired
-    // private GameService gameService;
 
     /**
      * Service containing Message related logic
@@ -37,10 +30,10 @@ public class GameSocket {
      * @param game   the new gameState to save and send
      */
     @MessageMapping("/game/{gameId}")
-    public void UpdateGame(@DestinationVariable String gameId, Game game) {
+    public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
 
         // send the game to the other users
-        messaging.convertAndSend("/topic/game/" + gameId, game);
+        messaging.convertAndSend("/topic/game/" + gameId, move);
 
     }
 }
