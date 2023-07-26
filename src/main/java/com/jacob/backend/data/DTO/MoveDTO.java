@@ -20,6 +20,12 @@ public class MoveDTO {
     private String piece;
 
     /**
+     * if the piece is a pawn, signifies the piece that the pawn will be promoted to
+     * after the move
+     */
+    private String promotion;
+
+    /**
      * if the move puts the opponent in check
      */
     private boolean isCheck;
@@ -104,6 +110,26 @@ public class MoveDTO {
      */
     public void setPiece(String newPiece) {
         piece = newPiece;
+    }
+
+    /**
+     * If the piece is a pawn, and the move will result in a promotion,
+     * this gets the piece that the pawn will be promoted to after moving
+     * 
+     * @return the new Piece as a string
+     */
+    public String getPromotion() {
+        return promotion;
+    }
+
+    /**
+     * Sets the piece that the current piece will be promoted to after moving. Only
+     * relevant for pawn moves resulting in promotions
+     * 
+     * @param promotion the piece to be promoted to
+     */
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
     }
 
     /**
