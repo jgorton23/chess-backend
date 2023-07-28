@@ -133,7 +133,7 @@ public class GameService {
         game.setWhitePlayerId(whitePlayer.getId());
         game.setResult("*");
         game.setMoveTimes("");
-        game.setMoves("");
+        game.setMoves("1. ");
 
         gameRepo.save(game);
 
@@ -206,9 +206,18 @@ public class GameService {
         // Set the Games FEN to match the board state after the move
         game.setFEN(gridToFEN(grid));
 
-        // Add the move to the list of moves
-        // TODO instead of just space separated list, number moves
-        game.setMoves(game.getMoves() + " " + move.toString());
+        // Get the current moves
+        String moves = game.getMoves().trim();
+
+        // Add the number if appropriate
+        if (moves.split(" ").length % 3 == 0) {
+            moves += " " + ((moves.split(" ").length / 3) + 1) + ". " + move.toString();
+        } else {
+            moves += " " + move.toString();
+        }
+
+        // Set the new moves string
+        game.setMoves(moves);
 
         // game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
 

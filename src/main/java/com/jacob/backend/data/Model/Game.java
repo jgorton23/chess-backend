@@ -27,7 +27,7 @@ public class Game implements JsonConvertible {
     /**
      * The current board in FEN format
      */
-    private String FEN;
+    private String fen;
 
     /**
      * A space delimited list of moves in SAN format
@@ -101,7 +101,7 @@ public class Game implements JsonConvertible {
      * @return The FEN of this Game
      */
     public String getFEN() {
-        return FEN;
+        return fen;
     }
 
     /**
@@ -109,8 +109,8 @@ public class Game implements JsonConvertible {
      * 
      * @param FEN the new FEN to store
      */
-    public void setFEN(String FEN) {
-        this.FEN = FEN;
+    public void setFEN(String fen) {
+        this.fen = fen;
     }
 
     /**
@@ -272,7 +272,7 @@ public class Game implements JsonConvertible {
         return JSONResponses.objectBuilder()
                 .add("id", id.toString())
                 .add("date", date.toString())
-                .add("FEN", FEN)
+                .add("fen", fen)
                 .add("moves", moves)
                 .add("moveTimes", moveTimes)
                 .add("timeControl", timeControl)
