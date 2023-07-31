@@ -341,6 +341,7 @@ public class GameService {
             int x2 = x + dir[0], y2 = y + dir[1];
             String[][] gridAfterMove = Arrays.stream(grid).map(row -> row.clone()).toArray(String[][]::new);
             String playerColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "b" : "w";
+            String opponentColor = grid[y][x].equals(grid[y][x].toLowerCase()) ? "w" : "b";
 
             while (0 <= x2 && x2 < grid[0].length && 0 <= y2 && y2 < grid.length) {
                 // if this square is the same color as the rook, break while
@@ -357,8 +358,18 @@ public class GameService {
                     continue;
                 }
 
-                movesList.add(
-                        grid[y][x] + (char) (x + 'a') + (Math.abs(y - 8)) + (char) (x2 + 'a') + (Math.abs(y2 - 8)));
+                String move = grid[y][x] + (char) (x + 'a') + (Math.abs(y - 8)) + (char) (x2 + 'a')
+                        + (Math.abs(y2 - 8));
+
+                if (!grid[y][x].equals(" ")) {
+                    move += "x";
+                }
+
+                if (isInCheck(grid, opponentColor)) {
+                    move += "+";
+                }
+
+                movesList.add(move);
 
                 // if this square is not empty, it must be an opposing piece that we capture
                 if (!grid[y2][x2].equals(" ")) {
