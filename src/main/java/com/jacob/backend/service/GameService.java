@@ -261,6 +261,16 @@ public class GameService {
         return getValidMoves(FEN, startingSquare, playerColor);
     }
 
+    /**
+     * Get all valid moves based on the given FEN, and optional starting square and
+     * player color. Note that since FEN doesn't include previous moves, castling is
+     * left out of the result set.
+     * 
+     * @param fen            the FEN notation for the current game state
+     * @param startingSquare the optional start square from which to get valid moves
+     * @param playerColor    the optional player color for who to get valid moves
+     * @return
+     */
     public List<String> getValidMoves(String fen, Optional<int[]> startingSquare, Optional<String> playerColor) {
 
         String[][] grid = FENToGrid(fen);
@@ -269,6 +279,17 @@ public class GameService {
 
     }
 
+    /**
+     * Get all valid moves based on the given 2-D String array, and optional
+     * starting square and player color. Note that these results won't contain
+     * castling, since its validity is unknown
+     * 
+     * @param grid           the grid of squares to use to determine valid moves -
+     *                       FEN converted to a 2D array
+     * @param startingSquare the starting square from which to find valid moves
+     * @param playerColor    the player color for whom to find valid moves
+     * @return
+     */
     public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
 
         // Create a list of all possible starting squares

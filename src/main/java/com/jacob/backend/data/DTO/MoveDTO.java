@@ -211,7 +211,21 @@ public class MoveDTO {
      */
     @Override
     public String toString() {
-        return piece + (char) (startSquare[0] + 'a') + Math.abs(startSquare[1] - 8) + (char) (destSquare[0] + 'a')
-                + Math.abs(destSquare[1] - 8);
+        String move = "";
+        String start = "" + (char) (startSquare[0] + 'a') + Math.abs(startSquare[1] - 8);
+        String end = "" + (char) (destSquare[0] + 'a') + Math.abs(destSquare[1] - 8);
+
+        move += piece;
+        move += start;
+        if (isCapture) {
+            move += "x";
+        }
+        move += end;
+        if (isMate) {
+            move += "#";
+        } else if (isCheck) {
+            move += "+";
+        }
+        return move;
     }
 }
