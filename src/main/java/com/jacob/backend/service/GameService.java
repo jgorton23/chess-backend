@@ -203,9 +203,6 @@ public class GameService {
         grid[end[1]][end[0]] = grid[start[1]][start[0]];
         grid[start[1]][start[0]] = " ";
 
-        // Set the Games FEN to match the board state after the move
-        game.setFEN(gridToFEN(grid));
-
         // Get the current moves
         String moves = game.getMoves().trim();
 
@@ -216,12 +213,11 @@ public class GameService {
             moves += " " + move.toString();
         }
 
-        // Set the new moves string
+        // Set the new game features
+        game.setFEN(gridToFEN(grid));
         game.setMoves(moves);
-
-        // game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
-
-        // game.setResult(); TODO fill in result
+        game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
+        // game.setResult("*");
 
         // Update the Game in the db
         update(username, game);
@@ -269,6 +265,12 @@ public class GameService {
 
         String[][] grid = FENToGrid(fen);
 
+        return getValidMoves(grid, startingSquare, playerColor);
+
+    }
+
+    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
+
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
@@ -289,6 +291,7 @@ public class GameService {
         }
 
         return moves;
+
     }
 
     // #endregion
@@ -358,18 +361,16 @@ public class GameService {
                     continue;
                 }
 
-                String move = grid[y][x] + (char) (x + 'a') + (Math.abs(y - 8)) + (char) (x2 + 'a')
-                        + (Math.abs(y2 - 8));
+                MoveDTO move = new MoveDTO();
 
-                if (!grid[y][x].equals(" ")) {
-                    move += "x";
-                }
+                move.setPiece(grid[y][x]);
+                move.setStartSquare(new int[] { x, y });
+                move.setDestSquare(new int[] { x2, y2 });
+                move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                move.setIsMate(isInMate(grid, opponentColor));
 
-                if (isInCheck(grid, opponentColor)) {
-                    move += "+";
-                }
-
-                movesList.add(move);
+                movesList.add(move.toString());
 
                 // if this square is not empty, it must be an opposing piece that we capture
                 if (!grid[y2][x2].equals(" ")) {
@@ -622,13 +623,8 @@ public class GameService {
 
     private boolean isInCheck(String[][] grid, String playerColor) {
 
-        List<int[]> opponentPieces = findPlayerPieces(grid, playerColor.equals("w") ? "b" : "w");
-
-        List<String> opponentValidMoves = new ArrayList<String>();
-
-        for (int[] opponentPiece : opponentPieces) {
-            opponentValidMoves.addAll(findValidPieceMoves(grid, opponentPiece, true));
-        }
+        List<String> opponentValidMoves = getValidMoves(grid, null,
+                Optional.ofNullable(playerColor.equals("w") ? "b" : "w"));
 
         String kingLocation = "";
 
@@ -649,6 +645,12 @@ public class GameService {
             }
         }
         return false;
+    }
+
+    private boolean isInMate(String[][] grid, String playerColor) {
+
+        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor)).size() > 0;
+
     }
 
     private List<int[]> findPlayerPieces(String[][] grid, String playerColor) {
