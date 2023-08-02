@@ -20,6 +20,12 @@ public class MoveDTO {
     private String piece;
 
     /**
+     * if the piece is a pawn, signifies the piece that the pawn will be promoted to
+     * after the move
+     */
+    private String promotion;
+
+    /**
      * if the move puts the opponent in check
      */
     private boolean isCheck;
@@ -107,6 +113,26 @@ public class MoveDTO {
     }
 
     /**
+     * If the piece is a pawn, and the move will result in a promotion,
+     * this gets the piece that the pawn will be promoted to after moving
+     * 
+     * @return the new Piece as a string
+     */
+    public String getPromotion() {
+        return promotion;
+    }
+
+    /**
+     * Sets the piece that the current piece will be promoted to after moving. Only
+     * relevant for pawn moves resulting in promotions
+     * 
+     * @param promotion the piece to be promoted to
+     */
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
+    }
+
+    /**
      * Gets whether or not the move captures an opposing piece
      * 
      * @return True if the move was a capture, else False
@@ -185,7 +211,21 @@ public class MoveDTO {
      */
     @Override
     public String toString() {
-        return piece + (char) (startSquare[0] + 'a') + Math.abs(startSquare[1] - 8) + (char) (destSquare[0] + 'a')
-                + Math.abs(destSquare[1] - 8);
+        String move = "";
+        String start = "" + (char) (startSquare[0] + 'a') + Math.abs(startSquare[1] - 8);
+        String end = "" + (char) (destSquare[0] + 'a') + Math.abs(destSquare[1] - 8);
+
+        move += piece;
+        move += start;
+        if (isCapture) {
+            move += "x";
+        }
+        move += end;
+        if (isMate) {
+            move += "#";
+        } else if (isCheck) {
+            move += "+";
+        }
+        return move;
     }
 }
