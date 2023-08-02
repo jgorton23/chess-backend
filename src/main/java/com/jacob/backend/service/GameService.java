@@ -247,7 +247,7 @@ public class GameService {
 
         // Ensure the Game exists
         if (game == null) {
-            throw new NotFoundException("Game", String.format("GameId: %s", gameId));
+            throw new NotFoundException("Game", "GameId: %s".formatted(gameId));
         }
 
         // Ensure the User making the request is one of the players

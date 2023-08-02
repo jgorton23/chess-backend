@@ -3,7 +3,7 @@ package com.jacob.backend.data.Model;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.jacob.backend.data.JsonConvertible;
 import com.jacob.backend.responses.JSONResponses;

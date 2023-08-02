@@ -2,11 +2,11 @@ package com.jacob.backend.responses;
 
 import java.util.List;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonBuilderFactory;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 import com.jacob.backend.data.JsonConvertible;
 
@@ -18,7 +18,7 @@ public class JSONResponses {
     }
 
     public static JsonObject error(String msg) {
-        return builderFactory.createObjectBuilder().add("msg", String.format("Error: %s", msg)).build();
+        return builderFactory.createObjectBuilder().add("msg", "Error: %s".formatted(msg)).build();
     }
 
     public static String unauthorized() {
