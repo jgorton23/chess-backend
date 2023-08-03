@@ -46,10 +46,9 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void create_whenInvoked_deletesCurrentSession() {
+    public void create_whenInvoked_deletesCurrentSessionandSavesNewSession() {
 
         doNothing().when(mockSessionRepo).deleteByUsername(anyString());
-        // when(mockSessionRepo.save(any(Session.class)))
 
         UUID uuid = UUID.randomUUID();
 
