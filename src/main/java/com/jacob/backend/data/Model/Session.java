@@ -30,6 +30,10 @@ public class Session implements JsonConvertible {
         return id.toString();
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
