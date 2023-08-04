@@ -1,6 +1,7 @@
 package com.jacob.backend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,20 +35,34 @@ public class SessionServiceTest {
     private SessionService service;
     // #region CRUD
 
+    /**
+     * ensure that {@link SessionService#findById(UUID) SessionService.findById} invokes getById with the same UUID
+     */
     @Test
     public void findById_whenInvoked_getsSessionById() {
         
+        // MOCK
         when(mockSessionRepo.getById(any(UUID.class))).thenReturn(new Session());
 
-        service.findById(UUID.randomUUID());
+        // ACT
+        UUID id = UUID.randomUUID();
 
-        verify(mockSessionRepo, times(1)).getById(any(UUID.class));
+        Session s = service.findById(id);
+
+        // ASSERT
+        verify(mockSessionRepo, times(1)).getById(id);
+        assertNotNull(s);
 
     }
 
+    /**
+     * ensure that {@link SessionService#create(Session) SessionService.create}
+     * deletes any existing Session and creates a new Session for the given username
+     */
     @Test
-    public void create_whenInvoked_deletesCurrentSessionandSavesNewSession() {
+    public void create_whenInvoked_deletesCurrentSessionAndSavesNewSession() {
 
+        // MOCK
         doNothing().when(mockSessionRepo).deleteByUsername(anyString());
 
         UUID uuid = UUID.randomUUID();
@@ -57,13 +72,59 @@ public class SessionServiceTest {
             return null;
         }).when(mockSessionRepo).save(any(Session.class));
 
+        // ACT
         String id = service.create("username");
 
+        // ASSERT
         verify(mockSessionRepo, times(1)).deleteByUsername("username");
-
         verify(mockSessionRepo, times(1)).save(any(Session.class));
-
         assertEquals(id, uuid.toString());
+
+    }
+
+    /**
+     * ensure that {@link SessionService#deleteById(UUID) SessionService.deleteById}
+     * invokes deleteById on the repo layer with the same UUID
+     */
+    @Test
+    public void deleteById_whenInvoked_deletesSessionById() {
+
+        // MOCK
+        doNothing().when(mockSessionRepo).deleteById(any(UUID.class));
+
+        // ACT
+        UUID id = UUID.randomUUID();
+
+        service.deleteById(id);
+
+        // ASSERT
+        verify(mockSessionRepo, times(1)).deleteById(id);
+
+    }
+
+    /**
+     * ensure that {@link SessionService#update(UUID, String) SessionService.update}
+     * invokes getById on the repo layer, updates the username of the resulting
+     * Session, and invokes update on the repo layer
+     */
+    @Test
+    public void update_whenInvoked_getsSessionByIdAndSetsUsernameAndUpdatesSession() {
+
+        // MOCK
+        Session s = new Session();
+
+        when(mockSessionRepo.getById(any(UUID.class))).thenReturn(s);
+        doNothing().when(mockSessionRepo).update(any(Session.class));
+
+        // ACT
+        UUID id = UUID.randomUUID();
+        String username = "username";
+
+        service.update(id, username);
+
+        // ASSERT
+        verify(mockSessionRepo, times(1)).getById(id);
+        verify(mockSessionRepo, times(1)).update(s);
 
     }
 
