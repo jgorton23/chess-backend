@@ -147,6 +147,25 @@ public class SessionServiceTest {
 
     }
 
+    @Test
+    public void validateSessionId_whenInvokedWithValidArgs_getsUsernameAndReturnsTrue() {
+
+        // MOCK
+        Session session = new Session();
+        session.setUsername("username");
+
+        when(mockSessionRepo.getById(any(UUID.class))).thenReturn(session);
+
+        // ACT
+        UUID id = UUID.randomUUID();
+        Boolean valid = service.validateSessionId(id.toString());
+
+        // ASSERT
+        verify(mockSessionRepo, times(1)).getById(id);
+        assertTrue(valid);
+
+    }
+
     // #endregion
 
     // #region Helper
