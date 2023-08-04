@@ -73,13 +73,13 @@ public class SessionService {
             throw new UnauthorizedException();
         }
 
-        Session s = findById(UUID.fromString(sessionId));
+        Session session = findById(UUID.fromString(sessionId));
 
-        if (s == null) {
+        if (session == null) {
             throw new UnauthorizedException();
         }
 
-        String username = s.getUsername();
+        String username = session.getUsername();
 
         if (username == null || username.isEmpty()) {
             throw new UnauthorizedException();

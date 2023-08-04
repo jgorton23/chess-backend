@@ -39,7 +39,7 @@ public class SessionServiceTest {
      * ensure that {@link SessionService#findById(UUID) SessionService.findById} invokes getById with the same UUID
      */
     @Test
-    public void findById_whenInvoked_getsSessionById() {
+    public void findById_whenInvokedWithValidArgs_getsSessionById() {
         
         // MOCK
         when(mockSessionRepo.getById(any(UUID.class))).thenReturn(new Session());
@@ -60,7 +60,7 @@ public class SessionServiceTest {
      * deletes any existing Session and creates a new Session for the given username
      */
     @Test
-    public void create_whenInvoked_deletesCurrentSessionAndSavesNewSession() {
+    public void create_whenInvokedWithValidArgs_deletesCurrentSessionAndSavesNewSession() {
 
         // MOCK
         doNothing().when(mockSessionRepo).deleteByUsername(anyString());
@@ -87,7 +87,7 @@ public class SessionServiceTest {
      * invokes deleteById on the repo layer with the same UUID
      */
     @Test
-    public void deleteById_whenInvoked_deletesSessionById() {
+    public void deleteById_whenInvokedWithValidArgs_deletesSessionById() {
 
         // MOCK
         doNothing().when(mockSessionRepo).deleteById(any(UUID.class));
@@ -108,7 +108,7 @@ public class SessionServiceTest {
      * Session, and invokes update on the repo layer
      */
     @Test
-    public void update_whenInvoked_getsSessionByIdAndSetsUsernameAndUpdatesSession() {
+    public void update_whenInvokedWithValidArgs_getsSessionByIdAndSetsUsernameAndUpdatesSession() {
 
         // MOCK
         Session s = new Session();
@@ -125,6 +125,25 @@ public class SessionServiceTest {
         // ASSERT
         verify(mockSessionRepo, times(1)).getById(id);
         verify(mockSessionRepo, times(1)).update(s);
+
+    }
+
+    @Test
+    public void getUsernameById_whenInvokedWithValidArgs_getsSessionByIdAndReturnsUsername() {
+
+        // MOCK
+        Session session = new Session();
+        session.setUsername("username");
+
+        when(mockSessionRepo.getById(any(UUID.class))).thenReturn(session);
+
+        // ACT
+        UUID id = UUID.randomUUID();
+        String username = service.getUsernameById(id.toString());
+
+        // ASSERT
+        verify(mockSessionRepo, times(1)).getById(id);
+        assertEquals("username", username);
 
     }
 
