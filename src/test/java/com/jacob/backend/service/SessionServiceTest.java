@@ -128,6 +128,11 @@ public class SessionServiceTest {
 
     }
 
+    /**
+     * ensure that {@link SessionService#getUsernameById(String)
+     * SessionService.getUsernameById} invokes getById on the repo layer
+     * and returns the username associated with the resulting session
+     */
     @Test
     public void getUsernameById_whenInvokedWithValidArgs_getsSessionByIdAndReturnsUsername() {
 
@@ -147,6 +152,11 @@ public class SessionServiceTest {
 
     }
 
+    /**
+     * ensure that {@link SessionService#validateSessionId(String)
+     * SessionService.validateSessionId} invokes getById on the repo layer and
+     * returns true if the resulting username is not null
+     */
     @Test
     public void validateSessionId_whenInvokedWithValidArgs_getsUsernameAndReturnsTrue() {
 
