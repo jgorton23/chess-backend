@@ -32,11 +32,16 @@ public class SessionService {
      * @return the UUID of the newly created Session
      */
     public String create(String username) {
+
         sessionRepo.deleteByUsername(username);
+
         Session session = new Session();
         session.setUsername(username);
+
         sessionRepo.save(session);
+
         return session.getId();
+
     }
 
     /**
@@ -55,9 +60,12 @@ public class SessionService {
      * @param username  the new username to associate with the given sessionId
      */
     public void update(UUID sessionId, String username) {
+
         Session session = sessionRepo.getById(sessionId);
+
         session.setUsername(username);
         sessionRepo.update(session);
+
     }
 
     /**
@@ -73,19 +81,20 @@ public class SessionService {
             throw new UnauthorizedException();
         }
 
-        Session s = findById(UUID.fromString(sessionId));
+        Session session = sessionRepo.getById(UUID.fromString(sessionId));
 
-        if (s == null) {
+        if (session == null) {
             throw new UnauthorizedException();
         }
 
-        String username = s.getUsername();
+        String username = session.getUsername();
 
         if (username == null || username.isEmpty()) {
             throw new UnauthorizedException();
         }
 
         return username;
+
     }
 
     /**

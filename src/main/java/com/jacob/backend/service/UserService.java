@@ -34,10 +34,10 @@ public class UserService {
     }
 
     public ProfileDTO getProfile(String username) {
-        User u = findByUsername(username);
-        UUID id = u.getId();
+        User user = findByUsername(username);
+        UUID id = user.getId();
         int friends = (int) friendRepo.getById(id).stream().filter(f -> !f.getPending()).count();
-        String email = findByUsername(username).getEmail();
+        String email = user.getEmail();
         return new ProfileDTO(friends, username, email);
     }
 

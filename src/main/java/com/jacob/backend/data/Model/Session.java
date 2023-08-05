@@ -2,7 +2,7 @@ package com.jacob.backend.data.Model;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.jacob.backend.data.JsonConvertible;
 import com.jacob.backend.responses.JSONResponses;
@@ -28,6 +28,10 @@ public class Session implements JsonConvertible {
 
     public String getId() {
         return id.toString();
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
