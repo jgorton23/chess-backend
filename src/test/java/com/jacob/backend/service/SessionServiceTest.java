@@ -174,6 +174,9 @@ public class SessionServiceTest {
 
     // #region Helper
 
+    /**
+     * ensure when a valid UUID is passed the validator function returns True
+     */
     @Test
     public void isValidUUID_whenInvokedWithValidUUID_thenReturnsTrue() {
 
@@ -187,6 +190,9 @@ public class SessionServiceTest {
 
     }
 
+    /**
+     * ensure when an invalid UUID is passed the validator function returns False
+     */
     @Test
     public void isValidUUID_whenInvokedWithInvalidUUID_thenReturnsFalse() {
 
@@ -200,6 +206,9 @@ public class SessionServiceTest {
 
     }
 
+    /**
+     * ensure that when a null reference is passed an exception is thrown
+     */
     @Test
     public void isValidUUID_whenInvokedWithNullReference_thenThrowsException() {
 
