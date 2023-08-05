@@ -1,4 +1,4 @@
-package com.jacob.backend.service;
+package com.jacob.backend.service.IntegrationTests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
