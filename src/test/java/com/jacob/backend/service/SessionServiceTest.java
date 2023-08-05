@@ -1,15 +1,8 @@
 package com.jacob.backend.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 
@@ -33,6 +26,7 @@ public class SessionServiceTest {
 
     @InjectMocks
     private SessionService service;
+
     // #region CRUD
 
     /**
@@ -182,7 +176,42 @@ public class SessionServiceTest {
 
     @Test
     public void isValidUUID_whenInvokedWithValidUUID_thenReturnsTrue() {
-        assertTrue(false, "");
+
+        // MOCK
+
+        // ACT
+        Boolean result = service.isValidUUID(UUID.randomUUID().toString());
+
+        // ASSERT
+        assertTrue(result);
+
+    }
+
+    @Test
+    public void isValidUUID_whenInvokedWithInvalidUUID_thenReturnsFalse() {
+
+        // MOCK
+
+        // ACT
+        Boolean result = service.isValidUUID(UUID.randomUUID().toString().substring(1));
+
+        // ASSERT
+        assertFalse(result);
+
+    }
+
+    @Test
+    public void isValidUUID_whenInvokedWithNullReference_thenThrowsException() {
+
+        // MOCK
+
+        // ACT
+
+        // ASSERT
+        assertThrows(NullPointerException.class, () -> {
+            service.isValidUUID(null);
+        });
+
     }
 
     // #endregion
