@@ -41,6 +41,10 @@ public class UserServiceTest {
 
     // #region CRUD
 
+    /**
+     * ensure that when {@link UserService#findById(UUID)} 
+     * is called, then getById is invoked in the repo layer
+     */
     @Test
     public void findById_whenInvokedWithValidArgs_getsUserById() {
 
@@ -58,6 +62,10 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#findByUsername(String)} is called, then
+     * getByUsername is invoked in the repo layer
+     */
     @Test
     public void findByUsername_whenInvokedWithValidArgs_getsUserByUsername() {
 
@@ -75,6 +83,10 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#getProfile(String)} is called, then
+     * the correct methods are invoked in the repo layer
+     */
     @Test
     public void getProfile_whenInvokedWithValidArgs_getsUserDataByUsername() {
 
@@ -104,6 +116,10 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called, then getByUsername is invoked in the repo layer
+     */
     @Test
     public void update_whenInvokedWithValidArgs_getsUserByUsername() {
 
@@ -128,6 +144,11 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called with a new username supplied, and the new username is not taken, then
+     * the User is updated
+     */
     @Test
     public void update_whenInvokedWithNewUsername_whereUserDoesntExist_updatesUsername() {
 
@@ -154,6 +175,11 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called with a new username supplied, and the new username is taken, then
+     * an exception is thrown
+     */
     @Test
     public void update_whenInvokedWithNewUsername_wherUserExists_throwsException() {
 
@@ -181,6 +207,11 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called, with a password and confirmation that match, then the password is
+     * updated
+     */
     @Test
     public void update_whenInvokedWithNewPasswordAndConfirm_wherePasswordsMatch_updatesPassword() {
 
@@ -209,6 +240,11 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called, with a password and confirmation that don't match, then an exception
+     * is thrown
+     */
     @Test
     public void update_whenInvokedWithNewPasswordAndConfirm_wherePasswordsDontMatch_throwsException() {
 
@@ -229,6 +265,10 @@ public class UserServiceTest {
 
     }
 
+    /**
+     * ensure that when {@link UserService#update(String, CredentialsDTO)} is
+     * called, with only password, no confirmation, then the password is not updated
+     */
     @Test
     public void update_whenInvokedWithNewPasswordWithoutConfirm_doesntUpdateUsername() {
 
