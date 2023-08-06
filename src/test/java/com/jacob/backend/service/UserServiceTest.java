@@ -21,6 +21,7 @@ import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
 import com.jacob.backend.repository.interfaces.UserRepositoryInterface;
 import com.jacob.backend.responses.exceptions.AlreadyFoundException;
+import com.jacob.backend.responses.exceptions.PasswordMismatchException;
 
 @Tag("UnitTest")
 @ExtendWith(MockitoExtension.class)
@@ -205,6 +206,26 @@ public class UserServiceTest {
         verify(mockAuthService, times(1)).getRandomString(anyInt());
         verify(mockAuthService, times(1)).getPasswordHash("pass" + "12345678901234567890");
         verify(mockUserRepo, times(1)).update(user);
+
+    }
+
+    @Test
+    public void update_whenInvokedWithNewPasswordAndConfirm_wherePasswordsDontMatch_throwsException() {
+
+        // MOCK
+        User user = new User();
+
+        when(mockUserRepo.getByUsername(anyString())).thenReturn(user);
+
+        // ASSERT
+        String username = "username";
+        CredentialsDTO creds = new CredentialsDTO();
+        creds.setPassword("pass");
+        creds.setConfirm("wrongpass");
+
+        assertThrows(PasswordMismatchException.class, () -> {
+            service.update(username, creds);
+        });
 
     }
 
