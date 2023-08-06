@@ -229,6 +229,30 @@ public class UserServiceTest {
 
     }
 
+    @Test
+    public void update_whenInvokedWithNewPasswordWithoutConfirm_doesntUpdateUsername() {
+
+        // MOCK
+        User user = new User();
+
+        when(mockUserRepo.getByUsername(anyString())).thenReturn(user);
+        doNothing().when(mockUserRepo).update(any(User.class));
+
+        // ACT
+        String username = "username";
+        CredentialsDTO creds = new CredentialsDTO();
+
+        service.update(username, creds);
+
+        // ASSERT
+        verify(mockUserRepo, times(1)).getByUsername(username);
+        verify(mockUserRepo, times(0)).userExists(anyString());
+        verify(mockAuthService, times(0)).getRandomString(anyInt());
+        verify(mockAuthService, times(0)).getPasswordHash(anyString());
+        verify(mockUserRepo, times(1)).update(user);
+
+    }
+
     // #endregion
 
 }
