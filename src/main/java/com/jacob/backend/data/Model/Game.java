@@ -98,6 +98,15 @@ public class Game implements JsonConvertible {
     }
 
     /**
+     * only for testing
+     * 
+     * @param id
+     */
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    /**
      * @return The FEN of this Game
      */
     public String getFEN() {

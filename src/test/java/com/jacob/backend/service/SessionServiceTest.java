@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jacob.backend.data.Model.Session;
 import com.jacob.backend.repository.interfaces.SessionRepositoryInterface;
+
+import java.util.UUID;
 
 @Tag("UnitTest")
 @ExtendWith(MockitoExtension.class)
