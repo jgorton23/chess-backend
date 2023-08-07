@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.Model.Game;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
@@ -230,12 +231,29 @@ public class GameServiceTest {
         // MOCK
         Game game = new Game();
         game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        game.setMoves("");
+        game.setMoveTimes("");
+
         when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
         when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+        doNothing().when(mockGameRepo).save(any(Game.class));
 
         // ACT
+        MoveDTO move = new MoveDTO();
+        move.setStartSquare(new int[] { 0, 6 });
+        move.setDestSquare(new int[] { 0, 4 });
+        move.setMiliseconds(100);
+        String id = UUID.randomUUID().toString();
+
+        service.doMove("blackPlayer", id, move);
 
         // ASSERT
+        verify(mockSessionService, times(1)).isValidUUID(id);
+        verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
+        verify(mockGameRepo, times(1)).update(game);
+        assertEquals("rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR", game.getFEN());
 
     }
 

@@ -292,7 +292,7 @@ public class GameService {
 
         String[][] grid = FENToGrid(fen);
 
-        return getValidMoves(grid, startingSquare, playerColor);
+        return getValidMoves(grid, startingSquare, playerColor, false);
 
     }
 
@@ -307,7 +307,8 @@ public class GameService {
      * @param playerColor    the player color for whom to find valid moves
      * @return
      */
-    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor) {
+    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor,
+            Boolean ignoreCheck) {
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
@@ -324,7 +325,7 @@ public class GameService {
 
         // Add the moves from each starting position
         for (int[] start : startingSquareList) {
-            List<String> pieceMoves = findValidPieceMoves(grid, start, false);
+            List<String> pieceMoves = findValidPieceMoves(grid, start, ignoreCheck);
             moves.addAll(pieceMoves);
         }
 
@@ -701,7 +702,7 @@ public class GameService {
     private boolean isInCheck(String[][] grid, String playerColor) {
 
         List<String> opponentValidMoves = getValidMoves(grid, Optional.ofNullable(null),
-                Optional.ofNullable(playerColor.equals("w") ? "b" : "w"));
+                Optional.ofNullable(playerColor.equals("w") ? "b" : "w"), true);
 
         String kingLocation = "";
 
