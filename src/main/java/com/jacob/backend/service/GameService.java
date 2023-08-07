@@ -186,7 +186,7 @@ public class GameService {
         }
 
         // Get all possible moves
-        List<String> validMoves = getValidMoves(username, gameId, Optional.ofNullable(null), Optional.ofNullable(null));
+        List<String> validMoves = getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable(null));
 
         // Ensure the attempted move is valid
         if (!validMoves.contains(move.toString())) {
@@ -255,10 +255,27 @@ public class GameService {
             throw new UnauthorizedException();
         }
 
+        return getValidMoves(game, startingSquare, playerColor);
+
+    }
+
+    /**
+     * Get all valid moves based on the given Game, and optional starting square and
+     * player color
+     * 
+     * @param game           the Game for which to get valid moves
+     * @param startingSquare the optional starting square to consider
+     * @param playerColor    the optional player color to consider
+     * @return
+     */
+    public List<String> getValidMoves(Game game, Optional<int[]> startingSquare,
+            Optional<String> playerColor) {
+
         // Get the board from the game
         String FEN = game.getFEN();
 
         return getValidMoves(FEN, startingSquare, playerColor);
+
     }
 
     /**
