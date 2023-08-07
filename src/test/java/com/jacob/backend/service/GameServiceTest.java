@@ -15,7 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.jacob.backend.data.Model.Game;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.GameRepositoryInterface;
+import com.jacob.backend.responses.exceptions.MissingFieldException;
 import com.jacob.backend.responses.exceptions.NotFoundException;
+import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,11 +98,11 @@ public class GameServiceTest {
         when(mockUserService.findByUsername(anyString())).thenReturn(null);
 
         // ACT
+        
+        // ASSERT
         assertThrows(NotFoundException.class, () -> {
             service.findAllByUsername("username");
         });
-
-        // ASSERT
 
     }
 
@@ -136,8 +138,14 @@ public class GameServiceTest {
         // MOCK
 
         // ACT
+        String username = "username";
+        Game game = new Game();
 
         // ASSERT
+        MissingFieldException e = assertThrows(MissingFieldException.class, () -> {
+            service.create(username, game);
+        });
+        assertTrue(e.getMessage().contains("missing field White Player Username"));
 
     }
 
@@ -147,19 +155,35 @@ public class GameServiceTest {
         // MOCK
 
         // ACT
+        String username = "username";
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackplayer");
+        game.setWhitePlayerUsername("whiteplayer");
 
         // ASSERT
+        UnauthorizedException e = assertThrows(UnauthorizedException.class, () -> {
+            service.create(username, game);
+        });
+        assertTrue(e.getMessage().contains("UNAUTHORIZED"));
 
     }
 
     @Test
-    public void cretae_whenInvokedWithUnregisteredPlayer_throwsException() {
+    public void create_whenInvokedWithUnregisteredPlayer_throwsException() {
 
         // MOCK
+        when(mockUserService.findByUsername(anyString())).thenReturn(null);
 
         // ACT
+        assertThrows(NotFoundException.class, () -> {
+            Game game = new Game();
+            game.setBlackPlayerUsername("BlackPlayer");
+            game.setWhitePlayerUsername("WhitePlayer");
+            service.create("WhitePlayer", game);
+        });
 
         // ASSERT
+        verify(mockGameRepo, times(0)).save(any(Game.class));
 
     }
 
@@ -167,10 +191,17 @@ public class GameServiceTest {
     public void update_whenInvokedWithValidArgs_updatesGame() {
 
         // MOCK
+        doNothing().when(mockGameRepo).update(any(Game.class));
 
         // ACT
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+
+        service.update("blackPlayer", game);
 
         // ASSERT
+        verify(mockGameRepo, times(1)).update(game);
 
     }
 
@@ -180,8 +211,16 @@ public class GameServiceTest {
         // MOCK
 
         // ACT
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+
+        assertThrows(UnauthorizedException.class, () -> {
+            service.update("user", game);
+        });
 
         // ASSERT
+        verify(mockGameRepo, times(0)).update(any(Game.class));
 
     }
 
