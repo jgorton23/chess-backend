@@ -727,7 +727,7 @@ public class GameService {
 
     private boolean isInMate(String[][] grid, String playerColor) {
 
-        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor)).size() > 0;
+        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor), false).size() > 0;
 
     }
 
