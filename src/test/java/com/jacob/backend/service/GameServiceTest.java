@@ -228,6 +228,10 @@ public class GameServiceTest {
     public void doMove_whenInvokedWithValidArgs_updatesGame() {
 
         // MOCK
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
         // ACT
 
