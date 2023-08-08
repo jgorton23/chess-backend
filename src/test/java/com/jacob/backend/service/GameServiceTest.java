@@ -312,6 +312,33 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void doMove_whenInvokedWithAnInvalidMove_throwsException() {
+
+        // MOVE
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        game.setMoves("");
+        game.setMoveTimes("");
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+
+        // ASSERT
+        MoveDTO move = new MoveDTO();
+        move.setDestSquare(new int[] { 4, 5 });
+        move.setStartSquare(new int[] { 4, 5 });
+
+        RuntimeException e = assertThrows(RuntimeException.class, () -> {
+            service.doMove("blackPlayer", UUID.randomUUID().toString(), move);
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Attempting to perform an Invalid Move"));
+
+    }
+
     // TODO add more tests for doMove and below
 
     // #endregion
