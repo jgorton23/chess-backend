@@ -242,6 +242,7 @@ public class GameServiceTest {
 
         // ACT
         MoveDTO move = new MoveDTO();
+        move.setPiece("P");
         move.setStartSquare(new int[] { 0, 6 });
         move.setDestSquare(new int[] { 0, 4 });
         move.setMiliseconds(100);
