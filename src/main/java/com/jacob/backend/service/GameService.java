@@ -212,7 +212,7 @@ public class GameService {
         String moves = game.getMoves().trim();
 
         // Add the number if appropriate
-        if (moves.split(" ").length % 3 == 0) {
+        if (moves.length() == 0 || moves.split(" ").length % 3 == 0) {
             moves += " " + ((moves.split(" ").length / 3) + 1) + ". " + move.toString();
         } else {
             moves += " " + move.toString();
