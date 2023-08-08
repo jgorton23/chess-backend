@@ -298,6 +298,20 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void doMove_whenInvokedByAUserWhoIsntAPlayer_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(new Game());
+
+        // ACT
+        assertThrows(UnauthorizedException.class, () -> {
+            service.doMove("username", UUID.randomUUID().toString(), new MoveDTO());
+        });
+
+    }
+
     // TODO add more tests for doMove and below
 
     // #endregion
