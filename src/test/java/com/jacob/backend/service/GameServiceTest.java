@@ -260,6 +260,22 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void doMove_whenInvokedWithInvalidGameUUID_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
+
+        // ACT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.doMove("username", "invalidid", new MoveDTO());
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: invalidid not found in database"));
+
+    }
+
     // TODO add more tests for doMove and below
 
     // #endregion

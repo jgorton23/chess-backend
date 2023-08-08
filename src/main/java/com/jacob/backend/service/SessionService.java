@@ -120,7 +120,7 @@ public class SessionService {
      * @param uuid the String UUID to test
      * @return True if the String is in valid UUID format, else False
      */
-    public Boolean isValidUUID(String uuid) {
+    public boolean isValidUUID(String uuid) {
         return uuid.matches("[0-9a-zA-Z]{8}(-[0-9a-zA-Z]{4}){3}-[0-9a-zA-Z]{12}");
     }
 }
