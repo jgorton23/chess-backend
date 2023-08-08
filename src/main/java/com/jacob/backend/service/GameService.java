@@ -180,13 +180,18 @@ public class GameService {
             throw new NotFoundException("Game", "ID: " + gameId);
         }
 
+        String playerColor = "";
         // Ensure the User doing the move is one of the players
-        if (!username.equals(game.getBlackPlayerUsername()) && !username.equals(game.getWhitePlayerUsername())) {
+        if (username.equals(game.getBlackPlayerUsername())) {
+            playerColor = "b";
+        } else if (username.equals(game.getWhitePlayerUsername())) {
+            playerColor = "w";
+        } else {
             throw new UnauthorizedException();
         }
 
         // Get all possible moves
-        List<String> validMoves = getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable(null));
+        List<String> validMoves = getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable(playerColor));
 
         // Ensure the attempted move is valid
         if (!validMoves.contains(move.toString())) {

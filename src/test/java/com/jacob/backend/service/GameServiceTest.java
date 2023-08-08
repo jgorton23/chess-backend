@@ -248,7 +248,7 @@ public class GameServiceTest {
         move.setMiliseconds(100);
         String id = UUID.randomUUID().toString();
 
-        service.doMove("blackPlayer", id, move);
+        service.doMove("whitePlayer", id, move);
 
         // ASSERT
         verify(mockSessionService, times(1)).isValidUUID(id);
