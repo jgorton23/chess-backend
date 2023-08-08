@@ -272,7 +272,29 @@ public class GameServiceTest {
         });
 
         // ASSERT
+        verify(mockSessionService, times(1)).isValidUUID(anyString());
+        verify(mockGameRepo, times(0)).getById(any(UUID.class));
+        verify(mockGameRepo, times(0)).update(any(Game.class));
         assertTrue(e.getMessage().contains("Game with ID: invalidid not found in database"));
+
+    }
+
+    @Test
+    public void doMove_whenInvokedWithGameIdNotCorrespondingToGame_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
+
+        // ACT
+        String id = UUID.randomUUID().toString();
+
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.doMove("username", id, new MoveDTO());
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
 
     }
 
