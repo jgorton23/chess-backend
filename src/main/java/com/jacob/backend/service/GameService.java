@@ -292,7 +292,7 @@ public class GameService {
 
         String[][] grid = FENToGrid(fen);
 
-        return getValidMoves(grid, startingSquare, playerColor, false);
+        return getValidMoves(grid, startingSquare, playerColor, false, true);
 
     }
 
@@ -308,7 +308,7 @@ public class GameService {
      * @return
      */
     public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor,
-            Boolean ignoreCheck) {
+            boolean ignoreCheck, boolean includeAnnotations) {
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
@@ -325,7 +325,7 @@ public class GameService {
 
         // Add the moves from each starting position
         for (int[] start : startingSquareList) {
-            List<String> pieceMoves = findValidPieceMoves(grid, start, ignoreCheck);
+            List<String> pieceMoves = findValidPieceMoves(grid, start, ignoreCheck, includeAnnotations);
             moves.addAll(pieceMoves);
         }
 
@@ -339,36 +339,38 @@ public class GameService {
 
     // #region findValidMoves
 
-    private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
         int x = start[0], y = start[1];
 
         List<String> validMoves = new ArrayList<String>();
 
         switch (grid[y][x]) {
             case "R", "r":
-                validMoves = findValidRookMoves(grid, start, ignoreCheck);
+                validMoves = findValidRookMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "N", "n":
-                validMoves = findValidKnightMoves(grid, start, ignoreCheck);
+                validMoves = findValidKnightMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "B", "b":
-                validMoves = findValidBishopMoves(grid, start, ignoreCheck);
+                validMoves = findValidBishopMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "K", "k":
-                validMoves = findValidKingMoves(grid, start, ignoreCheck);
+                validMoves = findValidKingMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "Q", "q":
-                validMoves = findValidQueenMoves(grid, start, ignoreCheck);
+                validMoves = findValidQueenMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "P", "p":
-                validMoves = findValidPawnMoves(grid, start, ignoreCheck);
+                validMoves = findValidPawnMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
         }
 
         return validMoves;
     }
 
-    private List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -405,9 +407,11 @@ public class GameService {
                 move.setPiece(grid[y][x]);
                 move.setStartSquare(new int[] { x, y });
                 move.setDestSquare(new int[] { x2, y2 });
-                move.setIsCapture(!grid[y2][x2].equals(" "));
-                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
+                if (includeAnnotations) {
+                    move.setIsCapture(!grid[y2][x2].equals(" "));
+                    move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                    move.setIsMate(isInMate(grid, opponentColor));
+                }
 
                 movesList.add(move.toString());
 
@@ -425,7 +429,8 @@ public class GameService {
 
     }
 
-    private List<String> findValidKnightMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidKnightMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -470,9 +475,11 @@ public class GameService {
             move.setPiece(grid[y][x]);
             move.setStartSquare(new int[] { x, y });
             move.setDestSquare(new int[] { x2, y2 });
-            move.setIsCapture(!grid[y2][x2].equals(" "));
-            move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-            move.setIsMate(isInMate(grid, opponentColor));
+            if (includeAnnotations) {
+                move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                move.setIsMate(isInMate(grid, opponentColor));
+            }
 
             movesList.add(move.toString());
 
@@ -491,7 +498,8 @@ public class GameService {
 
     }
 
-    private List<String> findValidBishopMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidBishopMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -529,9 +537,11 @@ public class GameService {
                 move.setPiece(grid[y][x]);
                 move.setStartSquare(new int[] { x, y });
                 move.setDestSquare(new int[] { x2, y2 });
-                move.setIsCapture(!grid[y2][x2].equals(" "));
-                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
+                if (includeAnnotations) {
+                    move.setIsCapture(!grid[y2][x2].equals(" "));
+                    move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                    move.setIsMate(isInMate(grid, opponentColor));
+                }
 
                 movesList.add(move.toString());
 
@@ -555,7 +565,8 @@ public class GameService {
 
     }
 
-    private List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -600,9 +611,11 @@ public class GameService {
             move.setPiece(grid[y][x]);
             move.setStartSquare(new int[] { x, y });
             move.setDestSquare(new int[] { x2, y2 });
-            move.setIsCapture(!grid[y2][x2].equals(" "));
-            move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-            move.setIsMate(isInMate(grid, opponentColor));
+            if (includeAnnotations) {
+                move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                move.setIsMate(isInMate(grid, opponentColor));
+            }
 
             movesList.add(move.toString());
 
@@ -621,14 +634,16 @@ public class GameService {
 
     }
 
-    private List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
         List<String> result = new ArrayList<String>();
-        result.addAll(findValidRookMoves(grid, start, ignoreCheck));
-        result.addAll(findValidBishopMoves(grid, start, ignoreCheck));
+        result.addAll(findValidRookMoves(grid, start, ignoreCheck, includeAnnotations));
+        result.addAll(findValidBishopMoves(grid, start, ignoreCheck, includeAnnotations));
         return result;
     }
 
-    private List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck) {
+    private List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck,
+            boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -682,9 +697,11 @@ public class GameService {
             move.setPiece(grid[y][x]);
             move.setStartSquare(new int[] { x, y });
             move.setDestSquare(new int[] { x2, y2 });
-            move.setIsCapture(!grid[y2][x2].equals(" "));
-            move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-            move.setIsMate(isInMate(grid, opponentColor));
+            if (includeAnnotations) {
+                move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                move.setIsMate(isInMate(grid, opponentColor));
+            }
 
             movesList.add(move.toString());
 
@@ -702,7 +719,7 @@ public class GameService {
     private boolean isInCheck(String[][] grid, String playerColor) {
 
         List<String> opponentValidMoves = getValidMoves(grid, Optional.ofNullable(null),
-                Optional.ofNullable(playerColor.equals("w") ? "b" : "w"), true);
+                Optional.ofNullable(playerColor.equals("w") ? "b" : "w"), true, false);
 
         String kingLocation = "";
 
@@ -718,7 +735,7 @@ public class GameService {
         }
 
         for (String move : opponentValidMoves) {
-            if (move.endsWith(kingLocation)) {
+            if (move.substring(3, 5).equals(kingLocation)) {
                 return true;
             }
         }
@@ -727,7 +744,8 @@ public class GameService {
 
     private boolean isInMate(String[][] grid, String playerColor) {
 
-        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor), false).size() > 0;
+        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor), false, false)
+                .size() == 0;
 
     }
 
