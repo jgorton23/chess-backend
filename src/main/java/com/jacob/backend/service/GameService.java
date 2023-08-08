@@ -220,8 +220,8 @@ public class GameService {
 
         // Set the new game features
         game.setFEN(gridToFEN(grid));
-        game.setMoves(moves);
-        game.setMoveTimes(game.getMoveTimes() + " " + move.getMiliseconds());
+        game.setMoves(moves.trim());
+        game.setMoveTimes((game.getMoveTimes() + " " + move.getMiliseconds()).trim());
         // game.setResult("*");
 
         // Update the Game in the db

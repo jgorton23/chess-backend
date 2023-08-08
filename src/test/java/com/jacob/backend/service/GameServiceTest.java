@@ -256,7 +256,7 @@ public class GameServiceTest {
         verify(mockGameRepo, times(1)).update(game);
         assertEquals("rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR", game.getFEN());
         assertEquals("1. Pa2a4", game.getMoves());
-        assertEquals(" 100", game.getMoveTimes());
+        assertEquals("100", game.getMoveTimes());
 
     }
 
