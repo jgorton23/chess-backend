@@ -782,14 +782,9 @@ public class GameService {
     }
 
     private String gridToFEN(String[][] grid) {
-        String result = "";
-        for (String[] row : grid) {
-            String rowFEN = String.join("", row);
-            for (int i = 8; i >= 1; i--) {
-                rowFEN = rowFEN.replace(" ".repeat(i), "" + i);
-            }
-            result += rowFEN;
-            result += "/";
+        String result = String.join("/", Arrays.stream(grid).map(row -> String.join("", row)).toArray(String[]::new));
+        for (int i = 8; i >= 1; i--) {
+            result = result.replace(" ".repeat(i), "" + i);
         }
         return result;
     }

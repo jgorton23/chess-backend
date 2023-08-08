@@ -238,7 +238,7 @@ public class GameServiceTest {
 
         when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
         when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
-        doNothing().when(mockGameRepo).save(any(Game.class));
+        doNothing().when(mockGameRepo).update(any(Game.class));
 
         // ACT
         MoveDTO move = new MoveDTO();
