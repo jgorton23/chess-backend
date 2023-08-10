@@ -1,6 +1,7 @@
 package com.jacob.backend.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -372,6 +373,76 @@ public class GameServiceTest {
         // ASSERT
         assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
         verify(mockGameRepo, times(1)).getById(any(UUID.class));
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedByUnauthorizedUser_throwsException() {
+
+        // MOCK
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+        // ASSERT
+        UnauthorizedException e = assertThrowsExactly(UnauthorizedException.class, () -> {
+            service.getValidMoves("username", UUID.randomUUID().toString(), Optional.ofNullable(null),
+                    Optional.ofNullable(null));
+        });
+
+        // ACT
+        assertTrue(e.getMessage().contains("UNAUTHORIZED"));
+        verify(mockSessionService, times(1)).isValidUUID(anyString());
+        verify(mockGameRepo, times(1)).getById(any(UUID.class));
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedWithStartingPosition_returnsValidMoves() {
+
+        // MOCK
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        game.setMoves("");
+        game.setMoveTimes("");
+
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+        // ACT
+        List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
+                Optional.ofNullable(null), Optional.ofNullable(null));
+
+        // ASSERT
+        assertEquals(40, validMoves.size());
+        assertEquals(16, validMoves.stream().filter((s) -> {
+            return s.startsWith("p");
+        }).count());
+        assertEquals(4, validMoves.stream().filter((s) -> {
+            return s.startsWith("n");
+        }).count());
+        assertEquals(12, validMoves.stream().filter((s) -> {
+            return s.endsWith("6");
+        }).count());
+        assertEquals(8, validMoves.stream().filter((s) -> {
+            return s.endsWith("5");
+        }).count());
+        assertEquals(16, validMoves.stream().filter((s) -> {
+            return s.startsWith("P");
+        }).count());
+        assertEquals(4, validMoves.stream().filter((s) -> {
+            return s.startsWith("N");
+        }).count());
+        assertEquals(12, validMoves.stream().filter((s) -> {
+            return s.endsWith("3");
+        }).count());
+        assertEquals(8, validMoves.stream().filter((s) -> {
+            return s.endsWith("4");
+        }).count());
 
     }
 
