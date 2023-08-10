@@ -446,6 +446,41 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void getValidMoves_whenInvokedWithStartingPositionAndPlayerColor_returnsValidMoves() {
+
+        // MOCK
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        game.setMoves("");
+        game.setMoveTimes("");
+
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+        // ACT
+        List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
+                Optional.ofNullable(null), Optional.ofNullable("b"));
+
+        // ASSERT
+        assertEquals(20, validMoves.size());
+        assertEquals(16, validMoves.stream().filter((s) -> {
+            return s.startsWith("p");
+        }).count());
+        assertEquals(4, validMoves.stream().filter((s) -> {
+            return s.startsWith("n");
+        }).count());
+        assertEquals(12, validMoves.stream().filter((s) -> {
+            return s.endsWith("6");
+        }).count());
+        assertEquals(8, validMoves.stream().filter((s) -> {
+            return s.endsWith("5");
+        }).count());
+
+    }
+
     // #endregion
 
 }
