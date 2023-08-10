@@ -481,6 +481,31 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void getValidMoves_whenInvokedWithStartingPositionAndStartingSquare_returnsValidMoves() {
+
+        // MOCK
+        Game game = new Game();
+        game.setBlackPlayerUsername("blackPlayer");
+        game.setWhitePlayerUsername("whitePlayer");
+        game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        game.setMoves("");
+        game.setMoveTimes("");
+
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+        // ACT
+        List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
+                Optional.ofNullable(new int[] { 1, 0 }), Optional.ofNullable(null));
+
+        // ASSERT
+        assertEquals(2, validMoves.size());
+        assertTrue(validMoves.contains("nb8a6"));
+        assertTrue(validMoves.contains("nb8c6"));
+
+    }
+
     // #endregion
 
 }
