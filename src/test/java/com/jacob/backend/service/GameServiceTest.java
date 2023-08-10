@@ -1,14 +1,14 @@
 package com.jacob.backend.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,6 +43,17 @@ public class GameServiceTest {
     private GameService service;
 
     // #region CRUD
+
+    @Nested
+    class StartingPosition {
+
+        Game game;
+
+        @BeforeEach
+        public void createGame() {
+
+        }
+    }
 
     @Test
     public void findById_whenInvokedWithValidArgs_getsGameById() {
