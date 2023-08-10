@@ -244,7 +244,7 @@ public class GameService {
 
         // Get the UUID of the Game
         if (!sessionService.isValidUUID(gameId)) {
-            throw new NotFoundException("Game", "ID: " + gameId);
+            throw new NotFoundException("Game", "ID: %s".formatted(gameId));
         }
 
         // Get the Game with the given the UUID
@@ -252,7 +252,7 @@ public class GameService {
 
         // Ensure the Game exists
         if (game == null) {
-            throw new NotFoundException("Game", "GameId: %s".formatted(gameId));
+            throw new NotFoundException("Game", "ID: %s".formatted(gameId));
         }
 
         // Ensure the User making the request is one of the players

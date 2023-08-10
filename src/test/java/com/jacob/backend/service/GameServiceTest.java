@@ -356,7 +356,24 @@ public class GameServiceTest {
 
     }
 
-    // TODO add more tests for doMove and below
+    @Test
+    public void getValidMoves_whenInvokedWithNonexistentGameId_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
+
+        // ACT
+        String id = UUID.randomUUID().toString();
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.getValidMoves("username", id, Optional.ofNullable(null), Optional.ofNullable(null));
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
+        verify(mockGameRepo, times(1)).getById(any(UUID.class));
+
+    }
 
     // #endregion
 
