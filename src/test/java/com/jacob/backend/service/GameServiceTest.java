@@ -22,6 +22,7 @@ import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Tag("UnitTest")
@@ -336,6 +337,22 @@ public class GameServiceTest {
 
         // ASSERT
         assertTrue(e.getMessage().contains("Attempting to perform an Invalid Move"));
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedWithInvalidGameId_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
+
+        // ACT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.getValidMoves("username", "gameid", Optional.ofNullable(null), Optional.ofNullable(null));
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: gameid not found in database"));
 
     }
 
