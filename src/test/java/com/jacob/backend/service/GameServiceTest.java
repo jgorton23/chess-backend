@@ -279,6 +279,8 @@ public class GameServiceTest {
 
     }
 
+    // #endregion
+
     @Test
     public void getValidMoves_whenInvokedWithInvalidGameId_throwsException() {
 
@@ -310,6 +312,26 @@ public class GameServiceTest {
 
         // ASSERT
         assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
+        verify(mockGameRepo, times(1)).getById(any(UUID.class));
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedByUnauthorizedUser_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(new Game());
+
+        // ASSERT
+        UnauthorizedException e = assertThrows(UnauthorizedException.class, () -> {
+            service.getValidMoves("username", UUID.randomUUID().toString(), Optional.ofNullable(null),
+                    Optional.ofNullable(null));
+        });
+
+        // ACT
+        assertTrue(e.getMessage().contains("UNAUTHORIZED"));
+        verify(mockSessionService, times(1)).isValidUUID(anyString());
         verify(mockGameRepo, times(1)).getById(any(UUID.class));
 
     }
@@ -379,27 +401,7 @@ public class GameServiceTest {
         }
 
         @Test
-        public void getValidMoves_whenInvokedByUnauthorizedUser_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
-
-            // ASSERT
-            UnauthorizedException e = assertThrowsExactly(UnauthorizedException.class, () -> {
-                service.getValidMoves("username", UUID.randomUUID().toString(), Optional.ofNullable(null),
-                        Optional.ofNullable(null));
-            });
-
-            // ACT
-            assertTrue(e.getMessage().contains("UNAUTHORIZED"));
-            verify(mockSessionService, times(1)).isValidUUID(anyString());
-            verify(mockGameRepo, times(1)).getById(any(UUID.class));
-
-        }
-
-        @Test
-        public void getValidMoves_whenInvokedWithStartingPosition_returnsValidMoves() {
+        public void getValidMoves_whenInvokedWithValidArgs_returnsValidMoves() {
 
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
@@ -439,7 +441,7 @@ public class GameServiceTest {
         }
 
         @Test
-        public void getValidMoves_whenInvokedWithStartingPositionAndPlayerColor_returnsValidMoves() {
+        public void getValidMoves_whenInvokedWithPlayerColor_returnsValidMoves() {
 
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
@@ -467,7 +469,7 @@ public class GameServiceTest {
         }
 
         @Test
-        public void getValidMoves_whenInvokedWithStartingPositionAndStartingSquare_returnsValidMoves() {
+        public void getValidMoves_whenInvokedWithStartingSquare_returnsValidMoves() {
 
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
@@ -485,7 +487,7 @@ public class GameServiceTest {
         }
 
         @Test
-        public void getValidMoves_whenInvokedWithStartingPositionAndStartingSquareAndPlayerColor_ignoresPlayerColor() {
+        public void getValidMoves_whenInvokedWithStartingSquareAndPlayerColor_returnsValidMoves() {
 
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
@@ -500,7 +502,33 @@ public class GameServiceTest {
 
         }
 
+        @Test
+        public void findValidPieceMoves_whenInvokedOnEmptySquare_returnsEmptyList() {
+
+            // MOCK
+
+            // ACT
+            String[][] grid = service.FENToGrid(game.getFEN());
+
+            // ASSERT
+
+        }
+
     }
-    // #endregion
+
+    @Nested
+    class RandomStartingPosition1 {
+
+    }
+
+    @Nested
+    class RandomStartingPosition2 {
+
+    }
+
+    @Nested
+    class RandomStartingPosition3 {
+
+    }
 
 }

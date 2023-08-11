@@ -344,7 +344,7 @@ public class GameService {
 
     // #region findValidMoves
 
-    private List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
         int x = start[0], y = start[1];
 
@@ -374,7 +374,7 @@ public class GameService {
         return validMoves;
     }
 
-    private List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidRookMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
@@ -434,7 +434,7 @@ public class GameService {
 
     }
 
-    private List<String> findValidKnightMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidKnightMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
@@ -503,7 +503,7 @@ public class GameService {
 
     }
 
-    private List<String> findValidBishopMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidBishopMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
@@ -570,7 +570,7 @@ public class GameService {
 
     }
 
-    private List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
@@ -639,7 +639,7 @@ public class GameService {
 
     }
 
-    private List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
         List<String> result = new ArrayList<String>();
         result.addAll(findValidRookMoves(grid, start, ignoreCheck, includeAnnotations));
@@ -647,7 +647,7 @@ public class GameService {
         return result;
     }
 
-    private List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck,
+    public List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
@@ -721,7 +721,7 @@ public class GameService {
 
     // #endregion
 
-    private boolean isInCheck(String[][] grid, String playerColor) {
+    public boolean isInCheck(String[][] grid, String playerColor) {
 
         List<String> opponentValidMoves = getValidMoves(grid, Optional.ofNullable(null),
                 Optional.ofNullable(playerColor.equals("w") ? "b" : "w"), true, false);
@@ -747,14 +747,14 @@ public class GameService {
         return false;
     }
 
-    private boolean isInMate(String[][] grid, String playerColor) {
+    public boolean isInMate(String[][] grid, String playerColor) {
 
         return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor), false, false)
                 .size() == 0;
 
     }
 
-    private List<int[]> findPlayerPieces(String[][] grid, String playerColor) {
+    public List<int[]> findPlayerPieces(String[][] grid, String playerColor) {
 
         List<int[]> pieces = new ArrayList<int[]>();
 
@@ -773,7 +773,7 @@ public class GameService {
 
     }
 
-    private String[][] FENToGrid(String FEN) {
+    public String[][] FENToGrid(String FEN) {
         // in order to allow for bigger board sizes this needs to be revised
         for (int index = 1; index <= 9; index++) {
             FEN = FEN.replace(Integer.toString(index), " ".repeat(index));
@@ -781,7 +781,7 @@ public class GameService {
         return Arrays.stream(FEN.split("/")).map(row -> row.split("")).toArray(String[][]::new);
     }
 
-    private String gridToFEN(String[][] grid) {
+    public String gridToFEN(String[][] grid) {
         String result = String.join("/", Arrays.stream(grid).map(row -> String.join("", row)).toArray(String[]::new));
         for (int i = 8; i >= 1; i--) {
             result = result.replace(" ".repeat(i), "" + i);
@@ -789,12 +789,12 @@ public class GameService {
         return result;
     }
 
-    private boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {
+    public boolean isSameColorPiece(String[][] grid, int x1, int y1, int x2, int y2) {
         return (("RNBKQP".contains(grid[y1][x1]) && "RNBKQP".contains(grid[y2][x2]))
                 || ("rnbkqp".contains(grid[y1][x1]) && "rnbkqp".contains(grid[y2][x2])));
     }
 
-    private List<int[]> getStartingSquaresFromGrid(String[][] grid, Optional<String> playerColor) {
+    public List<int[]> getStartingSquaresFromGrid(String[][] grid, Optional<String> playerColor) {
 
         List<int[]> startingSquareList = new ArrayList<int[]>();
 
