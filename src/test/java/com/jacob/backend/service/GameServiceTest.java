@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -228,6 +227,93 @@ public class GameServiceTest {
 
     }
 
+    @Test
+    public void doMove_whenInvokedWithInvalidGameUUID_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
+
+        // ACT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.doMove("username", "invalidid", new MoveDTO());
+        });
+
+        // ASSERT
+        verify(mockSessionService, times(1)).isValidUUID(anyString());
+        verify(mockGameRepo, times(0)).getById(any(UUID.class));
+        verify(mockGameRepo, times(0)).update(any(Game.class));
+        assertTrue(e.getMessage().contains("Game with ID: invalidid not found in database"));
+
+    }
+
+    @Test
+    public void doMove_whenInvokedWithGameIdNotCorrespondingToGame_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
+
+        // ACT
+        String id = UUID.randomUUID().toString();
+
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.doMove("username", id, new MoveDTO());
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
+
+    }
+
+    @Test
+    public void doMove_whenInvokedByAUserWhoIsntAPlayer_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(new Game());
+
+        // ACT
+        assertThrows(UnauthorizedException.class, () -> {
+            service.doMove("username", UUID.randomUUID().toString(), new MoveDTO());
+        });
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedWithInvalidGameId_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
+
+        // ACT
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.getValidMoves("username", "gameid", Optional.ofNullable(null), Optional.ofNullable(null));
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: gameid not found in database"));
+
+    }
+
+    @Test
+    public void getValidMoves_whenInvokedWithNonexistentGameId_throwsException() {
+
+        // MOCK
+        when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+        when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
+
+        // ACT
+        String id = UUID.randomUUID().toString();
+        NotFoundException e = assertThrows(NotFoundException.class, () -> {
+            service.getValidMoves("username", id, Optional.ofNullable(null), Optional.ofNullable(null));
+        });
+
+        // ASSERT
+        assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
+        verify(mockGameRepo, times(1)).getById(any(UUID.class));
+
+    }
+
     @Nested
     class DefaultStartingPosition {
 
@@ -272,67 +358,9 @@ public class GameServiceTest {
         }
 
         @Test
-        public void doMove_whenInvokedWithInvalidGameUUID_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
-
-            // ACT
-            NotFoundException e = assertThrows(NotFoundException.class, () -> {
-                service.doMove("username", "invalidid", new MoveDTO());
-            });
-
-            // ASSERT
-            verify(mockSessionService, times(1)).isValidUUID(anyString());
-            verify(mockGameRepo, times(0)).getById(any(UUID.class));
-            verify(mockGameRepo, times(0)).update(any(Game.class));
-            assertTrue(e.getMessage().contains("Game with ID: invalidid not found in database"));
-
-        }
-
-        @Test
-        public void doMove_whenInvokedWithGameIdNotCorrespondingToGame_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
-
-            // ACT
-            String id = UUID.randomUUID().toString();
-
-            NotFoundException e = assertThrows(NotFoundException.class, () -> {
-                service.doMove("username", id, new MoveDTO());
-            });
-
-            // ASSERT
-            assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
-
-        }
-
-        @Test
-        public void doMove_whenInvokedByAUserWhoIsntAPlayer_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(new Game());
-
-            // ACT
-            assertThrows(UnauthorizedException.class, () -> {
-                service.doMove("username", UUID.randomUUID().toString(), new MoveDTO());
-            });
-
-        }
-
-        @Test
         public void doMove_whenInvokedWithAnInvalidMove_throwsException() {
 
             // MOVE
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
-            game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            game.setMoves("");
-            game.setMoveTimes("");
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
 
@@ -351,47 +379,9 @@ public class GameServiceTest {
         }
 
         @Test
-        public void getValidMoves_whenInvokedWithInvalidGameId_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(false);
-
-            // ACT
-            NotFoundException e = assertThrows(NotFoundException.class, () -> {
-                service.getValidMoves("username", "gameid", Optional.ofNullable(null), Optional.ofNullable(null));
-            });
-
-            // ASSERT
-            assertTrue(e.getMessage().contains("Game with ID: gameid not found in database"));
-
-        }
-
-        @Test
-        public void getValidMoves_whenInvokedWithNonexistentGameId_throwsException() {
-
-            // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(null);
-
-            // ACT
-            String id = UUID.randomUUID().toString();
-            NotFoundException e = assertThrows(NotFoundException.class, () -> {
-                service.getValidMoves("username", id, Optional.ofNullable(null), Optional.ofNullable(null));
-            });
-
-            // ASSERT
-            assertTrue(e.getMessage().contains("Game with ID: " + id + " not found in database"));
-            verify(mockGameRepo, times(1)).getById(any(UUID.class));
-
-        }
-
-        @Test
         public void getValidMoves_whenInvokedByUnauthorizedUser_throwsException() {
 
             // MOCK
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
@@ -412,13 +402,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingPosition_returnsValidMoves() {
 
             // MOCK
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
-            game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            game.setMoves("");
-            game.setMoveTimes("");
-
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
@@ -459,13 +442,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingPositionAndPlayerColor_returnsValidMoves() {
 
             // MOCK
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
-            game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            game.setMoves("");
-            game.setMoveTimes("");
-
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
@@ -494,13 +470,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingPositionAndStartingSquare_returnsValidMoves() {
 
             // MOCK
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
-            game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            game.setMoves("");
-            game.setMoveTimes("");
-
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
@@ -519,13 +488,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingPositionAndStartingSquareAndPlayerColor_ignoresPlayerColor() {
 
             // MOCK
-            Game game = new Game();
-            game.setBlackPlayerUsername("blackPlayer");
-            game.setWhitePlayerUsername("whitePlayer");
-            game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            game.setMoves("");
-            game.setMoveTimes("");
-
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
