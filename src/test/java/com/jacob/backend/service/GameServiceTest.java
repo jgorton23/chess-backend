@@ -509,8 +509,10 @@ public class GameServiceTest {
 
             // ACT
             String[][] grid = service.FENToGrid(game.getFEN());
+            List<String> validMoves = service.findValidPieceMoves(grid, new int[] { 4, 4 }, false, false);
 
             // ASSERT
+            assertEquals(0, validMoves.size());
 
         }
 
@@ -518,6 +520,53 @@ public class GameServiceTest {
 
     @Nested
     class RandomStartingPosition1 {
+
+        Game game;
+
+        @BeforeEach
+        public void setupGame() {
+            game = new Game();
+            game.setBlackPlayerUsername("Bronstein");
+            game.setWhitePlayerUsername("Kholmov");
+            game.setFEN("r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1");
+            game.setMoves(
+                    "1. e4 c5 2. Nf3 Nf6 3. Nc3 d6 4. d4 cxd4 5. Nxd4 a6 " +
+                            "6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7 10. g4 b5 " +
+                            "11. Bxf6 gxf6 12. f5 Ne5 13. Qh3 O-O 14. g5 b4 15. gxf6 " +
+                            "16. Rg1+ Kh8 17. Qh6 Qe7");
+            game.setMoveTimes("");
+        }
+
+        @Test
+        public void doMove_whenInvokedWithValidArgs_updatesGame() {
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+            doNothing().when(mockGameRepo).update(any(Game.class));
+
+            // ACT
+            MoveDTO move = new MoveDTO();
+            move.setPiece("N");
+            move.setStartSquare(new int[] { 3, 4 });
+            move.setDestSquare(new int[] { 2, 2 });
+            move.setMiliseconds(100);
+            String id = UUID.randomUUID().toString();
+
+            service.doMove("Kholmov", id, move);
+
+            // ASSERT
+            verify(mockSessionService, times(1)).isValidUUID(id);
+            verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
+            verify(mockGameRepo, times(1)).update(game);
+            assertEquals("r1b2r1k/4qp1p/p1Nppb1Q/4nP2/1p2P3/2N5/PPP4P/2KR1BR1", game.getFEN());
+            assertEquals("1. e4 c5 2. Nf3 Nf6 3. Nc3 d6 4. d4 cxd4 5. Nxd4 a6 " + //
+                    "6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7 10. g4 b5 " + //
+                    "11. Bxf6 gxf6 12. f5 Ne5 13. Qh3 O-O 14. g5 b4 15. gxf6 " + //
+                    "16. Rg1+ Kh8 17. Qh6 Qe7 18. Nd4c6", game.getMoves());
+            assertEquals("100", game.getMoveTimes());
+
+        }
 
     }
 
