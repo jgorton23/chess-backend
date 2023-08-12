@@ -494,7 +494,7 @@ public class GameService {
 
             // if this square is not empty, it must be an opposing piece that we capture
             if (!grid[y2][x2].equals(" ")) {
-                break;
+                continue;
             }
 
         }
