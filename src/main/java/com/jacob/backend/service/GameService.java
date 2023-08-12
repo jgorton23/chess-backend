@@ -492,11 +492,6 @@ public class GameService {
             gridAfterMove[y][x] = grid[y][x];
             gridAfterMove[y2][x2] = grid[y2][x2];
 
-            // if this square is not empty, it must be an opposing piece that we capture
-            if (!grid[y2][x2].equals(" ")) {
-                continue;
-            }
-
         }
 
         return movesList;
@@ -627,11 +622,6 @@ public class GameService {
             // return grid to regular state, ready for next move
             gridAfterMove[y][x] = grid[y][x];
             gridAfterMove[y2][x2] = grid[y2][x2];
-
-            // if this square is not empty, it must be an opposing piece that we capture
-            if (!grid[y2][x2].equals(" ")) {
-                break;
-            }
 
         }
 

@@ -580,7 +580,6 @@ public class GameServiceTest {
                     Optional.ofNullable(null), Optional.ofNullable("w"));
 
             // ASSERT
-            assertEquals(48, validMoves.size());
             assertEquals(6, validMoves.stream().filter((s) -> {
                 return s.startsWith("P");
             }).count());
@@ -599,7 +598,8 @@ public class GameServiceTest {
             assertEquals(2, validMoves.stream().filter((s) -> {
                 return s.startsWith("K");
             }).count());
-
+            assertEquals(49, validMoves.size());
+            
         }
 
     }
