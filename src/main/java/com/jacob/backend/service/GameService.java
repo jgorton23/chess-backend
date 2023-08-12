@@ -680,12 +680,22 @@ public class GameService {
             }
 
             // If the move is diagonal, but the dest is empty
-            if (dir[0] != 0 && grid[y2][x2].equals(" ")) {
+            if (dir[0] != 0 && grid[y2][x2].trim().equals("")) {
+                continue;
+            }
+
+            // If the move is not diagonal but the dest is not empty
+            if (dir[0] == 0 && !grid[y2][x2].trim().equals("")) {
+                continue;
+            }
+
+            // If the move is forward 2, but the space it's skipping is not empty
+            if (Math.abs(dir[1]) > 1 && !grid[y + increment[1]][x2].trim().equals("")) {
                 continue;
             }
 
             // If the move is forward 2, but the pawn isn't on its starting rank
-            if (dir[1] > 1 && !(0 > y - (2 * increment[1]) || y - (2 * increment[1]) >= grid.length)) {
+            if (Math.abs(dir[1]) > 1 && !(y - dir[1] < 0 || y - dir[1] >= grid.length)) {
                 continue;
             }
 
