@@ -639,12 +639,32 @@ public class GameServiceTest {
             assertEquals(0, validMoves.stream().filter((s) -> {
                 return s.contains("#");
             }).count());
+            assertTrue(validMoves.contains("Nd4c6"));
+            assertTrue(validMoves.contains("Qh6xf8+"));
 
         }
+
     }
 
     @Nested
     class RandomStartingPosition2 {
+
+        Game game;
+
+        @BeforeEach
+        public void createGame() {
+            game = new Game();
+            game.setBlackPlayerUsername("Sanz");
+            game.setWhitePlayerUsername("Estaban");
+            game.setFEN("8/pR4pk/1b2p3/2p3p1/N1p5/7P/PP1r2P1/6K1");
+            game.setMoves(
+                    "1. e4 e6 2. d3 d5 3. Nc3 Nf6 4. e5 Nfd7 5. f4 Bb4 6. Bd2 O-O " + 
+                    "7. Nf3 f6 8. d4 c5 9. Nb5 fxe5 10. dxe5 Rxf4 11. c3 Re4+ 12. Be2 Ba5 " + 
+                    "13. O-O Nxe5 14. Nxe5 Rxe5 15. Bf4 Rf5 16. Bd3 Rf6 17. Qc2 h6 18. Be5 Nd7 " + 
+                    "19. Bxf6 Nxf6 20. Rxf6 Qxf6 21. Rf1 Qe7 22. Bh7+ Kh8 23. Qg6 Bd7 24. Rf7 Qg5 " + 
+                    "25. Qxg5 hxg5 26. Rxd7 Kxh7 27. Rxb7 Bb6 28. c4 dxc4 29. Nc3 Rd8 30. h3 Rd2 31. Na4");
+            game.setMoveTimes("");
+        }
 
     }
 
