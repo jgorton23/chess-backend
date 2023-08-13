@@ -636,9 +636,11 @@ public class GameServiceTest {
             assertEquals(5, validMoves.stream().filter((s) -> {
                 return s.contains("+");
             }).count());
+            assertEquals(0, validMoves.stream().filter((s) -> {
+                return s.contains("#");
+            }).count());
 
         }
-
     }
 
     @Nested
