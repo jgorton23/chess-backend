@@ -554,11 +554,6 @@ public class GameService {
                 y2 += dir[1];
             }
 
-            // TODO: this could be different depending on why the while loop terminated
-            // gridAfterMove[y2 - dir[1]][x2 - dir[0]] = grid[y2 - dir[1]][x2 - dir[0]];
-
-            // gridAfterMove[y][x] = grid[y][x];
-
         }
 
         return movesList;
