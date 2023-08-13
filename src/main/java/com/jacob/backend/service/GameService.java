@@ -399,7 +399,7 @@ public class GameService {
                 }
 
                 // update the pieces to resemble the attempted move
-                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y2][x2] = grid[y][x];
                 gridAfterMove[y2 - dir[1]][x2 - dir[0]] = " ";
 
                 // if moving to this square leaves the king checked, skip while iteration
@@ -524,7 +524,7 @@ public class GameService {
                 }
 
                 // update the pieces to resemble the attempted move
-                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y2][x2] = grid[y][x];
                 gridAfterMove[y2 - dir[1]][x2 - dir[0]] = " ";
 
                 // if moving to this square leaves the king checked, skip while iteration

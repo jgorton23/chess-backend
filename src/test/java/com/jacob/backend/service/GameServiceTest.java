@@ -633,7 +633,7 @@ public class GameServiceTest {
             assertEquals(6, validMoves.stream().filter((s) -> {
                 return s.contains("x");
             }).count());
-            assertEquals(4, validMoves.stream().filter((s) -> {
+            assertEquals(5, validMoves.stream().filter((s) -> {
                 return s.contains("+");
             }).count());
 
