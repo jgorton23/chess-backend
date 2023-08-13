@@ -602,6 +602,43 @@ public class GameServiceTest {
             
         }
 
+        @Test
+        public void getValidMoves_whenInvokedWithoutIncludeAnnotations_returnsValidMoves() {
+
+            // MOCK
+
+            // ACT
+            List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
+                    Optional.ofNullable("w"), false, false);
+
+            // ASSERT
+            assertEquals(49, validMoves.size());
+            assertEquals(0, validMoves.stream().filter((s) -> {
+                return s.contains("x") || s.contains("+") || s.contains("#");
+            }).count());
+
+        }
+
+        @Test
+        public void getValidMoves_whenInvokedWithIncludeAnnotations_returnsValidMoves() {
+
+            // MOCK
+
+            // ACT
+            List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
+                    Optional.ofNullable("w"), false, true);
+
+            // ASSERT
+            assertEquals(49, validMoves.size());
+            assertEquals(6, validMoves.stream().filter((s) -> {
+                return s.contains("x");
+            }).count());
+            assertEquals(4, validMoves.stream().filter((s) -> {
+                return s.contains("+");
+            }).count());
+
+        }
+
     }
 
     @Nested

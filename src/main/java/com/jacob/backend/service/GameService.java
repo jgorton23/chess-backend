@@ -730,11 +730,9 @@ public class GameService {
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (playerColor.equals("w") && grid[i][j].equals(grid[i][j].toUpperCase())) {
-                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
-                }
-                if (playerColor.equals("b") && grid[i][j].equals(grid[i][j].toLowerCase())) {
-                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
+                if ((playerColor.equals("w") && grid[i][j].equals("K")) ||
+                        (playerColor.equals("b") && grid[i][j].equals("k"))) {
+                    kingLocation = "" + (char) (j + 'a') + Math.abs(i - 8);
                 }
             }
         }
