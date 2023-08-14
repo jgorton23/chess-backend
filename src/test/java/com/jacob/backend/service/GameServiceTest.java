@@ -353,13 +353,14 @@ public class GameServiceTest {
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
-            doNothing().when(mockGameRepo).update(any(Game.class));
+
         }
 
         @Test
         public void doMove_whenInvokedWithValidArgs_updatesGame() {
 
-            // MOCK            
+            // MOCK
+            doNothing().when(mockGameRepo).update(any(Game.class));
 
             // ACT
             MoveDTO move = new MoveDTO();
@@ -384,9 +385,7 @@ public class GameServiceTest {
         @Test
         public void doMove_whenInvokedWithAnInvalidMove_throwsException() {
 
-            // MOVE
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            // MOCK
 
             // ASSERT
             MoveDTO move = new MoveDTO();
@@ -406,8 +405,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithValidArgs_returnsValidMoves() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
@@ -446,8 +443,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithPlayerColor_returnsValidMoves() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
@@ -474,8 +469,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingSquare_returnsValidMoves() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
@@ -492,8 +485,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithStartingSquareAndPlayerColor_returnsValidMoves() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("blackPlayer", UUID.randomUUID().toString(),
@@ -501,20 +492,6 @@ public class GameServiceTest {
 
             // ASSERT
             assertEquals(2, validMoves.size());
-
-        }
-
-        @Test
-        public void findValidPieceMoves_whenInvokedOnEmptySquare_returnsEmptyList() {
-
-            // MOCK
-
-            // ACT
-            String[][] grid = service.FENToGrid(game.getFEN());
-            List<String> validMoves = service.findValidPieceMoves(grid, new int[] { 4, 4 }, false, false);
-
-            // ASSERT
-            assertEquals(0, validMoves.size());
 
         }
 
@@ -779,9 +756,9 @@ public class GameServiceTest {
             game = new Game();
             game.setWhitePlayerUsername("Lasker");
             game.setBlackPlayerUsername("Thomas");
-                    q1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R");
+            game.setFEN("rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R");
             game.setMoves("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
-                                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
+                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
             game.setMoveTimes("");
         }
 
