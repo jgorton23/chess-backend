@@ -349,15 +349,17 @@ public class GameServiceTest {
             game.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
             game.setMoves("");
             game.setMoveTimes("");
-        }
-
-        @Test
-        public void doMove_whenInvokedWithValidArgs_updatesGame() {
 
             // MOCK
             when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
             doNothing().when(mockGameRepo).update(any(Game.class));
+        }
+
+        @Test
+        public void doMove_whenInvokedWithValidArgs_updatesGame() {
+
+            // MOCK            
 
             // ACT
             MoveDTO move = new MoveDTO();
@@ -769,6 +771,19 @@ public class GameServiceTest {
 
     @Nested
     class RandomStartingPosition3 {
+
+        Game game;
+
+        @BeforeEach
+        public void createGame() {
+            game = new Game();
+            game.setWhitePlayerUsername("Lasker");
+            game.setBlackPlayerUsername("Thomas");
+                    q1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R");
+            game.setMoves("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
+                                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
+            game.setMoveTimes("");
+        }
 
     }
 
