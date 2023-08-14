@@ -693,6 +693,40 @@ public class GameServiceTest {
 
         }
 
+        @Test
+        public void getValidMoves_whenInvokedWithValidArgs_returnsValidMoves() {
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+            // ACT
+            List<String> validMoves = service.getValidMoves("Sanz", UUID.randomUUID().toString(),
+                    Optional.ofNullable(null), Optional.ofNullable("b"));
+
+            // ASSERT
+            assertEquals(5, validMoves.stream().filter((s) -> {
+                return s.startsWith("p");
+            }).count());
+            assertEquals(0, validMoves.stream().filter((s) -> {
+                return s.startsWith("n");
+            }).count());
+            assertEquals(12, validMoves.stream().filter((s) -> {
+                return s.startsWith("r");
+            }).count());
+            assertEquals(3, validMoves.stream().filter((s) -> {
+                return s.startsWith("b");
+            }).count());
+            assertEquals(0, validMoves.stream().filter((s) -> {
+                return s.startsWith("q");
+            }).count());
+            assertEquals(4, validMoves.stream().filter((s) -> {
+                return s.startsWith("k");
+            }).count());
+            assertEquals(24, validMoves.size());
+
+        }
+        
     }
 
     @Nested
