@@ -765,14 +765,17 @@ public class GameServiceTest {
             game.setMoves("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
                     "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
             game.setMoveTimes("1000 3500 2000 5000 4750 10000 12565 8750 9435 3456");
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
         }
 
         @Test
         public void doMove_whenInvokedWithValidArgs_updatesGame() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
             doNothing().when(mockGameRepo).update(any(Game.class));
 
             // ACT
@@ -801,8 +804,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithValidArgs_returnsValidMoves() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("Lasker", UUID.randomUUID().toString(),
@@ -835,8 +836,6 @@ public class GameServiceTest {
         public void getValidMoves_whenInvokedWithValidArgs_returnsValidMovesWithAnnotations() {
 
             // MOCK
-            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
-            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
             List<String> validMoves = service.getValidMoves("Lasker", UUID.randomUUID().toString(),
