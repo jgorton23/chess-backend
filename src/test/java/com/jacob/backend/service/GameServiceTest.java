@@ -855,6 +855,160 @@ public class GameServiceTest {
 
         }
 
+        @Test
+        public void doMove_whenCalledSequentially_updatesGame() {
+
+            // MOCK
+            doNothing().when(mockGameRepo).update(any(Game.class));
+
+            // ACT
+            String id = UUID.randomUUID().toString();
+
+            MoveDTO move;
+
+            move = new MoveDTO();
+            move.setPiece("Q");
+            move.setStartSquare(new int[] { 7, 3 });
+            move.setDestSquare(new int[] { 7, 1 });
+            move.setIsCapture(true);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 6, 0 });
+            move.setDestSquare(new int[] { 7, 1 });
+            move.setIsCapture(true);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("N");
+            move.setStartSquare(new int[] { 4, 4 });
+            move.setDestSquare(new int[] { 5, 2 });
+            move.setIsCapture(true);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 7, 1 });
+            move.setDestSquare(new int[] { 7, 2 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("N");
+            move.setStartSquare(new int[] { 4, 3 });
+            move.setDestSquare(new int[] { 6, 4 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 7, 7 });
+            move.setDestSquare(new int[] { 6, 3 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("P");
+            move.setStartSquare(new int[] { 7, 6 });
+            move.setDestSquare(new int[] { 7, 4 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 6, 3 });
+            move.setDestSquare(new int[] { 5, 4 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("P");
+            move.setStartSquare(new int[] { 6, 6 });
+            move.setDestSquare(new int[] { 6, 5 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 5, 4 });
+            move.setDestSquare(new int[] { 5, 5 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("B");
+            move.setStartSquare(new int[] { 3, 5 });
+            move.setDestSquare(new int[] { 4, 6 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 5, 5 });
+            move.setDestSquare(new int[] { 6, 6 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("R");
+            move.setStartSquare(new int[] { 7, 7 });
+            move.setDestSquare(new int[] { 7, 6 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+
+            service.doMove("Lasker", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("k");
+            move.setStartSquare(new int[] { 6, 6 });
+            move.setDestSquare(new int[] { 6, 7 });
+            move.setIsCapture(false);
+            move.setIsCheck(false);
+
+            service.doMove("Thomas", id, move);
+
+            move = new MoveDTO();
+            move.setPiece("K");
+            move.setStartSquare(new int[] { 4, 7 });
+            move.setDestSquare(new int[] { 3, 6 });
+            move.setIsCapture(false);
+            move.setIsCheck(true);
+            move.setIsMate(true);
+
+            service.doMove("Lasker", id, move);
+
+            // ASSERT
+            verify(mockSessionService, times(6)).isValidUUID(id);
+            verify(mockGameRepo, times(6)).getById(UUID.fromString(id));
+            verify(mockGameRepo, times(6)).update(game);
+
+        }
+
     }
 
 }

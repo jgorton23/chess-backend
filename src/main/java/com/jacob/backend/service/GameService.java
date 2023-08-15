@@ -404,6 +404,8 @@ public class GameService {
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                    x2 += dir[0];
+                    y2 += dir[1];
                     continue;
                 }
 
@@ -529,6 +531,8 @@ public class GameService {
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                    x2 += dir[0];
+                    y2 += dir[1];
                     continue;
                 }
 
