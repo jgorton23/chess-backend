@@ -764,7 +764,51 @@ public class GameServiceTest {
             game.setFEN("rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R");
             game.setMoves("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
                     "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
-            game.setMoveTimes("");
+            game.setMoveTimes("1000 3500 2000 5000 4750 10000 12565 8750 9435 3456");
+        }
+
+        @Test
+        public void doMove_whenInvokedWithValidArgs_updatesGame() {
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+            doNothing().when(mockGameRepo).update(any(Game.class));
+
+            // ACT
+            MoveDTO move = new MoveDTO();
+            move.setPiece("Q");
+            move.setStartSquare(new int[] { 7, 3 });
+            move.setDestSquare(new int[] { 7, 1 });
+            move.setMiliseconds(9999);
+            move.setIsCapture(true);
+            move.setIsCheck(true);
+            String id = UUID.randomUUID().toString();
+
+            service.doMove("Lasker", id, move);
+
+            // ASSERT
+            verify(mockSessionService, times(1)).isValidUUID(anyString());
+            verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
+            verify(mockGameRepo, times(1)).update(game);
+            assertEquals("rn3rk1/pbppq1pQ/1p2pb2/4N3/3PN3/3B4/PPP2PPP/R3K2R", game.getFEN());
+            assertEquals("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
+                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7 11. Qh5xh7+", game.getMoves());
+
+        }
+
+        @Test
+        public void getValidMoves_whenInvokedWithValidArgs_returnsValidMoves() {
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+            // ACT
+            List<String> validMoves = service.getValidMoves("Sanz", UUID.randomUUID().toString(),
+                    Optional.ofNullable(null), Optional.ofNullable("b"));
+
+            // ASSERT
         }
 
     }
