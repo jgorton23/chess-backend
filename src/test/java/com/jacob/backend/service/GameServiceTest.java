@@ -805,10 +805,55 @@ public class GameServiceTest {
             when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
 
             // ACT
-            List<String> validMoves = service.getValidMoves("Sanz", UUID.randomUUID().toString(),
-                    Optional.ofNullable(null), Optional.ofNullable("b"));
+            List<String> validMoves = service.getValidMoves("Lasker", UUID.randomUUID().toString(),
+                    Optional.ofNullable(null), Optional.ofNullable("w"));
 
             // ASSERT
+            assertEquals(13, validMoves.stream().filter((s) -> {
+                return s.startsWith("P");
+            }).count());
+            assertEquals(14, validMoves.stream().filter((s) -> {
+                return s.startsWith("N");
+            }).count());
+            assertEquals(5, validMoves.stream().filter((s) -> {
+                return s.startsWith("R");
+            }).count());
+            assertEquals(5, validMoves.stream().filter((s) -> {
+                return s.startsWith("B");
+            }).count());
+            assertEquals(13, validMoves.stream().filter((s) -> {
+                return s.startsWith("Q");
+            }).count());
+            assertEquals(4, validMoves.stream().filter((s) -> {
+                return s.startsWith("K");
+            }).count());
+            assertEquals(54, validMoves.size());
+
+        }
+
+        @Test
+        public void getValidMoves_whenInvokedWithValidArgs_returnsValidMovesWithAnnotations() {
+
+            // MOCK
+            when(mockSessionService.isValidUUID(anyString())).thenReturn(true);
+            when(mockGameRepo.getById(any(UUID.class))).thenReturn(game);
+
+            // ACT
+            List<String> validMoves = service.getValidMoves("Lasker", UUID.randomUUID().toString(),
+                    Optional.ofNullable(null), Optional.ofNullable("w"));
+
+            // ASSERT
+            assertEquals(3, validMoves.stream().filter((s) -> {
+                return s.contains("x");
+            }).count());
+            assertEquals(3, validMoves.stream().filter((s) -> {
+                return s.contains("+");
+            }).count());
+            assertEquals(0, validMoves.stream().filter((s) -> {
+                return s.contains("#");
+            }).count());
+            assertEquals(54, validMoves.size());
+
         }
 
     }
