@@ -474,6 +474,8 @@ public class GameService {
 
             // if moving to this square leaves the king checked, skip while iteration
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 
@@ -602,6 +604,8 @@ public class GameService {
 
             // if moving to this square leaves the king checked, skip while iteration
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 
@@ -693,6 +697,8 @@ public class GameService {
 
             // If the move leaves the king in check
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 

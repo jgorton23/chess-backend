@@ -913,7 +913,7 @@ public class GameServiceTest {
 
             move = new MoveDTO();
             move.setPiece("k");
-            move.setStartSquare(new int[] { 7, 7 });
+            move.setStartSquare(new int[] { 7, 2 });
             move.setDestSquare(new int[] { 6, 3 });
             move.setIsCapture(false);
             move.setIsCheck(false);
