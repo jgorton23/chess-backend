@@ -1003,9 +1003,9 @@ public class GameServiceTest {
             service.doMove("Lasker", id, move);
 
             // ASSERT
-            verify(mockSessionService, times(6)).isValidUUID(id);
-            verify(mockGameRepo, times(6)).getById(UUID.fromString(id));
-            verify(mockGameRepo, times(6)).update(game);
+            verify(mockSessionService, times(15)).isValidUUID(id);
+            verify(mockGameRepo, times(15)).getById(UUID.fromString(id));
+            verify(mockGameRepo, times(15)).update(game);
 
         }
 

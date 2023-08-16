@@ -404,9 +404,13 @@ public class GameService {
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
-                    x2 += dir[0];
-                    y2 += dir[1];
-                    continue;
+                    if (!grid[y2][x2].equals(" ")) {
+                        break;
+                    } else {
+                        x2 += dir[0];
+                        y2 += dir[1];
+                        continue;
+                    }
                 }
 
                 MoveDTO move = new MoveDTO();
@@ -533,9 +537,13 @@ public class GameService {
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
-                    x2 += dir[0];
-                    y2 += dir[1];
-                    continue;
+                    if (!grid[y2][x2].equals(" ")) {
+                        break;
+                    } else {
+                        x2 += dir[0];
+                        y2 += dir[1];
+                        continue;
+                    }
                 }
 
                 MoveDTO move = new MoveDTO();
@@ -616,8 +624,8 @@ public class GameService {
             move.setDestSquare(new int[] { x2, y2 });
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsMate(isInMate(gridAfterMove, opponentColor));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
             }
 
             movesList.add(move.toString());
