@@ -1038,4 +1038,16 @@ public class GameServiceTest {
 
     }
 
+    @Nested
+    class HelperMethods {
+
+        String[][] grid;
+
+        @BeforeEach
+        public void setupBoard() {
+            String fen = "";
+        }
+
+    }
+
 }
