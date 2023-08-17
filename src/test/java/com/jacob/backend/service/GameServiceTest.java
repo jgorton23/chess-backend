@@ -1161,25 +1161,117 @@ public class GameServiceTest {
     @Test
     public void gridToFEN_whenInvokedWithValidArgs_returnsCorrectFen() {
 
+        // MOCK
+        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        String newFen = service.gridToFEN(grid);
+
+        // ASSERT
+        assertTrue(fen.equals(newFen));
+
     }
 
     @Test
     public void isSameColorPiece_whenInvokedOnSameColorPieces_returnsTrue() {
+
+        // MOCK
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        boolean isSameColor = service.isSameColorPiece(grid, 0, 0, 7, 1);
+
+        // ASSERT
+        assertTrue(isSameColor);
 
     }
 
     @Test
     public void isSameColorPiece_whenInvokedOnDifferentColorPieces_returnsFalse() {
 
+        // MOCK
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        boolean isSameColor = service.isSameColorPiece(grid, 0, 0, 7, 7);
+
+        // ASSERT
+        assertFalse(isSameColor);
+
     }
 
     @Test
     public void getStartingSquaresFromGrid_whenInvokedWithoutPlayerColor_returnsCorrectStartingSquares() {
 
+        // MOCK
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        List<int[]> startingSquares = service.getStartingSquaresFromGrid(grid, Optional.ofNullable(null));
+
+        // ASSERT
+        assertEquals(32, startingSquares.size());
+
     }
 
     @Test
     public void getStartingSquaresFromGrid_whenInvokedWithPlayerColor_returnsCorrectStartingSquares() {
+
+        // MOCK
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        List<int[]> startingSquares = service.getStartingSquaresFromGrid(grid, Optional.ofNullable("w"));
+
+        // ASSERT
+        assertEquals(16, startingSquares.size());
 
     }
 
