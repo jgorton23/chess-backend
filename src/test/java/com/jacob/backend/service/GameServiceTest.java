@@ -1038,15 +1038,148 @@ public class GameServiceTest {
 
     }
 
-    @Nested
-    class HelperMethods {
+    @Test
+    public void isInCheck_whenPlayerIsInCheck_returnsTrue() {
 
-        String[][] grid;
+        // MOCK
+        String fen = "Q6k/8/8/8/8/8/8/K7";
 
-        @BeforeEach
-        public void setupBoard() {
-            String fen = "";
-        }
+        String[][] grid = service.FENToGrid(fen);
+
+        // ACT
+        boolean isCheck = service.isInCheck(grid, "b");
+
+        // ASSERT
+        assertTrue(isCheck);
+
+    }
+
+    @Test
+    public void isInCheck_whenPlayerIsNotInCheck_returnsFalse() {
+
+        // MOCK
+        String fen = "Q6k/8/8/8/8/8/8/K7";
+
+        String[][] grid = service.FENToGrid(fen);
+
+        // ACT
+        boolean isCheck = service.isInCheck(grid, "w");
+
+        // ASSERT
+        assertFalse(isCheck);
+
+    }
+
+    @Test
+    public void isInMate_whenPlayerIsInMate_returnsTrue() {
+
+        // MOCK
+        String fen = "5KQk/8/8/8/8/8/8/8";
+
+        String[][] grid = service.FENToGrid(fen);
+
+        // ACT
+        boolean isMate = service.isInMate(grid, "b");
+
+        // ASSERT
+        assertTrue(isMate);
+
+    }
+
+    @Test
+    public void isInMate_whenPlayerIsNotInMate_returnsFalse() {
+
+        // MOCK
+        String fen = "5KQk/8/8/8/8/8/b7/8";
+
+        String[][] grid = service.FENToGrid(fen);
+
+        // ACT
+        boolean isMate = service.isInMate(grid, "b");
+
+        // ASSERT
+        assertFalse(isMate);
+
+    }
+
+    @Test
+    public void findPlayerPieces_whenInvokedWithValidArgs_returnsCorrectPieces() {
+
+        // MOCK
+        String fen = "8/kppppppp/8/bbbqqrr1/8/8/PPPPPPPP/QQQQQQQQ";
+
+        String[][] grid = service.FENToGrid(fen);
+
+        // ACT
+        List<int[]> playerPieces = service.findPlayerPieces(grid, "w");
+
+        // ASSERT
+        assertEquals(16, playerPieces.size());
+        playerPieces.stream().forEach((piece) -> {
+            assertTrue(piece[1] >= 6);
+        });
+
+    }
+
+    @Test
+    public void FENToGrid_whenInvokedWithValidArgs_returnsCorrectGrid() {
+
+        // MOCK
+        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+        String[][] grid = new String[][] {
+                new String[] { "r", "n", "b", "q", "k", "b", "n", "r" },
+                new String[] { "p", "p", "p", "p", "p", "p", "p", "p" },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { " ", " ", " ", " ", " ", " ", " ", " " },
+                new String[] { "P", "P", "P", "P", "P", "P", "P", "P" },
+                new String[] { "R", "N", "B", "Q", "K", "B", "N", "R" }
+        };
+
+        // ACT
+        String[][] newGrid = service.FENToGrid(fen);
+
+        // ASSERT
+        assertTrue(() -> {
+            if (!(newGrid.length == grid.length) || !(newGrid[0].length == grid[0].length)) {
+                return false;
+            }
+            for (int i = 0; i < newGrid.length; i++) {
+                for (int j = 0; j < newGrid[0].length; j++) {
+                    if (!grid[i][j].equals(newGrid[i][j])) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
+
+    }
+
+    @Test
+    public void gridToFEN_whenInvokedWithValidArgs_returnsCorrectFen() {
+
+    }
+
+    @Test
+    public void isSameColorPiece_whenInvokedOnSameColorPieces_returnsTrue() {
+
+    }
+
+    @Test
+    public void isSameColorPiece_whenInvokedOnDifferentColorPieces_returnsFalse() {
+
+    }
+
+    @Test
+    public void getStartingSquaresFromGrid_whenInvokedWithoutPlayerColor_returnsCorrectStartingSquares() {
+
+    }
+
+    @Test
+    public void getStartingSquaresFromGrid_whenInvokedWithPlayerColor_returnsCorrectStartingSquares() {
 
     }
 
