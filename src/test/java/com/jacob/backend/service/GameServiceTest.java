@@ -862,6 +862,7 @@ public class GameServiceTest {
             doNothing().when(mockGameRepo).update(any(Game.class));
 
             // ACT
+            ArrayList<Integer> thomasValidMoves = new ArrayList<Integer>();
             String id = UUID.randomUUID().toString();
 
             MoveDTO move;
@@ -882,6 +883,9 @@ public class GameServiceTest {
             move.setIsCapture(true);
             move.setIsCheck(false);
 
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
+
             service.doMove("Thomas", id, move);
 
             move = new MoveDTO();
@@ -899,6 +903,9 @@ public class GameServiceTest {
             move.setDestSquare(new int[] { 7, 2 });
             move.setIsCapture(false);
             move.setIsCheck(false);
+
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
 
             service.doMove("Thomas", id, move);
 
@@ -918,6 +925,9 @@ public class GameServiceTest {
             move.setIsCapture(false);
             move.setIsCheck(false);
 
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
+
             service.doMove("Thomas", id, move);
 
             move = new MoveDTO();
@@ -935,6 +945,9 @@ public class GameServiceTest {
             move.setDestSquare(new int[] { 5, 4 });
             move.setIsCapture(false);
             move.setIsCheck(false);
+
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
 
             service.doMove("Thomas", id, move);
 
@@ -954,6 +967,9 @@ public class GameServiceTest {
             move.setIsCapture(false);
             move.setIsCheck(false);
 
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
+
             service.doMove("Thomas", id, move);
 
             move = new MoveDTO();
@@ -971,6 +987,9 @@ public class GameServiceTest {
             move.setDestSquare(new int[] { 6, 6 });
             move.setIsCapture(false);
             move.setIsCheck(false);
+
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
 
             service.doMove("Thomas", id, move);
 
@@ -990,6 +1009,9 @@ public class GameServiceTest {
             move.setIsCapture(false);
             move.setIsCheck(false);
 
+            thomasValidMoves
+                    .add(service.getValidMoves(game, Optional.ofNullable(null), Optional.ofNullable("b")).size());
+
             service.doMove("Thomas", id, move);
 
             move = new MoveDTO();
@@ -1006,6 +1028,11 @@ public class GameServiceTest {
             verify(mockSessionService, times(15)).isValidUUID(id);
             verify(mockGameRepo, times(15)).getById(UUID.fromString(id));
             verify(mockGameRepo, times(15)).update(game);
+            assertEquals(7, thomasValidMoves.size());
+            assertEquals(6, thomasValidMoves.stream().filter((n) -> {
+                return n == 1;
+            }).count());
+            assertEquals(2, thomasValidMoves.get(1));
 
         }
 
