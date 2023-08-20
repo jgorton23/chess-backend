@@ -2,7 +2,6 @@ package com.jacob.backend.responses;
 
 import java.util.List;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -26,7 +25,7 @@ public class JSONResponses {
         return error("UNAUTHORIZED").toString();
     }
 
-    public static <T extends JsonConvertible> JsonArrayBuilder ListToJsonArray(List<T> list) {
+    public static <T extends JsonConvertible> JsonArray ListToJsonArray(List<T> list) {
         JsonArray array = new JsonArray();
         for (T obj : list) {
             array.add(obj.toJson());
@@ -34,19 +33,12 @@ public class JSONResponses {
         return array;
     }
 
-    public static JsonArrayBuilder StringListToJsonArray(List<String> list) {
-        JsonArrayBuilder arrayBuilder = builderFactory.createArrayBuilder();
+    public static JsonArray StringListToJsonArray(List<String> list) {
+        JsonArray array = new JsonArray();
         for (String s : list) {
-            arrayBuilder.add(s);
+            array.add(s);
         }
-        return arrayBuilder;
+        return array;
     }
 
-    public static JsonArrayBuilder arrayBuilder() {
-        return builderFactory.createArrayBuilder();
-    }
-
-    public static JsonObjectBuilder objectBuilder() {
-        return builderFactory.createObjectBuilder();
-    }
 }
