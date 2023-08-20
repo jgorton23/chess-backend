@@ -20,8 +20,7 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.hibernate.orm:hibernate-core:6.2.2.Final'
 	implementation 'commons-codec:commons-codec:1.11'
-	implementation "jakarta.json:jakarta.json-api"
-	implementation 'org.glassfish:jakarta.json:2.0.1'
+	implementation 'com.google.code.gson:gson:2.10.1'
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:webjars-locator-core'

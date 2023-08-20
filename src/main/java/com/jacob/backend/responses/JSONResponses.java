@@ -2,11 +2,7 @@ package com.jacob.backend.responses;
 
 import java.util.List;
 
-import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
-import jakarta.json.JsonBuilderFactory;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
+import com.google.gson.Gson;
 
 import com.jacob.backend.data.JsonConvertible;
 
