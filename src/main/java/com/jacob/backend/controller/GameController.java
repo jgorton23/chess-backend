@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.json.JsonObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -72,17 +70,17 @@ public class GameController {
             String gameId = gameService.create(username, game);
 
             // return gameId
-            return ResponseEntity.ok().body(JSONResponses.objectBuilder().add("gameId", gameId).build().toString());
+            return ResponseEntity.ok().body(JSONResponses.success(gameId));
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -104,24 +102,18 @@ public class GameController {
             // perform the Get
             List<Game> games = gameService.findAllByUsername(username);
 
-            // build the result object
-            JsonObject result = JSONResponses
-                    .objectBuilder()
-                    .add("games", JSONResponses.ListToJsonArray(games))
-                    .build();
-
             // return successful
-            return ResponseEntity.ok().body(result.toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(games));
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -140,12 +132,7 @@ public class GameController {
                 throw new NotFoundException("Game", "ID: " + gameId);
             }
 
-            return ResponseEntity.ok().body(
-                    JSONResponses
-                            .objectBuilder()
-                            .add("game", game.toJson())
-                            .build()
-                            .toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(game));
 
         } catch (UnauthorizedException e) {
 
@@ -153,11 +140,11 @@ public class GameController {
 
         } catch (NotFoundException e) {
 
-            return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
 
@@ -186,14 +173,8 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
-            // Build resulting moves Array
-            JsonObject result = JSONResponses
-                    .objectBuilder()
-                    .add("validMoves", JSONResponses.StringListToJsonArray(moves))
-                    .build();
-
             // Return successful
-            return ResponseEntity.ok().body(result.toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(moves));
 
         } catch (UnauthorizedException e) {
 
@@ -208,7 +189,7 @@ public class GameController {
         } catch (Exception e) {
 
             // Catch Generic Exception - return BadRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -226,14 +207,8 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
-            // Build resulting moves Array
-            JsonObject result = JSONResponses
-                    .objectBuilder()
-                    .add("validMoves", JSONResponses.StringListToJsonArray(moves))
-                    .build();
-
             // Return successful
-            return ResponseEntity.ok().body(result.toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(moves));
 
         } catch (UnauthorizedException e) {
 
@@ -243,7 +218,7 @@ public class GameController {
         } catch (Exception e) {
 
             // Catch Generic Exception - return BadRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -262,22 +237,22 @@ public class GameController {
             gameService.doMove(username, gameId, move);
 
             // Return successful
-            return ResponseEntity.ok().body(JSONResponses.success().toString());
+            return ResponseEntity.ok().body(JSONResponses.success());
 
         } catch (UnauthorizedException e) {
 
             // Catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.unauthorized().toString());
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (NotFoundException e) {
 
             // Catch Not Found - return 404
-            return ResponseEntity.status(404).body(JSONResponses.unauthorized().toString());
+            return ResponseEntity.status(404).body(JSONResponses.unauthorized());
 
         } catch (Exception e) {
 
             // Catch Generic Exception - return BadRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }

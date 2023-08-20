@@ -1,44 +1,34 @@
 package com.jacob.backend.responses;
 
-import java.util.List;
-
-import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import com.jacob.backend.data.JsonConvertible;
 
 public class JSONResponses {
 
-    public static JsonObject success() {
+    public static String success() {
         JsonObject success = new JsonObject();
         success.addProperty("msg", "success");
-        return success;
+        return success.toString();
     }
 
-    public static JsonObject error(String msg) {
+    public static String success(String message) {
+        JsonObject success = new JsonObject();
+        success.addProperty("msg", message);
+        return success.toString();
+    }
+
+    public static String error(String msg) {
         JsonObject error = new JsonObject();
         error.addProperty("msg", "Error: %s".formatted(msg));
-        return error;
+        return error.toString();
     }
 
     public static String unauthorized() {
         return error("UNAUTHORIZED").toString();
     }
 
-    public static <T extends JsonConvertible> JsonArray ListToJsonArray(List<T> list) {
-        JsonArray array = new JsonArray();
-        for (T obj : list) {
-            array.add(obj.toJson());
-        }
-        return array;
-    }
-
-    public static JsonArray StringListToJsonArray(List<String> list) {
-        JsonArray array = new JsonArray();
-        for (String s : list) {
-            array.add(s);
-        }
-        return array;
+    public static String toJson(Object src) {
+        return new Gson().toJson(src);
     }
 
 }

@@ -3,11 +3,6 @@ package com.jacob.backend.data.Model;
 import java.util.Date;
 import java.util.UUID;
 
-import jakarta.json.JsonObject;
-
-import com.jacob.backend.data.JsonConvertible;
-import com.jacob.backend.responses.JSONResponses;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "games")
-public class Game implements JsonConvertible {
+public class Game {
 
     /**
      * The UUID identifying this Game
@@ -274,22 +269,4 @@ public class Game implements JsonConvertible {
 
     // #endregion
 
-    /**
-     * Turns this Game object into a JsonObject
-     */
-    public JsonObject toJson() {
-        return JSONResponses.objectBuilder()
-                .add("id", id.toString())
-                .add("date", date.toString())
-                .add("fen", fen)
-                .add("moves", moves)
-                .add("moveTimes", moveTimes)
-                .add("timeControl", timeControl)
-                .add("result", result)
-                .add("whitePlayerId", whitePlayerId.toString())
-                .add("blackPlayerId", blackPlayerId.toString())
-                .add("whitePlayerUsername", whitePlayerUsername)
-                .add("blackPlayerUsername", blackPlayerUsername)
-                .build();
-    }
 }

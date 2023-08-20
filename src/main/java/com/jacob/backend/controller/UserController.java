@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.json.JsonObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,17 +60,17 @@ public class UserController {
             friendService.addByUsernames(username, friendUsernameDTO.getUsername());
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.success().toString());
+            return ResponseEntity.ok().body(JSONResponses.success());
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -97,17 +95,17 @@ public class UserController {
             friendService.deleteByUsernames(username, friendUsernameDTO.getUsername());
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.success().toString());
+            return ResponseEntity.ok().body(JSONResponses.success());
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -132,24 +130,18 @@ public class UserController {
             // perform the Get
             List<FriendDTO> friends = friendService.findByUsername(username, pending != null && pending);
 
-            // build the result object
-            JsonObject result = JSONResponses
-                    .objectBuilder()
-                    .add("friends", JSONResponses.ListToJsonArray(friends))
-                    .build();
-
             // return successful
-            return ResponseEntity.ok().body(result.toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(friends));
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthroized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -178,17 +170,17 @@ public class UserController {
             userService.update(username, creds);
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.success().toString());
+            return ResponseEntity.ok().body(JSONResponses.success());
 
         } catch (UnauthorizedException e) {
 
             // catch Unaothorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -211,17 +203,17 @@ public class UserController {
             ProfileDTO profile = userService.getProfile(username);
 
             // build the result object and return successful
-            return ResponseEntity.ok().body(profile.toJson().toString());
+            return ResponseEntity.ok().body(JSONResponses.toJson(profile));
 
         } catch (UnauthorizedException e) {
 
             // catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }

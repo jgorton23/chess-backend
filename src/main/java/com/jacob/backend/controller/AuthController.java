@@ -70,7 +70,7 @@ public class AuthController {
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(JSONResponses.success().toString());
+                    .body(JSONResponses.success());
 
         } catch (Exception e) {
 
@@ -78,7 +78,7 @@ public class AuthController {
             return ResponseEntity
                     .badRequest()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(JSONResponses.error(e.getMessage()).toString());
+                    .body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -97,12 +97,12 @@ public class AuthController {
             authService.register(creds);
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.success().toString());
+            return ResponseEntity.ok().body(JSONResponses.success());
 
         } catch (Exception e) {
 
             // catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
@@ -129,12 +129,12 @@ public class AuthController {
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                    .body(JSONResponses.success().toString());
+                    .body(JSONResponses.success());
 
         } catch (Exception e) {
 
             // Catch generic Exception - return badRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()).toString());
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
