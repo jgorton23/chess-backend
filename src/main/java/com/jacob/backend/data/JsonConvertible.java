@@ -1,6 +1,6 @@
 package com.jacob.backend.data;
 
-import jakarta.json.JsonObject;
+import com.google.gson.JsonObject;
 
 public interface JsonConvertible {
     public JsonObject toJson();
