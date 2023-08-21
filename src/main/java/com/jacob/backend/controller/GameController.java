@@ -70,7 +70,7 @@ public class GameController {
             String gameId = gameService.create(username, game);
 
             // return gameId
-            return ResponseEntity.ok().body(JSONResponses.success(gameId));
+            return ResponseEntity.ok().body(JSONResponses.toJson("gameId", gameId));
 
         } catch (UnauthorizedException e) {
 
@@ -103,7 +103,7 @@ public class GameController {
             List<Game> games = gameService.findAllByUsername(username);
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.toJson(games));
+            return ResponseEntity.ok().body(JSONResponses.toJson("games", games));
 
         } catch (UnauthorizedException e) {
 
@@ -132,7 +132,7 @@ public class GameController {
                 throw new NotFoundException("Game", "ID: " + gameId);
             }
 
-            return ResponseEntity.ok().body(JSONResponses.toJson(game));
+            return ResponseEntity.ok().body(JSONResponses.toJson("game", game));
 
         } catch (UnauthorizedException e) {
 
@@ -174,7 +174,7 @@ public class GameController {
                     Optional.ofNullable(playerColor));
 
             // Return successful
-            return ResponseEntity.ok().body(JSONResponses.toJson(moves));
+            return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
 
@@ -208,7 +208,7 @@ public class GameController {
                     Optional.ofNullable(playerColor));
 
             // Return successful
-            return ResponseEntity.ok().body(JSONResponses.toJson(moves));
+            return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
 
