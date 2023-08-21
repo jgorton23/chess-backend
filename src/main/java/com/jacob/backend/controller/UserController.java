@@ -131,7 +131,7 @@ public class UserController {
             List<FriendDTO> friends = friendService.findByUsername(username, pending != null && pending);
 
             // return successful
-            return ResponseEntity.ok().body(JSONResponses.toJson(friends));
+            return ResponseEntity.ok().body(JSONResponses.toJson("friends", friends));
 
         } catch (UnauthorizedException e) {
 
@@ -203,7 +203,7 @@ public class UserController {
             ProfileDTO profile = userService.getProfile(username);
 
             // build the result object and return successful
-            return ResponseEntity.ok().body(JSONResponses.toJson(profile));
+            return ResponseEntity.ok().body(JSONResponses.toJson("profile", profile));
 
         } catch (UnauthorizedException e) {
 
