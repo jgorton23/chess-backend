@@ -31,4 +31,10 @@ public class JSONResponses {
         return new Gson().toJson(src);
     }
 
+    public static String toJson(String key, Object value) {
+        JsonObject result = new JsonObject();
+        result.addProperty(key, new Gson().toJson(value));
+        return result.toString();
+    }
+
 }
