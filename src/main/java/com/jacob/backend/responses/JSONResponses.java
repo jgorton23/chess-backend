@@ -1,5 +1,7 @@
 package com.jacob.backend.responses;
 
+import java.util.HashMap;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -32,9 +34,9 @@ public class JSONResponses {
     }
 
     public static String toJson(String key, Object value) {
-        JsonObject result = new JsonObject();
-        result.addProperty(key, new Gson().toJson(value));
-        return result.toString();
+        HashMap<String, Object> obj = new HashMap<>();
+        obj.put(key, value);
+        return new Gson().toJson(obj);
     }
 
 }
