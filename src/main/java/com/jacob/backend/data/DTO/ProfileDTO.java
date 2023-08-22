@@ -1,11 +1,6 @@
 package com.jacob.backend.data.DTO;
 
-import jakarta.json.JsonObject;
-
-import com.jacob.backend.data.JsonConvertible;
-import com.jacob.backend.responses.JSONResponses;
-
-public class ProfileDTO implements JsonConvertible {
+public class ProfileDTO {
     private int friends;
 
     private String username;
@@ -46,11 +41,4 @@ public class ProfileDTO implements JsonConvertible {
         this.username = username;
     }
 
-    public JsonObject toJson() {
-        return JSONResponses.objectBuilder()
-                .add("friends", friends)
-                .add("username", username)
-                .add("email", email)
-                .build();
-    }
 }

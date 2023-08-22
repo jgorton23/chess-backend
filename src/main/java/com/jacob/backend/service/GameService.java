@@ -212,7 +212,7 @@ public class GameService {
         String moves = game.getMoves().trim();
 
         // Add the number if appropriate
-        if (moves.length() == 0 || moves.split(" ").length % 3 == 2) {
+        if (moves.length() == 0 || moves.split(" ").length % 3 == 0) {
             moves += " " + (((moves.split(" ").length + 1) / 3) + 1) + ". " + move.toString();
         } else {
             moves += " " + move.toString();
@@ -399,12 +399,18 @@ public class GameService {
                 }
 
                 // update the pieces to resemble the attempted move
-                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y2][x2] = grid[y][x];
                 gridAfterMove[y2 - dir[1]][x2 - dir[0]] = " ";
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
-                    continue;
+                    if (!grid[y2][x2].equals(" ")) {
+                        break;
+                    } else {
+                        x2 += dir[0];
+                        y2 += dir[1];
+                        continue;
+                    }
                 }
 
                 MoveDTO move = new MoveDTO();
@@ -472,6 +478,8 @@ public class GameService {
 
             // if moving to this square leaves the king checked, skip while iteration
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 
@@ -524,12 +532,18 @@ public class GameService {
                 }
 
                 // update the pieces to resemble the attempted move
-                gridAfterMove[y2][x2] = gridAfterMove[y][x];
+                gridAfterMove[y2][x2] = grid[y][x];
                 gridAfterMove[y2 - dir[1]][x2 - dir[0]] = " ";
 
                 // if moving to this square leaves the king checked, skip while iteration
                 if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
-                    continue;
+                    if (!grid[y2][x2].equals(" ")) {
+                        break;
+                    } else {
+                        x2 += dir[0];
+                        y2 += dir[1];
+                        continue;
+                    }
                 }
 
                 MoveDTO move = new MoveDTO();
@@ -553,11 +567,6 @@ public class GameService {
                 x2 += dir[0];
                 y2 += dir[1];
             }
-
-            // TODO: this could be different depending on why the while loop terminated
-            // gridAfterMove[y2 - dir[1]][x2 - dir[0]] = grid[y2 - dir[1]][x2 - dir[0]];
-
-            // gridAfterMove[y][x] = grid[y][x];
 
         }
 
@@ -603,6 +612,8 @@ public class GameService {
 
             // if moving to this square leaves the king checked, skip while iteration
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 
@@ -613,8 +624,8 @@ public class GameService {
             move.setDestSquare(new int[] { x2, y2 });
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
+                move.setIsMate(isInMate(gridAfterMove, opponentColor));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
             }
 
             movesList.add(move.toString());
@@ -694,6 +705,8 @@ public class GameService {
 
             // If the move leaves the king in check
             if (!ignoreCheck && isInCheck(gridAfterMove, playerColor)) {
+                gridAfterMove[y][x] = grid[y][x];
+                gridAfterMove[y2][x2] = grid[y2][x2];
                 continue;
             }
 
@@ -730,11 +743,9 @@ public class GameService {
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (playerColor.equals("w") && grid[i][j].equals(grid[i][j].toUpperCase())) {
-                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
-                }
-                if (playerColor.equals("b") && grid[i][j].equals(grid[i][j].toLowerCase())) {
-                    kingLocation = "" + (char) (j + 'a') + (char) (i + 'a');
+                if ((playerColor.equals("w") && grid[i][j].equals("K")) ||
+                        (playerColor.equals("b") && grid[i][j].equals("k"))) {
+                    kingLocation = "" + (char) (j + 'a') + Math.abs(i - 8);
                 }
             }
         }

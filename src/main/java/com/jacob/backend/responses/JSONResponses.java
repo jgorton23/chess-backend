@@ -1,51 +1,42 @@
 package com.jacob.backend.responses;
 
-import java.util.List;
+import java.util.HashMap;
 
-import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
-import jakarta.json.JsonBuilderFactory;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
-
-import com.jacob.backend.data.JsonConvertible;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class JSONResponses {
-    private static JsonBuilderFactory builderFactory = Json.createBuilderFactory(null);
 
-    public static JsonObject success() {
-        return builderFactory.createObjectBuilder().add("msg", "success").build();
+    public static String success() {
+        JsonObject success = new JsonObject();
+        success.addProperty("msg", "success");
+        return success.toString();
     }
 
-    public static JsonObject error(String msg) {
-        return builderFactory.createObjectBuilder().add("msg", "Error: %s".formatted(msg)).build();
+    public static String success(String message) {
+        JsonObject success = new JsonObject();
+        success.addProperty("msg", message);
+        return success.toString();
+    }
+
+    public static String error(String msg) {
+        JsonObject error = new JsonObject();
+        error.addProperty("msg", "Error: %s".formatted(msg));
+        return error.toString();
     }
 
     public static String unauthorized() {
         return error("UNAUTHORIZED").toString();
     }
 
-    public static <T extends JsonConvertible> JsonArrayBuilder ListToJsonArray(List<T> list) {
-        JsonArrayBuilder arrayBuilder = builderFactory.createArrayBuilder();
-        for (T obj : list) {
-            arrayBuilder.add(obj.toJson());
-        }
-        return arrayBuilder;
+    public static String toJson(Object src) {
+        return new Gson().toJson(src);
     }
 
-    public static JsonArrayBuilder StringListToJsonArray(List<String> list) {
-        JsonArrayBuilder arrayBuilder = builderFactory.createArrayBuilder();
-        for (String s : list) {
-            arrayBuilder.add(s);
-        }
-        return arrayBuilder;
+    public static String toJson(String key, Object value) {
+        HashMap<String, Object> obj = new HashMap<>();
+        obj.put(key, value);
+        return new Gson().toJson(obj);
     }
 
-    public static JsonArrayBuilder arrayBuilder() {
-        return builderFactory.createArrayBuilder();
-    }
-
-    public static JsonObjectBuilder objectBuilder() {
-        return builderFactory.createObjectBuilder();
-    }
 }

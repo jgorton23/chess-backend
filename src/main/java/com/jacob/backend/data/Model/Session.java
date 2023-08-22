@@ -2,11 +2,6 @@ package com.jacob.backend.data.Model;
 
 import java.util.UUID;
 
-import jakarta.json.JsonObject;
-
-import com.jacob.backend.data.JsonConvertible;
-import com.jacob.backend.responses.JSONResponses;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sessions")
-public class Session implements JsonConvertible {
+public class Session {
     @Id
     @GeneratedValue
     private UUID id;
@@ -50,11 +45,4 @@ public class Session implements JsonConvertible {
         this.currentGameId = id;
     }
 
-    public JsonObject toJson() {
-        return JSONResponses.objectBuilder()
-                .add("id", id.toString())
-                .add("username", username)
-                .add("currentGame", currentGameId.toString())
-                .build();
-    }
 }
