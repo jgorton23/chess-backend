@@ -421,7 +421,7 @@ public class GameService {
                 if (includeAnnotations) {
                     move.setIsCapture(!grid[y2][x2].equals(" "));
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                    move.setIsMate(isInMate(grid, opponentColor));
+                    move.setIsMate(isInMate(gridAfterMove, opponentColor));
                 }
 
                 movesList.add(move.toString());
@@ -491,7 +491,7 @@ public class GameService {
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
+                move.setIsMate(isInMate(gridAfterMove, opponentColor));
             }
 
             movesList.add(move.toString());
@@ -554,7 +554,7 @@ public class GameService {
                 if (includeAnnotations) {
                     move.setIsCapture(!grid[y2][x2].equals(" "));
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                    move.setIsMate(isInMate(grid, opponentColor));
+                    move.setIsMate(isInMate(gridAfterMove, opponentColor));
                 }
 
                 movesList.add(move.toString());
@@ -718,7 +718,7 @@ public class GameService {
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(isInMate(grid, opponentColor));
+                move.setIsMate(isInMate(gridAfterMove, opponentColor));
             }
 
             movesList.add(move.toString());
