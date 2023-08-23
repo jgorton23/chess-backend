@@ -222,7 +222,9 @@ public class GameService {
         game.setFEN(gridToFEN(grid));
         game.setMoves(moves.trim());
         game.setMoveTimes((game.getMoveTimes() + " " + move.getMiliseconds()).trim());
-        // game.setResult("*");
+        if (move.getIsMate()) {
+            game.setResult(playerColor.equals("w") ? "1-0" : "0-1");
+        }
 
         // Update the Game in the db
         update(username, game);
