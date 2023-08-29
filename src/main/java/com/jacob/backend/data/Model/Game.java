@@ -3,6 +3,7 @@ package com.jacob.backend.data.Model;
 import java.util.Date;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -27,11 +28,13 @@ public class Game {
     /**
      * A space delimited list of moves in SAN format
      */
+    @Column(length = 1337)
     private String moves;
 
     /**
      * A space delimited list of how many miliseconds each move took
      */
+    @Column(length = 1337)
     private String moveTimes;
 
     /**
