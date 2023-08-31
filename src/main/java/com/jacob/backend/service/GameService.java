@@ -281,7 +281,12 @@ public class GameService {
         // Get the board from the game
         String FEN = game.getFEN();
 
-        return getValidMoves(FEN, startingSquare, playerColor);
+        List<String> moves = getValidMoves(FEN, startingSquare, playerColor);
+
+        moves.addAll(findCastleMoves(FENToGrid(FEN), game.getMoves(), startingSquare, playerColor));
+        moves.addAll(findEnPassantMoves(FENToGrid(FEN), game.getMoves(), startingSquare, playerColor));
+
+        return moves;
 
     }
 
@@ -642,6 +647,11 @@ public class GameService {
 
     }
 
+    protected List<String> findCastleMoves(String[][] grid, String moves, Optional<int[]> startingSquare,
+            Optional<String> playerColor) {
+        return null;
+    }
+
     protected List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck,
             boolean includeAnnotations) {
         List<String> result = new ArrayList<String>();
@@ -732,6 +742,11 @@ public class GameService {
 
         return movesList;
 
+    }
+
+    protected List<String> findEnPassantMoves(String[][] grid, String moves, Optional<int[]> startingSquare,
+            Optional<String> playerColor) {
+        return null;
     }
 
     // #endregion
