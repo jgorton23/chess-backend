@@ -799,6 +799,10 @@ public class GameService {
 
         if (previousMoves.isPresent()) {
 
+            if (y - (3 * increment[1]) == 0) {
+
+            }
+
         }
 
         return movesList;
