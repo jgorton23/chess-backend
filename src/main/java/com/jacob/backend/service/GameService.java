@@ -281,12 +281,9 @@ public class GameService {
         // Get the board from the game
         String FEN = game.getFEN();
 
-        List<String> moves = getValidMoves(FEN, startingSquare, playerColor);
+        String[] moves = game.getMoves().split(" ");
 
-        moves.addAll(findCastleMoves(FENToGrid(FEN), game.getMoves(), startingSquare, playerColor));
-        moves.addAll(findEnPassantMoves(FENToGrid(FEN), game.getMoves(), startingSquare, playerColor));
-
-        return moves;
+        return getValidMoves(FEN, Optional.ofNullable(moves), startingSquare, playerColor);
 
     }
 
@@ -300,11 +297,12 @@ public class GameService {
      * @param playerColor    the optional player color for who to get valid moves
      * @return
      */
-    public List<String> getValidMoves(String fen, Optional<int[]> startingSquare, Optional<String> playerColor) {
+    public List<String> getValidMoves(String fen, Optional<String[]> moves, Optional<int[]> startingSquare,
+            Optional<String> playerColor) {
 
         String[][] grid = FENToGrid(fen);
 
-        return getValidMoves(grid, startingSquare, playerColor, false, true);
+        return getValidMoves(grid, moves, startingSquare, playerColor, false, true);
 
     }
 
@@ -319,8 +317,8 @@ public class GameService {
      * @param playerColor    the player color for whom to find valid moves
      * @return
      */
-    public List<String> getValidMoves(String[][] grid, Optional<int[]> startingSquare, Optional<String> playerColor,
-            boolean ignoreCheck, boolean includeAnnotations) {
+    public List<String> getValidMoves(String[][] grid, Optional<String[]> previousMoves, Optional<int[]> startingSquare,
+            Optional<String> playerColor, boolean ignoreCheck, boolean includeAnnotations) {
 
         // Create a list of all possible starting squares
         List<int[]> startingSquareList = new ArrayList<int[]>();
@@ -337,7 +335,7 @@ public class GameService {
 
         // Add the moves from each starting position
         for (int[] start : startingSquareList) {
-            List<String> pieceMoves = findValidPieceMoves(grid, start, ignoreCheck, includeAnnotations);
+            List<String> pieceMoves = findValidPieceMoves(grid, previousMoves, start, ignoreCheck, includeAnnotations);
             moves.addAll(pieceMoves);
         }
 
@@ -351,8 +349,8 @@ public class GameService {
 
     // #region findValidMoves
 
-    protected List<String> findValidPieceMoves(String[][] grid, int[] start, boolean ignoreCheck,
-            boolean includeAnnotations) {
+    protected List<String> findValidPieceMoves(String[][] grid, Optional<String[]> previousMoves, int[] start,
+            boolean ignoreCheck, boolean includeAnnotations) {
         int x = start[0], y = start[1];
 
         List<String> validMoves = new ArrayList<String>();
@@ -368,13 +366,13 @@ public class GameService {
                 validMoves = findValidBishopMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "K", "k":
-                validMoves = findValidKingMoves(grid, start, ignoreCheck, includeAnnotations);
+                validMoves = findValidKingMoves(grid, previousMoves, start, ignoreCheck, includeAnnotations);
                 break;
             case "Q", "q":
                 validMoves = findValidQueenMoves(grid, start, ignoreCheck, includeAnnotations);
                 break;
             case "P", "p":
-                validMoves = findValidPawnMoves(grid, start, ignoreCheck, includeAnnotations);
+                validMoves = findValidPawnMoves(grid, previousMoves, start, ignoreCheck, includeAnnotations);
                 break;
         }
 
@@ -581,8 +579,8 @@ public class GameService {
 
     }
 
-    protected List<String> findValidKingMoves(String[][] grid, int[] start, boolean ignoreCheck,
-            boolean includeAnnotations) {
+    protected List<String> findValidKingMoves(String[][] grid, Optional<String[]> previousMoves, int[] start,
+            boolean ignoreCheck, boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -643,13 +641,72 @@ public class GameService {
 
         }
 
+        if (previousMoves.isPresent()) {
+
+            boolean leftPossible = true, rightPossible = true;
+            String leftRook, rightRook;
+            int xl, xr, y2, increment;
+
+            // Get the rooks names and coordinates based on playerColor
+            if (playerColor.equals("w")) {
+                leftRook = "Ra1";
+                rightRook = "Ra8";
+                xl = 0;
+                xr = 7;
+                y2 = 7;
+                increment = 1;
+            } else {
+                leftRook = "rh8";
+                rightRook = "rh1";
+                xl = 7;
+                xr = 0;
+                y2 = 0;
+                increment = -1;
+            }
+
+            // Check if the king, or either rook has been used in a previous move
+            for (String move : previousMoves.get()) {
+                if (move.contains(grid[y][x])) {
+                    leftPossible = false;
+                    rightPossible = false;
+                    break;
+                }
+                if (move.contains(leftRook)) {
+                    leftPossible = false;
+                }
+                if (move.contains(rightRook)) {
+                    rightPossible = false;
+                }
+            }
+
+            // check that all the spaces between the king and left rook are empty
+            for (int x2 = x - increment; x2 != xl; x2 -= increment) {
+                if (!grid[y2][x2].equals(" ")) {
+                    leftPossible = false;
+                    break;
+                }
+            }
+
+            if (leftPossible) {
+                movesList.add(playerColor.equals("w") ? "Ke1c1" : "ke8g8");
+            }
+
+            // check that all the spaces between the king and right rook are empty
+            for (int x2 = x + increment; x2 != xr; x2 += increment) {
+                if (!grid[y2][x2].equals(" ")) {
+                    rightPossible = false;
+                    break;
+                }
+            }
+
+            if (rightPossible) {
+                movesList.add(playerColor.equals("w") ? "Ke1g1" : "ke8c8");
+            }
+
+        }
+
         return movesList;
 
-    }
-
-    protected List<String> findCastleMoves(String[][] grid, String moves, Optional<int[]> startingSquare,
-            Optional<String> playerColor) {
-        return null;
     }
 
     protected List<String> findValidQueenMoves(String[][] grid, int[] start, boolean ignoreCheck,
@@ -660,8 +717,8 @@ public class GameService {
         return result;
     }
 
-    protected List<String> findValidPawnMoves(String[][] grid, int[] start, boolean ignoreCheck,
-            boolean includeAnnotations) {
+    protected List<String> findValidPawnMoves(String[][] grid, Optional<String[]> previousMoves, int[] start,
+            boolean ignoreCheck, boolean includeAnnotations) {
 
         int x = start[0], y = start[1];
 
@@ -740,20 +797,19 @@ public class GameService {
 
         }
 
+        if (previousMoves.isPresent()) {
+
+        }
+
         return movesList;
 
-    }
-
-    protected List<String> findEnPassantMoves(String[][] grid, String moves, Optional<int[]> startingSquare,
-            Optional<String> playerColor) {
-        return null;
     }
 
     // #endregion
 
     protected boolean isInCheck(String[][] grid, String playerColor) {
 
-        List<String> opponentValidMoves = getValidMoves(grid, Optional.ofNullable(null),
+        List<String> opponentValidMoves = getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(null),
                 Optional.ofNullable(playerColor.equals("w") ? "b" : "w"), true, false);
 
         String kingLocation = "";
@@ -777,8 +833,8 @@ public class GameService {
 
     protected boolean isInMate(String[][] grid, String playerColor) {
 
-        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(playerColor), false, false)
-                .size() == 0;
+        return getValidMoves(grid, Optional.ofNullable(null), Optional.ofNullable(null),
+                Optional.ofNullable(playerColor), false, false).size() == 0;
 
     }
 
