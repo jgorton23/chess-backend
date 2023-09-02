@@ -814,26 +814,68 @@ public class GameService {
                 return movesList;
             }
 
-            int prevX1, prevX2;
+            int prevRank1, prevRank2, prevX, prevY;
 
-            prevX1 = Integer.parseInt(previousMove.substring(2, 2));
-            prevX2 = Integer.parseInt(previousMove.substring(4, 4));
+            prevRank1 = Integer.parseInt(previousMove.substring(2, 2));
+            prevRank2 = Integer.parseInt(previousMove.substring(4, 4));
+
+            prevY = Math.abs(prevRank2 - 8);
+            prevX = Integer.parseInt(previousMove.substring(1, 1)) - 'a';
+
+            // if the current pawns rank is not the same as the last moves rank
+            if (Math.abs(y - 8) != prevRank2) {
+                return movesList;
+            }
+
+            // if the current pawn is not offset by 1 file from the last pawn
+            if (Math.abs(x - prevX) != 1) {
+                return movesList;
+            }
 
             if (playerColor.equals("w")) {
 
                 // if the last move was not from rank 7 to rank 5
-                if (prevX1 != 7 || prevX1 - prevX2 != 2) {
-
+                if (prevRank1 != 7 || prevRank1 - prevRank2 != 2) {
+                    return movesList;
                 }
 
             } else if (playerColor.equals("b")) {
 
-                // if the last move was not from rank 7 to rank 5
-                if (prevX1 != 1 || prevX1 - prevX2 != -2) {
-
+                // if the last move was not from rank 1 to rank 3
+                if (prevRank1 != 1 || prevRank1 - prevRank2 != -2) {
+                    return movesList;
                 }
 
             }
+
+            // update the gridAfterMove
+            gridAfterMove[y][x] = " ";
+            gridAfterMove[prevY][prevX] = " ";
+            gridAfterMove[y + increment[1]][prevX] = grid[y][x];
+
+            // if ignoreCheck or the move doesn't leave the user in check, it is valid
+            if (ignoreCheck || !isInCheck(gridAfterMove, playerColor)) {
+
+                MoveDTO move = new MoveDTO();
+
+                move.setPiece(grid[y][x]);
+                move.setStartSquare(new int[] { x, y });
+                move.setDestSquare(new int[] { prevX, y + increment[1] });
+
+                if (includeAnnotations) {
+                    move.setIsCapture(!grid[y + increment[1]][prevX].equals(" "));
+                    move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                    move.setIsMate(isInMate(gridAfterMove, opponentColor));
+                }
+
+                movesList.add(move.toString());
+
+            }
+
+            // reset the gridAfterMove
+            gridAfterMove[y][x] = grid[y][x];
+            gridAfterMove[prevY][prevX] = grid[prevY][prevX];
+            gridAfterMove[y + increment[1]][prevX] = grid[y + increment[1]][prevX];
 
         }
 
