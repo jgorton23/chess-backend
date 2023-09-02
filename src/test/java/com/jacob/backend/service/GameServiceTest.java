@@ -825,10 +825,10 @@ public class GameServiceTest {
             assertEquals(13, validMoves.stream().filter((s) -> {
                 return s.startsWith("Q");
             }).count());
-            assertEquals(4, validMoves.stream().filter((s) -> {
+            assertEquals(6, validMoves.stream().filter((s) -> {
                 return s.startsWith("K");
             }).count());
-            assertEquals(54, validMoves.size());
+            assertEquals(56, validMoves.size());
 
         }
 
@@ -851,7 +851,7 @@ public class GameServiceTest {
             assertEquals(0, validMoves.stream().filter((s) -> {
                 return s.contains("#");
             }).count());
-            assertEquals(54, validMoves.size());
+            assertEquals(56, validMoves.size());
 
         }
 

@@ -654,7 +654,7 @@ public class GameService {
 
         }
 
-        if (previousMoves.isPresent()) {
+        if (previousMoves.isPresent() && x == 4) {
 
             boolean leftPossible = true, rightPossible = true;
             String leftRook, rightRook;
