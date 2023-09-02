@@ -797,9 +797,41 @@ public class GameService {
 
         }
 
+        // Check for en passant
         if (previousMoves.isPresent()) {
 
-            if (y - (3 * increment[1]) == 0) {
+            String[] previousMovesList = previousMoves.get();
+
+            String previousMove = previousMovesList[previousMovesList.length - 1];
+
+            // if the last move was not a pawn move
+            if (!previousMove.toLowerCase().contains("p")) {
+                return movesList;
+            }
+
+            // if the last move was a capture
+            if (previousMove.contains("x")) {
+                return movesList;
+            }
+
+            int prevX1, prevX2;
+
+            prevX1 = Integer.parseInt(previousMove.substring(2, 2));
+            prevX2 = Integer.parseInt(previousMove.substring(4, 4));
+
+            if (playerColor.equals("w")) {
+
+                // if the last move was not from rank 7 to rank 5
+                if (prevX1 != 7 || prevX1 - prevX2 != 2) {
+
+                }
+
+            } else if (playerColor.equals("b")) {
+
+                // if the last move was not from rank 7 to rank 5
+                if (prevX1 != 1 || prevX1 - prevX2 != -2) {
+
+                }
 
             }
 
