@@ -629,8 +629,8 @@ public class GameService {
             move.setDestSquare(new int[] { x2, y2 });
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
-                move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
+                move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
             }
 
             movesList.add(move.toString());
@@ -641,69 +641,69 @@ public class GameService {
 
         }
 
-        if (previousMoves.isPresent()) {
+        // if (previousMoves.isPresent()) {
 
-            boolean leftPossible = true, rightPossible = true;
-            String leftRook, rightRook;
-            int xl, xr, y2, increment;
+        // boolean leftPossible = true, rightPossible = true;
+        // String leftRook, rightRook;
+        // int xl, xr, y2, increment;
 
-            // Get the rooks names and coordinates based on playerColor
-            if (playerColor.equals("w")) {
-                leftRook = "Ra1";
-                rightRook = "Ra8";
-                xl = 0;
-                xr = 7;
-                y2 = 7;
-                increment = 1;
-            } else {
-                leftRook = "rh8";
-                rightRook = "rh1";
-                xl = 7;
-                xr = 0;
-                y2 = 0;
-                increment = -1;
-            }
+        // // Get the rooks names and coordinates based on playerColor
+        // if (playerColor.equals("w")) {
+        // leftRook = "Ra1";
+        // rightRook = "Ra8";
+        // xl = 0;
+        // xr = 7;
+        // y2 = 7;
+        // increment = 1;
+        // } else {
+        // leftRook = "rh8";
+        // rightRook = "rh1";
+        // xl = 7;
+        // xr = 0;
+        // y2 = 0;
+        // increment = -1;
+        // }
 
-            // Check if the king, or either rook has been used in a previous move
-            for (String move : previousMoves.get()) {
-                if (move.contains(grid[y][x])) {
-                    leftPossible = false;
-                    rightPossible = false;
-                    break;
-                }
-                if (move.contains(leftRook)) {
-                    leftPossible = false;
-                }
-                if (move.contains(rightRook)) {
-                    rightPossible = false;
-                }
-            }
+        // // Check if the king, or either rook has been used in a previous move
+        // for (String move : previousMoves.get()) {
+        // if (move.contains(grid[y][x])) {
+        // leftPossible = false;
+        // rightPossible = false;
+        // break;
+        // }
+        // if (move.contains(leftRook)) {
+        // leftPossible = false;
+        // }
+        // if (move.contains(rightRook)) {
+        // rightPossible = false;
+        // }
+        // }
 
-            // check that all the spaces between the king and left rook are empty
-            for (int x2 = x - increment; x2 != xl; x2 -= increment) {
-                if (!grid[y2][x2].equals(" ")) {
-                    leftPossible = false;
-                    break;
-                }
-            }
+        // // check that all the spaces between the king and left rook are empty
+        // for (int x2 = x - increment; x2 != xl; x2 -= increment) {
+        // if (!grid[y2][x2].equals(" ")) {
+        // leftPossible = false;
+        // break;
+        // }
+        // }
 
-            if (leftPossible) {
-                movesList.add(playerColor.equals("w") ? "Ke1c1" : "ke8g8");
-            }
+        // if (leftPossible) {
+        // movesList.add(playerColor.equals("w") ? "Ke1c1" : "ke8g8");
+        // }
 
-            // check that all the spaces between the king and right rook are empty
-            for (int x2 = x + increment; x2 != xr; x2 += increment) {
-                if (!grid[y2][x2].equals(" ")) {
-                    rightPossible = false;
-                    break;
-                }
-            }
+        // // check that all the spaces between the king and right rook are empty
+        // for (int x2 = x + increment; x2 != xr; x2 += increment) {
+        // if (!grid[y2][x2].equals(" ")) {
+        // rightPossible = false;
+        // break;
+        // }
+        // }
 
-            if (rightPossible) {
-                movesList.add(playerColor.equals("w") ? "Ke1g1" : "ke8c8");
-            }
+        // if (rightPossible) {
+        // movesList.add(playerColor.equals("w") ? "Ke1g1" : "ke8c8");
+        // }
 
-        }
+        // }
 
         return movesList;
 
