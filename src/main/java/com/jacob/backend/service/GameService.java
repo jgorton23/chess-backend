@@ -212,7 +212,7 @@ public class GameService {
         // if the move is a castle
         if (move.getPiece().toLowerCase().equals("k") && Math.abs(start[0] - end[0]) >= 2) {
             int[] rook = new int[2];
-            rook[2] = end[0] < 4 ? 0 : 7;
+            rook[0] = end[0] < 4 ? 0 : 7;
             rook[1] = end[1];
 
             grid[end[1]][end[0] + (end[0] < 4 ? 1 : -1)] = grid[rook[1]][rook[0]];
