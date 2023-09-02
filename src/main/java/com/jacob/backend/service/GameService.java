@@ -205,6 +205,9 @@ public class GameService {
         int[] end = move.getDestSquare();
 
         // Perform the move on the Grid
+        if (move.getIsCapture() && move.toString().toLowerCase().contains("p") && grid[end[1]][end[0]].equals(" ")) {
+            grid[start[1]][end[0]] = " ";
+        }
         grid[end[1]][end[0]] = grid[start[1]][start[0]];
         grid[start[1]][start[0]] = " ";
 
@@ -837,7 +840,7 @@ public class GameService {
                 // if the last move was not from rank 7 to rank 5
                 return movesList;
 
-            } else if (playerColor.equals("b") && (prevRank1 != 1 || prevRank1 - prevRank2 != -2)) {
+            } else if (playerColor.equals("b") && (prevRank1 != 2 || prevRank1 - prevRank2 != -2)) {
 
                 // if the last move was not from rank 1 to rank 3
                 return movesList;
@@ -859,7 +862,7 @@ public class GameService {
                 move.setDestSquare(new int[] { prevX, y + increment[1] });
 
                 if (includeAnnotations) {
-                    move.setIsCapture(!grid[y + increment[1]][prevX].equals(" "));
+                    move.setIsCapture(true);
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
                     move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
                 }
