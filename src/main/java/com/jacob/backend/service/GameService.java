@@ -816,11 +816,11 @@ public class GameService {
 
             int prevRank1, prevRank2, prevX, prevY;
 
-            prevRank1 = Integer.parseInt(previousMove.substring(2, 2));
-            prevRank2 = Integer.parseInt(previousMove.substring(4, 4));
+            prevRank1 = Integer.parseInt(previousMove.substring(2, 3));
+            prevRank2 = Integer.parseInt(previousMove.substring(4, 5));
 
             prevY = Math.abs(prevRank2 - 8);
-            prevX = Integer.parseInt(previousMove.substring(1, 1)) - 'a';
+            prevX = previousMove.charAt(1) - 'a';
 
             // if the current pawns rank is not the same as the last moves rank
             if (Math.abs(y - 8) != prevRank2) {
