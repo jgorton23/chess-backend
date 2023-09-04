@@ -158,6 +158,32 @@ public class GameService {
 
     }
 
+    public void resign(String username, String gameId) {
+
+        // Get the Game with the given UUID
+        Game game = findById(UUID.fromString(gameId));
+
+        // Ensure the Game exists
+        if (game == null) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        String playerColor = "";
+        // Ensure the User resigning is one of the players
+        if (username.equals(game.getBlackPlayerUsername())) {
+            playerColor = "b";
+        } else if (username.equals(game.getWhitePlayerUsername())) {
+            playerColor = "w";
+        } else {
+            throw new UnauthorizedException();
+        }
+
+        game.setResult(playerColor.equals("w") ? "0-1" : "1-0");
+
+        gameRepo.update(game);
+
+    }
+
     /**
      * performs a given move on a given Game
      * 
