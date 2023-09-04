@@ -158,6 +158,13 @@ public class GameService {
 
     }
 
+    /**
+     * Updates the given Game to reflect the winner as the resigning player's
+     * opponent
+     * 
+     * @param username the username of the player who is resigning
+     * @param gameId   the game from which the user is resigning
+     */
     public void resign(String username, String gameId) {
 
         // Get the Game with the given UUID
@@ -178,8 +185,10 @@ public class GameService {
             throw new UnauthorizedException();
         }
 
+        // Set the result of the game
         game.setResult(playerColor.equals("w") ? "0-1" : "1-0");
 
+        // Update the game
         gameRepo.update(game);
 
     }
