@@ -204,8 +204,8 @@ public class GameController {
 
             sessionService.validateSessionId(sessionId);
 
-            List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(startingSquare),
-                    Optional.ofNullable(playerColor));
+            List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
+                    Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));

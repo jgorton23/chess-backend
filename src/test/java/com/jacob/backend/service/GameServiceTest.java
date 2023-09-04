@@ -588,7 +588,7 @@ public class GameServiceTest {
 
             // ACT
             List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
-                    Optional.ofNullable("w"), false, false);
+                    Optional.ofNullable(null), Optional.ofNullable("w"), false, false);
 
             // ASSERT
             assertEquals(49, validMoves.size());
@@ -605,7 +605,7 @@ public class GameServiceTest {
 
             // ACT
             List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
-                    Optional.ofNullable("w"), false, true);
+                    Optional.ofNullable(null), Optional.ofNullable("w"), false, true);
 
             // ASSERT
             assertEquals(49, validMoves.size());
@@ -716,7 +716,7 @@ public class GameServiceTest {
 
             // ACT
             List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
-                    Optional.ofNullable("b"), false, false);
+                    Optional.ofNullable(null), Optional.ofNullable("b"), false, false);
 
             // ASSERT
             assertEquals(24, validMoves.size());
@@ -733,7 +733,7 @@ public class GameServiceTest {
 
             // ACT
             List<String> validMoves = service.getValidMoves(service.FENToGrid(game.getFEN()), Optional.ofNullable(null),
-                    Optional.ofNullable("b"), false, true);
+                    Optional.ofNullable(null), Optional.ofNullable("b"), false, true);
 
             // ASSERT
             assertEquals(24, validMoves.size());
@@ -825,10 +825,10 @@ public class GameServiceTest {
             assertEquals(13, validMoves.stream().filter((s) -> {
                 return s.startsWith("Q");
             }).count());
-            assertEquals(4, validMoves.stream().filter((s) -> {
+            assertEquals(6, validMoves.stream().filter((s) -> {
                 return s.startsWith("K");
             }).count());
-            assertEquals(54, validMoves.size());
+            assertEquals(56, validMoves.size());
 
         }
 
@@ -851,7 +851,7 @@ public class GameServiceTest {
             assertEquals(0, validMoves.stream().filter((s) -> {
                 return s.contains("#");
             }).count());
-            assertEquals(54, validMoves.size());
+            assertEquals(56, validMoves.size());
 
         }
 
