@@ -253,8 +253,13 @@ public class GameService {
             grid[end[1]][end[0] + (end[0] < 4 ? 1 : -1)] = grid[rook[1]][rook[0]];
             grid[rook[1]][rook[0]] = " ";
         }
+
         grid[end[1]][end[0]] = grid[start[1]][start[0]];
         grid[start[1]][start[0]] = " ";
+
+        if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
+            grid[end[1]][end[0]] = move.getPiece();
+        }
 
         // Get the current moves
         String moves = game.getMoves().trim();
