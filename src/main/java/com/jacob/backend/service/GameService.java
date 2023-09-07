@@ -258,7 +258,7 @@ public class GameService {
         grid[start[1]][start[0]] = " ";
 
         if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
-            grid[end[1]][end[0]] = move.getPiece();
+            grid[end[1]][end[0]] = move.getPromotion();
         }
 
         // Get the current moves
