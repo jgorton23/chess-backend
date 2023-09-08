@@ -216,11 +216,14 @@ public class GameService {
         }
 
         String playerColor = "";
+        String opponentColor = "";
         // Ensure the User doing the move is one of the players
         if (username.equals(game.getBlackPlayerUsername())) {
             playerColor = "b";
+            opponentColor = "w";
         } else if (username.equals(game.getWhitePlayerUsername())) {
             playerColor = "w";
+            opponentColor = "b";
         } else {
             throw new UnauthorizedException();
         }
@@ -259,6 +262,8 @@ public class GameService {
 
         if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
             grid[end[1]][end[0]] = move.getPromotion();
+            move.setIsCheck(isInCheck(grid, opponentColor));
+            move.setIsMate(move.getIsCheck() && isInMate(grid, opponentColor));
         }
 
         // Get the current moves
