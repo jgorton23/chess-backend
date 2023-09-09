@@ -6,16 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.Model.*;
@@ -214,6 +205,40 @@ public class GameController {
 
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
+
+        } catch (Exception e) {
+
+            // Catch Generic Exception - return BadRequest
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+
+        }
+    }
+
+    @PutMapping("/{gameId}/resign")
+    public ResponseEntity<String> resign(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @PathVariable String gameId) {
+
+        try {
+
+            // Get the username of the player, by session
+            String username = sessionService.getUsernameById(sessionId);
+
+            // resign the user from the given game
+            gameService.resign(username, gameId);
+
+            // Return success
+            return ResponseEntity.ok().body(JSONResponses.success());
+
+        } catch (UnauthorizedException e) {
+
+            // Catch Unauthorized - return 401
+            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
+
+        } catch (NotFoundException e) {
+
+            // Catch Not Found - return 404
+            return ResponseEntity.status(404).body(JSONResponses.unauthorized());
 
         } catch (Exception e) {
 

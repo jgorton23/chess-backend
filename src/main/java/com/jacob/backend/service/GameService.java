@@ -159,6 +159,41 @@ public class GameService {
     }
 
     /**
+     * Updates the given Game to reflect the winner as the resigning player's
+     * opponent
+     * 
+     * @param username the username of the player who is resigning
+     * @param gameId   the game from which the user is resigning
+     */
+    public void resign(String username, String gameId) {
+
+        // Get the Game with the given UUID
+        Game game = findById(UUID.fromString(gameId));
+
+        // Ensure the Game exists
+        if (game == null) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        String playerColor = "";
+        // Ensure the User resigning is one of the players
+        if (username.equals(game.getBlackPlayerUsername())) {
+            playerColor = "b";
+        } else if (username.equals(game.getWhitePlayerUsername())) {
+            playerColor = "w";
+        } else {
+            throw new UnauthorizedException();
+        }
+
+        // Set the result of the game
+        game.setResult(playerColor.equals("w") ? "0-1" : "1-0");
+
+        // Update the game
+        gameRepo.update(game);
+
+    }
+
+    /**
      * performs a given move on a given Game
      * 
      * @param username the Username of the User performing the move
@@ -181,11 +216,14 @@ public class GameService {
         }
 
         String playerColor = "";
+        String opponentColor = "";
         // Ensure the User doing the move is one of the players
         if (username.equals(game.getBlackPlayerUsername())) {
             playerColor = "b";
+            opponentColor = "w";
         } else if (username.equals(game.getWhitePlayerUsername())) {
             playerColor = "w";
+            opponentColor = "b";
         } else {
             throw new UnauthorizedException();
         }
@@ -218,8 +256,15 @@ public class GameService {
             grid[end[1]][end[0] + (end[0] < 4 ? 1 : -1)] = grid[rook[1]][rook[0]];
             grid[rook[1]][rook[0]] = " ";
         }
+
         grid[end[1]][end[0]] = grid[start[1]][start[0]];
         grid[start[1]][start[0]] = " ";
+
+        if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
+            grid[end[1]][end[0]] = move.getPromotion();
+            move.setIsCheck(isInCheck(grid, opponentColor));
+            move.setIsMate(move.getIsCheck() && isInMate(grid, opponentColor));
+        }
 
         // Get the current moves
         String moves = game.getMoves().trim();
