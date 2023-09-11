@@ -39,10 +39,8 @@ public class GameSocket {
 
     @MessageMapping("/game/{gameId}/chat")
     public void sendChat(@DestinationVariable String gameId, String message) {
-        if (gameId.length() > 0) {
-            messaging.convertAndSend("/topic/game/" + gameId + "/chat", message);
-        } else {
-            gameId = "nothing found";
-        }
+
+        messaging.convertAndSend("/topic/game/" + gameId + "/chat", message);
+
     }
 }
