@@ -30,10 +30,19 @@ public class GameSocket {
      * @param game   the new gameState to save and send
      */
     @MessageMapping("/game/{gameId}")
-    public void UpdateGame(@DestinationVariable String gameId, String move) {
+    public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
 
         // send the game to the other users
         messaging.convertAndSend("/topic/game/" + gameId, move);
 
+    }
+
+    @MessageMapping("/game/{gameId}/chat")
+    public void sendChat(@DestinationVariable String gameId, String message) {
+        if (gameId.length() > 0) {
+            messaging.convertAndSend("/topic/game/" + gameId + "/chat", message);
+        } else {
+            gameId = "nothing found";
+        }
     }
 }
