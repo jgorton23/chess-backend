@@ -30,7 +30,7 @@ public class GameSocket {
      * @param game   the new gameState to save and send
      */
     @MessageMapping("/game/{gameId}")
-    public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
+    public void UpdateGame(@DestinationVariable String gameId, String move) {
 
         // send the game to the other users
         messaging.convertAndSend("/topic/game/" + gameId, move);
