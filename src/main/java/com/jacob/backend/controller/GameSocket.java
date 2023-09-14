@@ -50,4 +50,12 @@ public class GameSocket {
         messaging.convertAndSend("/topic/game/" + gameId + "/resign", message);
 
     }
+
+    @MessageMapping("/game/{gameId}/rematch")
+    public void sendRematch(@DestinationVariable String gameId, boolean confirmed) {
+
+        messaging.convertAndSend("/topic/game/" + gameId + "/rematch", confirmed);
+
+    }
+
 }
