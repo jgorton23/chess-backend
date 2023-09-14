@@ -175,6 +175,10 @@ public class GameService {
             throw new NotFoundException("Game", "ID: " + gameId);
         }
 
+        if (!game.getResult().equals("*")) {
+            throw new RuntimeException("Cannot resign from a game that has already ended");
+        }
+
         String playerColor = "";
         // Ensure the User resigning is one of the players
         if (username.equals(game.getBlackPlayerUsername())) {
