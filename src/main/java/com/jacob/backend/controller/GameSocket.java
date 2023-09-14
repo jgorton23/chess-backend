@@ -43,4 +43,11 @@ public class GameSocket {
         messaging.convertAndSend("/topic/game/" + gameId + "/chat", message);
 
     }
+
+    @MessageMapping("/game/{gameId}/resign")
+    public void sendResign(@DestinationVariable String gameId, String message) {
+
+        messaging.convertAndSend("/topic/game/" + gameId + "/resign", message);
+
+    }
 }
