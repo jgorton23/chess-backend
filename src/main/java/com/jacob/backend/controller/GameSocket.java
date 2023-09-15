@@ -52,7 +52,7 @@ public class GameSocket {
     }
 
     @MessageMapping("/game/{gameId}/rematch")
-    public void sendRematch(@DestinationVariable String gameId, boolean confirmed) {
+    public void sendRematch(@DestinationVariable String gameId, int confirmed) {
 
         messaging.convertAndSend("/topic/game/" + gameId + "/rematch", confirmed);
 
