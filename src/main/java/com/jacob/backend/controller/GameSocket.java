@@ -51,6 +51,12 @@ public class GameSocket {
 
     }
 
+    /**
+     * Updates the game and broadcasts the resignation to the players of the game
+     * 
+     * @param gameId  the UUID of the game in which someone resigned
+     * @param message the username of the user who resigned
+     */
     @MessageMapping("/game/{gameId}/resign")
     public void sendResign(@DestinationVariable String gameId, String message) {
 
