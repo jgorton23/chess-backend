@@ -24,7 +24,7 @@ public class GameSocket {
 
     /**
      * Updates the Game in the database, and sends the updated gameState to the
-     * topoic
+     * topic
      * 
      * @param gameId the Id of the Game to update
      * @param game   the new gameState to save and send
@@ -37,6 +37,13 @@ public class GameSocket {
 
     }
 
+    /**
+     * Broadcasts a chat message to all users subscribed to the game room chat
+     * 
+     * @param gameId  the UUID of the game in which the chat was sent, and to which
+     *                the chat will be broadcast
+     * @param message the content of the chat
+     */
     @MessageMapping("/game/{gameId}/chat")
     public void sendChat(@DestinationVariable String gameId, String message) {
 
