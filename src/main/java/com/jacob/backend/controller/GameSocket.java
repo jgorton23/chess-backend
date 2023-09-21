@@ -64,6 +64,15 @@ public class GameSocket {
 
     }
 
+    /**
+     * Offers or accepts a rematch offer after the game with UUID {@code gameId}
+     * ends
+     * 
+     * @param gameId    the UUID of the game that just ended
+     * @param confirmed the players which have sent the rematch offer, if it is both
+     *                  then the new game will be created and the gameId will be
+     *                  sent
+     */
     @MessageMapping("/game/{gameId}/rematch")
     public void sendRematch(@DestinationVariable String gameId, int confirmed) {
 
