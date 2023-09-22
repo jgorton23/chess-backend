@@ -92,8 +92,12 @@ public class GameSocket {
             newGame.setBlackPlayerUsername(previousGame.getWhitePlayerUsername());
             newGame.setWhitePlayerUsername(previousGame.getBlackPlayerUsername());
             newGame.setTimeControl(previousGame.getTimeControl());
+            newGame.setFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
-            gameService.create(previousGame.getWhitePlayerUsername(), newGame);
+            String newGameId = gameService.create(previousGame.getWhitePlayerUsername(), newGame);
+
+            rematchRequest.setNewGameId(newGameId);
+
         }
 
         messaging.convertAndSend("/topic/game/" + gameId + "/rematch", rematchRequest);
