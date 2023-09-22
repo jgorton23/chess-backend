@@ -1,5 +1,7 @@
 package com.jacob.backend.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jacob.backend.data.DTO.MoveDTO;
+import com.jacob.backend.data.DTO.RematchDTO;
+import com.jacob.backend.data.Model.Game;
+import com.jacob.backend.service.GameService;
 
 /**
  * Controller containing endpoints for the WebSocket
@@ -21,6 +26,9 @@ public class GameSocket {
      */
     @Autowired
     private SimpMessagingTemplate messaging;
+
+    @Autowired
+    private GameService gameService;
 
     /**
      * Updates the Game in the database, and sends the updated gameState to the
@@ -74,9 +82,21 @@ public class GameSocket {
      *                  sent
      */
     @MessageMapping("/game/{gameId}/rematch")
-    public void sendRematch(@DestinationVariable String gameId, int confirmed) {
+    public void sendRematch(@DestinationVariable String gameId, RematchDTO rematchRequest) {
 
-        messaging.convertAndSend("/topic/game/" + gameId + "/rematch", confirmed);
+        if (rematchRequest.getBlackPlayerConfirmed() && rematchRequest.getWhitePlayerConfirmed()) {
+
+            Game previousGame = gameService.findById(UUID.fromString(gameId));
+
+            Game newGame = new Game();
+            newGame.setBlackPlayerUsername(previousGame.getWhitePlayerUsername());
+            newGame.setWhitePlayerUsername(previousGame.getBlackPlayerUsername());
+            newGame.setTimeControl(previousGame.getTimeControl());
+
+            gameService.create(previousGame.getWhitePlayerUsername(), newGame);
+        }
+
+        messaging.convertAndSend("/topic/game/" + gameId + "/rematch", rematchRequest);
 
     }
 

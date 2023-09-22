@@ -131,9 +131,6 @@ public class GameService {
         // Set default values
         game.setBlackPlayerId(blackPlayer.getId());
         game.setWhitePlayerId(whitePlayer.getId());
-        game.setResult("*");
-        game.setMoveTimes("");
-        game.setMoves("1. ");
 
         gameRepo.save(game);
 
