@@ -201,7 +201,7 @@ public class GameService {
      * @param gameId   the UUID of the Game on which to perform the move
      * @param move     the move to perform
      */
-    public void doMove(String gameId, MoveDTO move) {
+    public void doMove(String username, String gameId, MoveDTO move) {
 
         // Ensure the given gameId is a valid UUID
         if (!sessionService.isValidUUID(gameId)) {
@@ -219,10 +219,10 @@ public class GameService {
         String playerColor = "";
         String opponentColor = "";
         // Ensure the User doing the move is one of the players
-        if (move.getPlayerUsername().equals(game.getBlackPlayerUsername())) {
+        if (username.equals(game.getBlackPlayerUsername())) {
             playerColor = "b";
             opponentColor = "w";
-        } else if (move.getPlayerUsername().equals(game.getWhitePlayerUsername())) {
+        } else if (username.equals(game.getWhitePlayerUsername())) {
             playerColor = "w";
             opponentColor = "b";
         } else {
@@ -286,7 +286,7 @@ public class GameService {
         }
 
         // Update the Game in the db
-        update(move.getPlayerUsername(), game);
+        update(username, game);
 
     }
 

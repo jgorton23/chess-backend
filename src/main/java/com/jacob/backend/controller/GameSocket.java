@@ -40,8 +40,18 @@ public class GameSocket {
     @MessageMapping("/game/{gameId}")
     public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
 
-        // send the game to the other users
-        messaging.convertAndSend("/topic/game/" + gameId, move);
+        try {
+
+            gameService.doMove(move.getPlayerUsername(), gameId, move);
+
+            // send the game to the other users
+            messaging.convertAndSend("/topic/game/" + gameId, move);
+
+        } catch (Exception e) {
+
+            // log.error();
+
+        }
 
     }
 
