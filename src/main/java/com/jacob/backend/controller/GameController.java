@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.Model.*;
 import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.responses.exceptions.NotFoundException;
