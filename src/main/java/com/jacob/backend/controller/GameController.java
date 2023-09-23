@@ -258,8 +258,12 @@ public class GameController {
             // Get Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
+            if (username.equals(move.getPlayerUsername())) {
+                throw new UnauthorizedException();
+            }
+
             // Attempt to do the move
-            gameService.doMove(username, gameId, move);
+            gameService.doMove(gameId, move);
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.success());
