@@ -247,38 +247,4 @@ public class GameController {
 
         }
     }
-
-    @PutMapping("/{gameId}/move")
-    public ResponseEntity<String> doMove(
-            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
-            @RequestBody MoveDTO move,
-            @PathVariable String gameId) {
-        try {
-
-            // Get Username - throws Unauthorized
-            String username = sessionService.getUsernameById(sessionId);
-
-            // Attempt to do the move
-            gameService.doMove(username, gameId, move);
-
-            // Return successful
-            return ResponseEntity.ok().body(JSONResponses.success());
-
-        } catch (UnauthorizedException e) {
-
-            // Catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
-
-        } catch (NotFoundException e) {
-
-            // Catch Not Found - return 404
-            return ResponseEntity.status(404).body(JSONResponses.unauthorized());
-
-        } catch (Exception e) {
-
-            // Catch Generic Exception - return BadRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
-
-        }
-    }
 }

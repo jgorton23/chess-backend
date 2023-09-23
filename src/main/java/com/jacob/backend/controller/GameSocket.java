@@ -42,6 +42,7 @@ public class GameSocket {
 
         try {
 
+            // perform the move
             gameService.doMove(move.getPlayerUsername(), gameId, move);
 
             // send the game to the other users
