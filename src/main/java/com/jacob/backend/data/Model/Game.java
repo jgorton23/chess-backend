@@ -84,6 +84,8 @@ public class Game {
     public Game() {
         date = new Date();
         result = "*";
+        moves = "1. ";
+        moveTimes = "";
     }
 
     // #region getters/setters

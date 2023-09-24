@@ -45,6 +45,11 @@ public class MoveDTO {
      */
     private int miliseconds;
 
+    /**
+     * the username of the player making the move
+     */
+    private String playerUsername;
+
     // endregion
 
     /**
@@ -202,6 +207,24 @@ public class MoveDTO {
      */
     public void setMiliseconds(int miliseconds) {
         this.miliseconds = miliseconds;
+    }
+
+    /**
+     * Gets the username of the player who made this move
+     * 
+     * @return the username of the player who made the move
+     */
+    public String getPlayerUsername() {
+        return playerUsername;
+    }
+
+    /**
+     * Sets the username of the player who made this move
+     * 
+     * @param username the username of the player who made the move
+     */
+    public void setPlayerUsername(String username) {
+        playerUsername = username;
     }
 
     // endregion

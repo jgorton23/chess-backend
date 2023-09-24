@@ -131,9 +131,6 @@ public class GameService {
         // Set default values
         game.setBlackPlayerId(blackPlayer.getId());
         game.setWhitePlayerId(whitePlayer.getId());
-        game.setResult("*");
-        game.setMoveTimes("");
-        game.setMoves("1. ");
 
         gameRepo.save(game);
 
@@ -173,6 +170,10 @@ public class GameService {
         // Ensure the Game exists
         if (game == null) {
             throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        if (!game.getResult().equals("*")) {
+            throw new RuntimeException("Cannot resign from a game that has already ended");
         }
 
         String playerColor = "";

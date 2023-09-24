@@ -1,6 +1,7 @@
 package com.jacob.backend.data.DTO;
 
 public class ProfileDTO {
+
     private int friends;
 
     private String username;
