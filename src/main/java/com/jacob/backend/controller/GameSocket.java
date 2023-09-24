@@ -35,7 +35,8 @@ public class GameSocket {
      * topic
      * 
      * @param gameId the Id of the Game to update
-     * @param game   the new gameState to save and send
+     * @param move   the move that will be done before sending the updated game
+     *               state across the ws channel
      */
     @MessageMapping("/game/{gameId}")
     public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
@@ -45,8 +46,11 @@ public class GameSocket {
             // perform the move
             gameService.doMove(move.getPlayerUsername(), gameId, move);
 
+            // get the new state of the game
+            Game game = gameService.findById(UUID.fromString(gameId));
+
             // send the game to the other users
-            messaging.convertAndSend("/topic/game/" + gameId, move);
+            messaging.convertAndSend("/topic/game/" + gameId, game);
 
         } catch (Exception e) {
 
