@@ -50,7 +50,7 @@ public class GameSocket {
 
         } catch (Exception e) {
 
-            // log.error();
+            // log.error(e.getMessage());
 
         }
 
@@ -77,9 +77,19 @@ public class GameSocket {
      * @param message the username of the user who resigned
      */
     @MessageMapping("/game/{gameId}/resign")
-    public void sendResign(@DestinationVariable String gameId, String message) {
+    public void sendResign(@DestinationVariable String gameId, String username) {
 
-        messaging.convertAndSend("/topic/game/" + gameId + "/resign", message);
+        try {
+
+            gameService.resign(username, gameId);
+
+            messaging.convertAndSend("/topic/game/" + gameId + "/resign", username);
+
+        } catch (Exception e) {
+
+            // log.error(e.getMessage());
+
+        }
 
     }
 
