@@ -212,38 +212,4 @@ public class GameController {
 
         }
     }
-
-    @PutMapping("/{gameId}/resign")
-    public ResponseEntity<String> resign(
-            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
-            @PathVariable String gameId) {
-
-        try {
-
-            // Get the username of the player, by session
-            String username = sessionService.getUsernameById(sessionId);
-
-            // resign the user from the given game
-            gameService.resign(username, gameId);
-
-            // Return success
-            return ResponseEntity.ok().body(JSONResponses.success());
-
-        } catch (UnauthorizedException e) {
-
-            // Catch Unauthorized - return 401
-            return ResponseEntity.status(401).body(JSONResponses.unauthorized());
-
-        } catch (NotFoundException e) {
-
-            // Catch Not Found - return 404
-            return ResponseEntity.status(404).body(JSONResponses.unauthorized());
-
-        } catch (Exception e) {
-
-            // Catch Generic Exception - return BadRequest
-            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
-
-        }
-    }
 }
