@@ -14,11 +14,14 @@ import com.jacob.backend.data.DTO.RematchDTO;
 import com.jacob.backend.data.Model.Game;
 import com.jacob.backend.service.GameService;
 
+import lombok.extern.apachecommons.CommonsLog;
+
 /**
  * Controller containing endpoints for the WebSocket
  */
 @RestController
 @CrossOrigin
+@CommonsLog
 public class GameSocket {
 
     /**
@@ -42,6 +45,8 @@ public class GameSocket {
     public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
 
         try {
+
+            log.info(String.format("User: '%s' performed move: '%s'", move.getPlayerUsername(), move.toString()));
 
             // perform the move
             gameService.doMove(move.getPlayerUsername(), gameId, move);
