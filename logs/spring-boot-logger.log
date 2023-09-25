@@ -341,3 +341,42 @@ ERROR in ch.qos.logback.classic.pattern.ClassOfCallerConverter@df6620a - failed 
 2023-09-24 19:21:57,185 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
 2023-09-24 19:21:57,196 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
 2023-09-24 19:21:57,203 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2023-09-24 19:28:24,183 INFO o.s.b.StartupInfoLogger [main] Starting BackendApplication using Java 17.0.6 with PID 77985 (/Users/jacobgorton/Desktop/Projects/Personal/Chess/backend/build/classes/java/main started by jacobgorton in /Users/jacobgorton/Desktop/Projects/Personal/Chess/backend)
+2023-09-24 19:28:24,185 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-09-24 19:28:24,749 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-09-24 19:28:24,778 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 20 ms. Found 0 JPA repository interfaces.
+2023-09-24 19:28:25,268 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2023-09-24 19:28:25,279 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2023-09-24 19:28:25,282 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2023-09-24 19:28:25,282 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/10.1.11]
+2023-09-24 19:28:25,383 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-09-24 19:28:25,384 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1157 ms
+2023-09-24 19:28:25,531 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-09-24 19:28:25,594 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 6.2.2.Final
+2023-09-24 19:28:25,597 INFO o.h.c.Environment [main] HHH000406: Using bytecode reflection optimizer
+2023-09-24 19:28:25,729 INFO o.h.b.i.BytecodeProviderInitiator [main] HHH000021: Bytecode provider name : bytebuddy
+2023-09-24 19:28:25,878 INFO o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-09-24 19:28:25,897 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2023-09-24 19:28:26,066 INFO c.z.h.p.HikariPool [main] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@514377fc
+2023-09-24 19:28:26,068 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2023-09-24 19:28:26,098 INFO o.h.e.j.d.i.DialectFactoryImpl [main] HHH035001: Using dialect: org.hibernate.dialect.PostgreSQLDialect, version: org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$DialectResolutionInfoImpl@374c3975
+2023-09-24 19:28:26,274 INFO o.h.b.i.BytecodeProviderInitiator [main] HHH000021: Bytecode provider name : bytebuddy
+2023-09-24 19:28:26,837 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-09-24 19:28:26,914 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-09-24 19:28:27,139 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-09-24 19:28:27,585 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2023-09-24 19:28:27,599 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2023-09-24 19:28:27,600 INFO o.s.c.l.CompositeLog [main] Starting...
+2023-09-24 19:28:27,602 INFO o.s.c.l.CompositeLog [main] BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@49654a35]]
+2023-09-24 19:28:27,602 INFO o.s.c.l.CompositeLog [main] Started.
+2023-09-24 19:28:27,610 INFO o.s.b.StartupInfoLogger [main] Started BackendApplication in 3.863 seconds (process running for 4.141)
+2023-09-24 19:28:31,872 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-09-24 19:28:31,873 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2023-09-24 19:28:31,874 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2023-09-24 19:28:43,579 INFO c.j.b.c.GameSocket [clientInboundChannel-16] User: 'user2' performed move: 'Pg2g4'
+2023-09-24 19:29:17,813 INFO o.s.c.l.CompositeLog [SpringApplicationShutdownHook] Stopping...
+2023-09-24 19:29:17,814 INFO o.s.c.l.CompositeLog [SpringApplicationShutdownHook] BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@49654a35]]
+2023-09-24 19:29:17,816 INFO o.s.c.l.CompositeLog [SpringApplicationShutdownHook] Stopped.
+2023-09-24 19:29:17,867 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-09-24 19:29:17,870 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-09-24 19:29:17,877 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

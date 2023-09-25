@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jacob.backend.data.DTO.MoveDTO;
 import com.jacob.backend.data.DTO.RematchDTO;
 import com.jacob.backend.data.Model.Game;
+import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.service.GameService;
 
 import lombok.extern.apachecommons.CommonsLog;
@@ -46,7 +47,9 @@ public class GameSocket {
 
         try {
 
-            log.info(String.format("User: '%s' performed move: '%s'", move.getPlayerUsername(), move.toString()));
+            log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
+                    "/game/" + gameId,
+                    JSONResponses.toJson(move)));
 
             // perform the move
             gameService.doMove(move.getPlayerUsername(), gameId, move);
@@ -57,9 +60,13 @@ public class GameSocket {
             // send the game to the other users
             messaging.convertAndSend("/topic/game/" + gameId, game);
 
+            log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
+                    "/topic/game/" + gameId,
+                    JSONResponses.toJson(game)));
+
         } catch (Exception e) {
 
-            // log.error(e.getMessage());
+            log.error(e.getMessage());
 
         }
 
@@ -75,7 +82,15 @@ public class GameSocket {
     @MessageMapping("/game/{gameId}/chat")
     public void sendChat(@DestinationVariable String gameId, String message) {
 
+        log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
+                "/game/" + gameId + "/chat",
+                JSONResponses.toJson(message)));
+
         messaging.convertAndSend("/topic/game/" + gameId + "/chat", message);
+
+        log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
+                "/topic/game/" + gameId + "/chat",
+                JSONResponses.toJson(message)));
 
     }
 
@@ -90,13 +105,21 @@ public class GameSocket {
 
         try {
 
+            log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
+                    "/game/" + gameId + "/resign",
+                    JSONResponses.toJson(username)));
+
             gameService.resign(username, gameId);
 
             messaging.convertAndSend("/topic/game/" + gameId + "/resign", username);
 
+            log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
+                    "/topic/game/" + gameId + "/resign",
+                    JSONResponses.toJson(username)));
+
         } catch (Exception e) {
 
-            // log.error(e.getMessage());
+            log.error(e.getMessage());
 
         }
 
@@ -113,6 +136,10 @@ public class GameSocket {
      */
     @MessageMapping("/game/{gameId}/rematch")
     public void sendRematch(@DestinationVariable String gameId, RematchDTO rematchRequest) {
+
+        log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
+                "/game/" + gameId + "/rematch",
+                JSONResponses.toJson(rematchRequest)));
 
         if (rematchRequest.getBlackPlayerConfirmed() && rematchRequest.getWhitePlayerConfirmed()) {
 
@@ -131,6 +158,10 @@ public class GameSocket {
         }
 
         messaging.convertAndSend("/topic/game/" + gameId + "/rematch", rematchRequest);
+
+        log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
+                "/topic/game/" + gameId + "/resign",
+                JSONResponses.toJson(rematchRequest)));
 
     }
 
