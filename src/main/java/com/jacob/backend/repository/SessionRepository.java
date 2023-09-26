@@ -99,7 +99,7 @@ public class SessionRepository implements SessionRepositoryInterface {
                 entityManager.remove(s);
             }
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to delete 'Session' from database", e);
             throw e;
         }
     }
