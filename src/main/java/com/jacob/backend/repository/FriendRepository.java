@@ -14,10 +14,17 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 
+/**
+ * Class for interacting with the 'Friend' database table, and managing
+ * friendships between users
+ */
 @Repository
 @CommonsLog
 public class FriendRepository implements FriendRepositoryInterface {
 
+    /**
+     * Handles persistence of {@link Friend} objects
+     */
     @PersistenceContext
     EntityManager entityManager;
 
