@@ -29,7 +29,7 @@ public class FriendRepository implements FriendRepositoryInterface {
             List<Friend> f = query.setParameter("userId", id).getResultList();
             return f;
         } catch (Exception e) {
-            log.error(e);
+            log.error("Failed to get 'Friends' from database", e);
             throw e;
         }
     }
@@ -47,7 +47,7 @@ public class FriendRepository implements FriendRepositoryInterface {
                     .orElse(null);
             return f;
         } catch (Exception e) {
-            log.error("Failed to get Friends from database", e);
+            log.error("Failed to get 'Friend' from database", e);
             throw e;
         }
     }
@@ -58,7 +58,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.persist(friend);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Failed to save 'Friend' to databse", e);
             throw e;
         }
     }
@@ -69,7 +69,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.merge(friend);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Failed to update 'Friend' in database", e);
             throw e;
         }
     }
@@ -80,7 +80,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.remove(friend);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Failed to delete 'Friend' from database", e);
             throw e;
         }
     }
