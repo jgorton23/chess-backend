@@ -11,8 +11,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import lombok.extern.apachecommons.CommonsLog;
 
 @Repository
+@CommonsLog
 public class UserRepository implements UserRepositoryInterface {
 
     @PersistenceContext
@@ -24,7 +26,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             entityManager.persist(user);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to save 'User' to database", e);
             throw e;
         }
     }
@@ -35,7 +37,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             entityManager.merge(user);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to update 'User' in database", e);
             throw e;
         }
     }
