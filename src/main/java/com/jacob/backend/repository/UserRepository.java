@@ -49,7 +49,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<User> query = entityManager.createQuery(qString, User.class);
             return query.setParameter("username", username).getResultList().size() > 0;
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User' from database", e);
             throw e;
         }
     }
@@ -59,7 +59,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             return entityManager.find(User.class, userId);
         } catch (Exception e) {
-            // Logger.error(e)
+            log.error("Failed to get 'User' from database", e);
             throw e;
         }
     }
@@ -71,7 +71,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<User> query = entityManager.createQuery(qString, User.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.username' from database", e);
             throw e;
         }
     }
@@ -83,7 +83,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<String> query = entityManager.createQuery(qString, String.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.passwordHash' from database", e);
             throw e;
         }
     }
@@ -95,7 +95,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<String> query = entityManager.createQuery(qString, String.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.passwordSalt' from database", e);
             throw e;
         }
     }
