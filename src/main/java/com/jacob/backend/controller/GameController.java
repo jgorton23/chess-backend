@@ -246,7 +246,7 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
                     Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
 
-            log.info("HTTP response sent");
+            log.info("HTTP response sent | Status: 200");
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
