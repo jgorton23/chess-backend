@@ -15,12 +15,15 @@ import com.jacob.backend.responses.exceptions.UnauthorizedException;
 import com.jacob.backend.service.GameService;
 import com.jacob.backend.service.SessionService;
 
+import lombok.extern.apachecommons.CommonsLog;
+
 /**
  * Controller containing endpoints related Games
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/games")
+@CommonsLog
 public class GameController {
 
     /**
@@ -48,6 +51,10 @@ public class GameController {
             @RequestBody Game game) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Data: '%s'",
+                    "/games/new",
+                    JSONResponses.toJson(game)));
+
             // get the Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
@@ -59,15 +66,21 @@ public class GameController {
             // perform Create
             String gameId = gameService.create(username, game);
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameId)));
+
             // return gameId
             return ResponseEntity.ok().body(JSONResponses.toJson("gameId", gameId));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to create a new 'Game'", e);
+
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (Exception e) {
+
+            log.error("Failed to create a new 'Game'", e);
 
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
