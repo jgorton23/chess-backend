@@ -51,8 +51,9 @@ public class GameController {
             @RequestBody Game game) {
         try {
 
-            log.info(String.format("HTTP request received | URL: '%s', Data: '%s'",
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
                     "/games/new",
+                    "POST",
                     JSONResponses.toJson(game)));
 
             // get the Username - throws Unauthorized
@@ -99,21 +100,29 @@ public class GameController {
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'", "/games", "GET", ""));
+
             // get the Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
             // perform the Get
             List<Game> games = gameService.findAllByUsername(username);
 
+            log.info(String.format("HTTP response sent | "));
+
             // return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("games", games));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to get 'Games'", e);
+
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
+
+            log.error("Failed to get 'Games'", e);
 
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
