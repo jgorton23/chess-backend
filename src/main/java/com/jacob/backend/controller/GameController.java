@@ -239,17 +239,14 @@ public class GameController {
             @RequestParam String fen) {
         try {
 
-            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
-                    "/games/board/validMoves",
-                    "GET",
-                    JSONResponses.toJson(startingSquare) + " " + playerColor));
+            log.info("HTTP request received | URL: '/games/board/validMoves', Method: 'GET'");
 
             sessionService.validateSessionId(sessionId);
 
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
                     Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
 
-            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(moves)));
+            log.info("HTTP response sent");
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
