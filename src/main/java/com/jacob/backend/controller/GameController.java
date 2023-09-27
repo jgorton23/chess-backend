@@ -108,7 +108,7 @@ public class GameController {
             // perform the Get
             List<Game> games = gameService.findAllByUsername(username);
 
-            log.info(String.format("HTTP response sent | "));
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(games)));
 
             // return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("games", games));
@@ -136,6 +136,10 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/" + gameId,
+                    "GET", ""));
+
             sessionService.validateSessionId(sessionId);
 
             Game game = gameService.findById(UUID.fromString(gameId));
@@ -144,17 +148,25 @@ public class GameController {
                 throw new NotFoundException("Game", "ID: " + gameId);
             }
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(game)));
+
             return ResponseEntity.ok().body(JSONResponses.toJson("game", game));
 
         } catch (UnauthorizedException e) {
+
+            log.error("Failed to get 'Game'", e);
 
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (NotFoundException e) {
 
+            log.error("Failed to get 'Game'", e);
+
             return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
+
+            log.error("Failed to get 'Game'", e);
 
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
