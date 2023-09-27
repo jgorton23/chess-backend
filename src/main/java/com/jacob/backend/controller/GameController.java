@@ -190,6 +190,11 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/" + gameId + "/validMoves",
+                    "GET",
+                    JSONResponses.toJson(startingSquare) + " " + playerColor));
+
             // Get the username - throws unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
@@ -197,20 +202,28 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(moves)));
+
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
 
         } catch (NotFoundException e) {
 
+            log.error("Failed to get valid moves", e);
+
             // Catch NotFound - return 404
             return ResponseEntity.notFound().build();
 
         } catch (Exception e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
