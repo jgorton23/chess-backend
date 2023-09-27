@@ -239,20 +239,31 @@ public class GameController {
             @RequestParam String fen) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/board/validMoves",
+                    "GET",
+                    JSONResponses.toJson(startingSquare) + " " + playerColor));
+
             sessionService.validateSessionId(sessionId);
 
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
                     Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
+
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(moves)));
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to get valid moves", e);
+
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
 
         } catch (Exception e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
