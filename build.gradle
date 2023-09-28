@@ -26,6 +26,9 @@ dependencies {
 	implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:stomp-websocket:2.3.3'
 
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
 	testImplementation "com.sun.xml.ws:jaxws-rt:4.0.1"
     testImplementation "org.junit.jupiter:junit-jupiter:5.10.0"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

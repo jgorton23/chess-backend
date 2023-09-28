@@ -11,8 +11,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import lombok.extern.apachecommons.CommonsLog;
 
 @Repository
+@CommonsLog
 public class UserRepository implements UserRepositoryInterface {
 
     @PersistenceContext
@@ -24,7 +26,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             entityManager.persist(user);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to save 'User' to database", e);
             throw e;
         }
     }
@@ -35,7 +37,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             entityManager.merge(user);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to update 'User' in database", e);
             throw e;
         }
     }
@@ -47,7 +49,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<User> query = entityManager.createQuery(qString, User.class);
             return query.setParameter("username", username).getResultList().size() > 0;
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User' from database", e);
             throw e;
         }
     }
@@ -57,7 +59,7 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             return entityManager.find(User.class, userId);
         } catch (Exception e) {
-            // Logger.error(e)
+            log.error("Failed to get 'User' from database", e);
             throw e;
         }
     }
@@ -69,7 +71,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<User> query = entityManager.createQuery(qString, User.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.username' from database", e);
             throw e;
         }
     }
@@ -81,7 +83,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<String> query = entityManager.createQuery(qString, String.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.passwordHash' from database", e);
             throw e;
         }
     }
@@ -93,7 +95,7 @@ public class UserRepository implements UserRepositoryInterface {
             TypedQuery<String> query = entityManager.createQuery(qString, String.class);
             return query.setParameter("username", username).getSingleResult();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'User.passwordSalt' from database", e);
             throw e;
         }
     }

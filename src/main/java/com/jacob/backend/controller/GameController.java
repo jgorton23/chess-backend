@@ -15,12 +15,15 @@ import com.jacob.backend.responses.exceptions.UnauthorizedException;
 import com.jacob.backend.service.GameService;
 import com.jacob.backend.service.SessionService;
 
+import lombok.extern.apachecommons.CommonsLog;
+
 /**
  * Controller containing endpoints related Games
  */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/games")
+@CommonsLog
 public class GameController {
 
     /**
@@ -48,6 +51,11 @@ public class GameController {
             @RequestBody Game game) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/new",
+                    "POST",
+                    JSONResponses.toJson(game)));
+
             // get the Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
@@ -59,15 +67,21 @@ public class GameController {
             // perform Create
             String gameId = gameService.create(username, game);
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameId)));
+
             // return gameId
             return ResponseEntity.ok().body(JSONResponses.toJson("gameId", gameId));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to create a new 'Game'", e);
+
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (Exception e) {
+
+            log.error("Failed to create a new 'Game'", e);
 
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
@@ -86,21 +100,29 @@ public class GameController {
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'", "/games", "GET", ""));
+
             // get the Username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
             // perform the Get
             List<Game> games = gameService.findAllByUsername(username);
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(games)));
+
             // return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("games", games));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to get 'Games'", e);
+
             // catch Unauthorized - return 401
             return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
+
+            log.error("Failed to get 'Games'", e);
 
             // catch generic Exception - return badRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
@@ -114,6 +136,10 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/" + gameId,
+                    "GET", ""));
+
             sessionService.validateSessionId(sessionId);
 
             Game game = gameService.findById(UUID.fromString(gameId));
@@ -122,17 +148,25 @@ public class GameController {
                 throw new NotFoundException("Game", "ID: " + gameId);
             }
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(game)));
+
             return ResponseEntity.ok().body(JSONResponses.toJson("game", game));
 
         } catch (UnauthorizedException e) {
+
+            log.error("Failed to get 'Game'", e);
 
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (NotFoundException e) {
 
+            log.error("Failed to get 'Game'", e);
+
             return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
+
+            log.error("Failed to get 'Game'", e);
 
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
@@ -156,6 +190,11 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
+                    "/games/" + gameId + "/validMoves",
+                    "GET",
+                    JSONResponses.toJson(startingSquare) + " " + playerColor));
+
             // Get the username - throws unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
@@ -163,20 +202,28 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(moves)));
+
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
 
         } catch (NotFoundException e) {
 
+            log.error("Failed to get valid moves", e);
+
             // Catch NotFound - return 404
             return ResponseEntity.notFound().build();
 
         } catch (Exception e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
@@ -192,20 +239,28 @@ public class GameController {
             @RequestParam String fen) {
         try {
 
+            log.info("HTTP request received | URL: '/games/board/validMoves', Method: 'GET'");
+
             sessionService.validateSessionId(sessionId);
 
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
                     Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
+
+            log.info("HTTP response sent | Status: 200");
 
             // Return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("validMoves", moves));
 
         } catch (UnauthorizedException e) {
 
+            log.error("Failed to get valid moves", e);
+
             // Catch Unauthorized - return 401
             return ResponseEntity.status(401).build();
 
         } catch (Exception e) {
+
+            log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));

@@ -12,10 +12,19 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import lombok.extern.apachecommons.CommonsLog;
 
+/**
+ * Class for interacting with the 'Friend' database table, and managing
+ * friendships between users
+ */
 @Repository
+@CommonsLog
 public class FriendRepository implements FriendRepositoryInterface {
 
+    /**
+     * Handles persistence of {@link Friend} objects
+     */
     @PersistenceContext
     EntityManager entityManager;
 
@@ -27,7 +36,7 @@ public class FriendRepository implements FriendRepositoryInterface {
             List<Friend> f = query.setParameter("userId", id).getResultList();
             return f;
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'Friends' from database", e);
             throw e;
         }
     }
@@ -45,7 +54,7 @@ public class FriendRepository implements FriendRepositoryInterface {
                     .orElse(null);
             return f;
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'Friend' from database", e);
             throw e;
         }
     }
@@ -56,7 +65,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.persist(friend);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to save 'Friend' to databse", e);
             throw e;
         }
     }
@@ -67,7 +76,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.merge(friend);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to update 'Friend' in database", e);
             throw e;
         }
     }
@@ -78,7 +87,7 @@ public class FriendRepository implements FriendRepositoryInterface {
         try {
             entityManager.remove(friend);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to delete 'Friend' from database", e);
             throw e;
         }
     }

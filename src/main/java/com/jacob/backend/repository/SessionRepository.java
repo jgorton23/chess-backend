@@ -11,8 +11,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import lombok.extern.apachecommons.CommonsLog;
 
 @Repository
+@CommonsLog
 public class SessionRepository implements SessionRepositoryInterface {
 
     @PersistenceContext
@@ -23,7 +25,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         try {
             return entityManager.find(Session.class, sessionId);
         } catch (Exception e) {
-            // Logger.error(e)
+            log.error("Failed to get 'Session' from database", e);
             throw e;
         }
     }
@@ -35,7 +37,7 @@ public class SessionRepository implements SessionRepositoryInterface {
             TypedQuery<Session> query = entityManager.createQuery(qString, Session.class);
             return query.setParameter("username", username).getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'Session' from database", e);
             throw e;
         }
     }
@@ -47,7 +49,7 @@ public class SessionRepository implements SessionRepositoryInterface {
             TypedQuery<Session> query = entityManager.createQuery(qString, Session.class);
             return query.setParameter("username", username).getResultList().size() > 0;
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'Session' from database", e);
             throw e;
         }
     }
@@ -58,7 +60,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         try {
             entityManager.persist(session);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to save 'Session' to database", e);
             throw e;
         }
     }
@@ -69,7 +71,7 @@ public class SessionRepository implements SessionRepositoryInterface {
         try {
             entityManager.merge(session);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to update 'Session' in database", e);
             throw e;
         }
     }
@@ -83,7 +85,7 @@ public class SessionRepository implements SessionRepositoryInterface {
                 entityManager.remove(s);
             }
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to delete 'Session' from database", e);
             throw e;
         }
     }
@@ -97,7 +99,7 @@ public class SessionRepository implements SessionRepositoryInterface {
                 entityManager.remove(s);
             }
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to delete 'Session' from database", e);
             throw e;
         }
     }

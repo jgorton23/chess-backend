@@ -12,8 +12,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import lombok.extern.apachecommons.CommonsLog;
 
 @Repository
+@CommonsLog
 public class GameRepository implements GameRepositoryInterface {
 
     @PersistenceContext
@@ -23,7 +25,7 @@ public class GameRepository implements GameRepositoryInterface {
         try {
             return entityManager.find(Game.class, gameId);
         } catch (Exception e) {
-            // Logger.error(e)
+            log.error("Failed to get 'Game' from database", e);
             throw e;
         }
     }
@@ -34,7 +36,7 @@ public class GameRepository implements GameRepositoryInterface {
             TypedQuery<Game> query = entityManager.createQuery(qString, Game.class);
             return query.setParameter("userId", userId).getResultList();
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to get 'Games' from database", e);
             throw e;
         }
     }
@@ -44,7 +46,7 @@ public class GameRepository implements GameRepositoryInterface {
         try {
             entityManager.persist(game);
         } catch (Exception e) {
-            // Logger.error(e);
+            log.error("Failed to save 'Game' to database", e);
             throw e;
         }
     }
@@ -54,7 +56,7 @@ public class GameRepository implements GameRepositoryInterface {
         try {
             entityManager.merge(game);
         } catch (Exception e) {
-            // Logger.error(e)
+            log.error("Failed to update 'Game' in database", e);
             throw e;
         }
     }
