@@ -194,6 +194,13 @@ public class GameService {
 
     }
 
+    /**
+     * Updates the game to reflect the winner as the opponent of the player who ran
+     * out of time
+     * 
+     * @param username the username of the player who ran out of time
+     * @param gameId   the id of the game that the user timed out in
+     */
     public void timeout(String username, UUID gameId) {
 
         Game game = findById(gameId);
