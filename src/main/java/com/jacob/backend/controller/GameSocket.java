@@ -111,7 +111,7 @@ public class GameSocket {
 
             gameService.resign(username, UUID.fromString(gameId));
 
-            messaging.convertAndSend("/topic/game/" + gameId + "/resign", username);
+            messaging.convertAndSend("/topic/game/" + gameId + "/resign", JSONResponses.toJson(username));
 
             log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
                     "/topic/game/" + gameId + "/resign",
