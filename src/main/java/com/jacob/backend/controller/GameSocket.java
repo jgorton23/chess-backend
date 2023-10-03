@@ -43,7 +43,7 @@ public class GameSocket {
      *               state across the ws channel
      */
     @MessageMapping("/game/{gameId}")
-    public void UpdateGame(@DestinationVariable String gameId, MoveDTO move) {
+    public void updateGame(@DestinationVariable String gameId, MoveDTO move) {
 
         try {
 
@@ -80,7 +80,7 @@ public class GameSocket {
      * @param message the content of the chat
      */
     @MessageMapping("/game/{gameId}/chat")
-    public void sendChat(@DestinationVariable String gameId, String message) {
+    public void chat(@DestinationVariable String gameId, String message) {
 
         log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
                 "/game/" + gameId + "/chat",
@@ -101,7 +101,7 @@ public class GameSocket {
      * @param message the username of the user who resigned
      */
     @MessageMapping("/game/{gameId}/resign")
-    public void sendResign(@DestinationVariable String gameId, String username) {
+    public void resign(@DestinationVariable String gameId, String username) {
 
         try {
 
@@ -135,7 +135,7 @@ public class GameSocket {
      *                  sent
      */
     @MessageMapping("/game/{gameId}/rematch")
-    public void sendRematch(@DestinationVariable String gameId, RematchDTO rematchRequest) {
+    public void offerRematch(@DestinationVariable String gameId, RematchDTO rematchRequest) {
 
         log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
                 "/game/" + gameId + "/rematch",
@@ -162,6 +162,21 @@ public class GameSocket {
         log.info(String.format("Websocket message sent | URL: '%s', Data: '%s'",
                 "/topic/game/" + gameId + "/resign",
                 JSONResponses.toJson(rematchRequest)));
+
+    }
+
+    @MessageMapping("/game/{gameId}/timeout")
+    public void timeout(@DestinationVariable String gameId, String username) {
+
+        log.info(String.format("WebSocket message received | URL: '%s', Data: '%s'",
+                "/game/" + gameId + "/timeout",
+                username));
+
+        gameService.timeout(gameId, username);
+
+        log.info(String.format("WebSocket message sent | URL: '%s', Data: '%s'",
+                "/topic/game/" + gameId + "/timeout",
+                username));
 
     }
 
