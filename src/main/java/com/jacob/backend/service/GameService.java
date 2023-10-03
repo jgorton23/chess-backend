@@ -206,6 +206,21 @@ public class GameService {
             throw new RuntimeException("Timeout Error: Game has already ended");
         }
 
+        String playerColor = "";
+        if (username.equals(game.getBlackPlayerUsername())) {
+            playerColor = "b";
+        } else if (username.equals(game.getWhitePlayerUsername())) {
+            playerColor = "w";
+        } else {
+            throw new UnauthorizedException();
+        }
+
+        // Set the result of the game
+        game.setResult(playerColor.equals("w") ? "0-1" : "1-0");
+
+        // Update the game
+        gameRepo.update(game);
+
     }
 
     /**

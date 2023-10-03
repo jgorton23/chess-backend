@@ -109,7 +109,7 @@ public class GameSocket {
                     "/game/" + gameId + "/resign",
                     JSONResponses.toJson(username)));
 
-            gameService.resign(username, gameId);
+            gameService.resign(username, UUID.fromString(gameId));
 
             messaging.convertAndSend("/topic/game/" + gameId + "/resign", username);
 
@@ -172,7 +172,7 @@ public class GameSocket {
                 "/game/" + gameId + "/timeout",
                 username));
 
-        gameService.timeout(username, gameId);
+        gameService.timeout(username, UUID.fromString(gameId));
 
         messaging.convertAndSend("/topic/game/" + gameId + "/timeout", username);
 
