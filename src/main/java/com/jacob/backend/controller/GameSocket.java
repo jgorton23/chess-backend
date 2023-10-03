@@ -172,7 +172,9 @@ public class GameSocket {
                 "/game/" + gameId + "/timeout",
                 username));
 
-        gameService.timeout(gameId, username);
+        gameService.timeout(username, gameId);
+
+        messaging.convertAndSend("/topic/game/" + gameId + "/timeout", username);
 
         log.info(String.format("WebSocket message sent | URL: '%s', Data: '%s'",
                 "/topic/game/" + gameId + "/timeout",

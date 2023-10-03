@@ -162,10 +162,10 @@ public class GameService {
      * @param username the username of the player who is resigning
      * @param gameId   the game from which the user is resigning
      */
-    public void resign(String username, String gameId) {
+    public void resign(String username, UUID gameId) {
 
         // Get the Game with the given UUID
-        Game game = findById(UUID.fromString(gameId));
+        Game game = findById(gameId);
 
         // Ensure the Game exists
         if (game == null) {
@@ -191,6 +191,10 @@ public class GameService {
 
         // Update the game
         gameRepo.update(game);
+
+    }
+
+    public void timeout(String username, String gameId) {
 
     }
 
