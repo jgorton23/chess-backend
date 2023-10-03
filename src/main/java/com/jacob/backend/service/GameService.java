@@ -194,7 +194,17 @@ public class GameService {
 
     }
 
-    public void timeout(String username, String gameId) {
+    public void timeout(String username, UUID gameId) {
+
+        Game game = findById(gameId);
+
+        if (game == null) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        if (!game.getResult().equals("*")) {
+            throw new RuntimeException("Timeout Error: Game has already ended");
+        }
 
     }
 
