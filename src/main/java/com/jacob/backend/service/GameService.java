@@ -162,10 +162,10 @@ public class GameService {
      * @param username the username of the player who is resigning
      * @param gameId   the game from which the user is resigning
      */
-    public void resign(String username, String gameId) {
+    public void resign(String username, UUID gameId) {
 
         // Get the Game with the given UUID
-        Game game = findById(UUID.fromString(gameId));
+        Game game = findById(gameId);
 
         // Ensure the Game exists
         if (game == null) {
@@ -178,6 +178,42 @@ public class GameService {
 
         String playerColor = "";
         // Ensure the User resigning is one of the players
+        if (username.equals(game.getBlackPlayerUsername())) {
+            playerColor = "b";
+        } else if (username.equals(game.getWhitePlayerUsername())) {
+            playerColor = "w";
+        } else {
+            throw new UnauthorizedException();
+        }
+
+        // Set the result of the game
+        game.setResult(playerColor.equals("w") ? "0-1" : "1-0");
+
+        // Update the game
+        gameRepo.update(game);
+
+    }
+
+    /**
+     * Updates the game to reflect the winner as the opponent of the player who ran
+     * out of time
+     * 
+     * @param username the username of the player who ran out of time
+     * @param gameId   the id of the game that the user timed out in
+     */
+    public void timeout(String username, UUID gameId) {
+
+        Game game = findById(gameId);
+
+        if (game == null) {
+            throw new NotFoundException("Game", "ID: " + gameId);
+        }
+
+        if (!game.getResult().equals("*")) {
+            throw new RuntimeException("Timeout Error: Game has already ended");
+        }
+
+        String playerColor = "";
         if (username.equals(game.getBlackPlayerUsername())) {
             playerColor = "b";
         } else if (username.equals(game.getWhitePlayerUsername())) {
