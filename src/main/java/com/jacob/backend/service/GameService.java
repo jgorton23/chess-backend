@@ -305,19 +305,9 @@ public class GameService {
             move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
         }
 
-        // Get the current moves
-        String moves = game.getMoves().trim();
-
-        // Add the number if appropriate
-        if (moves.length() == 0 || moves.split(" ").length % 3 == 0) {
-            moves += " " + (((moves.split(" ").length + 1) / 3) + 1) + ". " + move.toString();
-        } else {
-            moves += " " + move.toString();
-        }
-
         // Set the new game features
         game.setFEN(gridToFEN(grid));
-        game.setMoves(moves.trim());
+        game.setMoves((game.getMoves() + " " + move.toString()).trim());
         game.setMoveTimes((game.getMoveTimes() + " " + move.getMiliseconds()).trim());
         if (move.getIsMate()) {
             game.setResult(playerColor.equals("w") ? "1-0" : "0-1");
