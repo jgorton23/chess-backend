@@ -36,6 +36,11 @@ public class MoveDTO {
     private boolean isMate;
 
     /**
+     * if the move puts the opponnent in stalemate
+     */
+    private boolean isStalemate;
+
+    /**
      * if the move captures an opposing piece
      */
     private boolean isCapture;
@@ -192,6 +197,24 @@ public class MoveDTO {
     }
 
     /**
+     * Gets if the move stalemates the opponent
+     * 
+     * @return True if the move is Stalemate, else false
+     */
+    public boolean getIsStalemate() {
+        return isStalemate;
+    }
+
+    /**
+     * Sets if the move stalemates the opponent or not
+     * 
+     * @param isStalemate if the move is stalemate
+     */
+    public void setIsStalemate(boolean isStalemate) {
+        this.isStalemate = isStalemate;
+    }
+
+    /**
      * Gets how long the move took in miliseconds
      * 
      * @return how many miliseconds the move took
@@ -248,6 +271,8 @@ public class MoveDTO {
             move += "#";
         } else if (isCheck) {
             move += "+";
+        } else if (isStalemate) {
+            move += "$";
         }
         return move;
     }

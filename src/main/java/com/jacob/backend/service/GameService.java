@@ -300,7 +300,9 @@ public class GameService {
         if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
             grid[end[1]][end[0]] = move.getPromotion();
             move.setIsCheck(isInCheck(grid, opponentColor));
-            move.setIsMate(move.getIsCheck() && isInMate(grid, opponentColor));
+            boolean hasNoMoves = isInMate(grid, opponentColor);
+            move.setIsMate(move.getIsCheck() && hasNoMoves);
+            move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
         }
 
         // Get the current moves
