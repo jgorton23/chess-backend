@@ -1,5 +1,6 @@
 package com.jacob.backend.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class UserService {
 
     @Autowired
     private AuthService authService;
+
+    public List<User> findAll() {
+        return userRepo.getAll();
+    }
 
     public User findById(UUID userId) {
         return userRepo.getById(userId);
