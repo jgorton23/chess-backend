@@ -1,5 +1,6 @@
 package com.jacob.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,13 +46,19 @@ public class UserController {
         try {
 
             // ensure the user at least has a session currently
-            String username = sessionService.getUsernameById(sessionId);
+            sessionService.getUsernameById(sessionId);
 
             // get all users
             List<User> users = userService.findAll();
 
+            List<String> usernames = new ArrayList<String>();
+
+            for (User user : users) {
+                usernames.add(user.getUsername());
+            }
+
             // return all users
-            return ResponseEntity.ok().body(JSONResponses.toJson("users", users));
+            return ResponseEntity.ok().body(JSONResponses.toJson("users", usernames));
 
         } catch (UnauthorizedException e) {
 
