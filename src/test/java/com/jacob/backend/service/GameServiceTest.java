@@ -377,7 +377,7 @@ public class GameServiceTest {
             verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
             verify(mockGameRepo, times(1)).update(game);
             assertEquals("rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR", game.getFEN());
-            assertEquals("1. Pa2a4", game.getMoves());
+            assertEquals("Pa2a4", game.getMoves());
             assertEquals("100", game.getMoveTimes());
 
         }
@@ -509,10 +509,10 @@ public class GameServiceTest {
             game.setWhitePlayerUsername("Kholmov");
             game.setFEN("r1b2r1k/4qp1p/p2ppb1Q/4nP2/1p1NP3/2N5/PPP4P/2KR1BR1");
             game.setMoves(
-                    "1. e4 c5 2. Nf3 Nf6 3. Nc3 d6 4. d4 cxd4 5. Nxd4 a6 " +
-                            "6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7 10. g4 b5 " +
-                            "11. Bxf6 gxf6 12. f5 Ne5 13. Qh3 O-O 14. g5 b4 15. gxf6 Bxf6 " +
-                            "16. Rg1+ Kh8 17. Qh6 Qe7");
+                    "e4 c5 Nf3 Nf6 Nc3 d6 d4 cxd4 Nxd4 a6 " +
+                            "Bg5 e6 f4 Be7 Qf3 Qc7 O-O-O Nbd7 g4 b5 " +
+                            "Bxf6 gxf6 f5 Ne5 Qh3 O-O g5 b4 gxf6 Bxf6 " +
+                            "Rg1+ Kh8 Qh6 Qe7");
             game.setMoveTimes("");
         }
 
@@ -539,10 +539,10 @@ public class GameServiceTest {
             verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
             verify(mockGameRepo, times(1)).update(game);
             assertEquals("r1b2r1k/4qp1p/p1Nppb1Q/4nP2/1p2P3/2N5/PPP4P/2KR1BR1", game.getFEN());
-            assertEquals("1. e4 c5 2. Nf3 Nf6 3. Nc3 d6 4. d4 cxd4 5. Nxd4 a6 " + //
-                    "6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7 10. g4 b5 " + //
-                    "11. Bxf6 gxf6 12. f5 Ne5 13. Qh3 O-O 14. g5 b4 15. gxf6 Bxf6 " + //
-                    "16. Rg1+ Kh8 17. Qh6 Qe7 18. Nd4c6", game.getMoves());
+            assertEquals("e4 c5 Nf3 Nf6 Nc3 d6 d4 cxd4 Nxd4 a6 " + //
+                    "Bg5 e6 f4 Be7 Qf3 Qc7 O-O-O Nbd7 g4 b5 " + //
+                    "Bxf6 gxf6 f5 Ne5 Qh3 O-O g5 b4 gxf6 Bxf6 " + //
+                    "Rg1+ Kh8 Qh6 Qe7 Nd4c6", game.getMoves());
             assertEquals("100", game.getMoveTimes());
 
         }
@@ -762,8 +762,8 @@ public class GameServiceTest {
             game.setWhitePlayerUsername("Lasker");
             game.setBlackPlayerUsername("Thomas");
             game.setFEN("rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R");
-            game.setMoves("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
-                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7");
+            game.setMoves("d4 e6 Nf3 f5 Nc3 Nf6 Bg5 Be7 Bxf6 Bxf6 " +
+                    "e4 fxe4 Nxe4 b6 Ne5 O-O Bd3 Bb7 Qh5 Qe7");
             game.setMoveTimes("1000 3500 2000 5000 4750 10000 12565 8750 9435 3456");
 
             // MOCK
@@ -795,8 +795,8 @@ public class GameServiceTest {
             verify(mockGameRepo, times(1)).getById(UUID.fromString(id));
             verify(mockGameRepo, times(1)).update(game);
             assertEquals("rn3rk1/pbppq1pQ/1p2pb2/4N3/3PN3/3B4/PPP2PPP/R3K2R", game.getFEN());
-            assertEquals("1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 " +
-                    "6. e4 fxe4 7. Nxe4 b6 8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7 11. Qh5xh7+", game.getMoves());
+            assertEquals("d4 e6 Nf3 f5 Nc3 Nf6 Bg5 Be7 Bxf6 Bxf6 " +
+                    "e4 fxe4 Nxe4 b6 Ne5 O-O Bd3 Bb7 Qh5 Qe7 Qh5xh7+", game.getMoves());
 
         }
 

@@ -300,25 +300,19 @@ public class GameService {
         if (move.getPromotion() != null && move.getPiece().toLowerCase().equals("p") && end[1] % 7 == 0) {
             grid[end[1]][end[0]] = move.getPromotion();
             move.setIsCheck(isInCheck(grid, opponentColor));
-            move.setIsMate(move.getIsCheck() && isInMate(grid, opponentColor));
-        }
-
-        // Get the current moves
-        String moves = game.getMoves().trim();
-
-        // Add the number if appropriate
-        if (moves.length() == 0 || moves.split(" ").length % 3 == 0) {
-            moves += " " + (((moves.split(" ").length + 1) / 3) + 1) + ". " + move.toString();
-        } else {
-            moves += " " + move.toString();
+            boolean hasNoMoves = isInMate(grid, opponentColor);
+            move.setIsMate(move.getIsCheck() && hasNoMoves);
+            move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
         }
 
         // Set the new game features
         game.setFEN(gridToFEN(grid));
-        game.setMoves(moves.trim());
+        game.setMoves((game.getMoves() + " " + move.toString()).trim());
         game.setMoveTimes((game.getMoveTimes() + " " + move.getMiliseconds()).trim());
         if (move.getIsMate()) {
             game.setResult(playerColor.equals("w") ? "1-0" : "0-1");
+        } else if (move.getIsStalemate()) {
+            game.setResult("1/2-1/2");
         }
 
         // Update the Game in the db
@@ -521,7 +515,9 @@ public class GameService {
                 if (includeAnnotations) {
                     move.setIsCapture(!grid[y2][x2].equals(" "));
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                    move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                    boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                    move.setIsMate(move.getIsCheck() && hasNoMoves);
+                    move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
                 }
 
                 movesList.add(move.toString());
@@ -591,7 +587,9 @@ public class GameService {
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                move.setIsMate(move.getIsCheck() && hasNoMoves);
+                move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
             }
 
             movesList.add(move.toString());
@@ -654,7 +652,9 @@ public class GameService {
                 if (includeAnnotations) {
                     move.setIsCapture(!grid[y2][x2].equals(" "));
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                    move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                    boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                    move.setIsMate(move.getIsCheck() && hasNoMoves);
+                    move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
                 }
 
                 movesList.add(move.toString());
@@ -725,7 +725,9 @@ public class GameService {
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                move.setIsMate(move.getIsCheck() && hasNoMoves);
+                move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
             }
 
             movesList.add(move.toString());
@@ -892,7 +894,9 @@ public class GameService {
             if (includeAnnotations) {
                 move.setIsCapture(!grid[y2][x2].equals(" "));
                 move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                move.setIsMate(move.getIsCheck() && hasNoMoves);
+                move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
             }
 
             movesList.add(move.toString());
@@ -966,7 +970,9 @@ public class GameService {
                 if (includeAnnotations) {
                     move.setIsCapture(true);
                     move.setIsCheck(isInCheck(gridAfterMove, opponentColor));
-                    move.setIsMate(move.getIsCheck() && isInMate(gridAfterMove, opponentColor));
+                    boolean hasNoMoves = isInMate(gridAfterMove, opponentColor);
+                    move.setIsMate(move.getIsCheck() && hasNoMoves);
+                    move.setIsStalemate(!move.getIsCheck() && hasNoMoves);
                 }
 
                 movesList.add(move.toString());
