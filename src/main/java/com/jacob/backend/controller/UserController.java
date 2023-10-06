@@ -41,6 +41,12 @@ public class UserController {
     @Autowired
     private FriendService friendService;
 
+    /**
+     * Gets the usernames of all users
+     * 
+     * @param sessionId the session id of the current user
+     * @return a list of all users' usernames
+     */
     @GetMapping
     public ResponseEntity<String> getUsers(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {

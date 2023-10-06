@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "friends")
 public class Friend {
+
     @Id
     @GeneratedValue
     private UUID id;

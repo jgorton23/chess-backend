@@ -1,5 +1,7 @@
 package com.jacob.backend.data.DTO;
 
+import java.util.UUID;
+
 public class FriendDTO {
 
     private String username;
@@ -7,6 +9,8 @@ public class FriendDTO {
     private Boolean pending;
 
     private Boolean invitation;
+
+    private UUID currentGameId;
 
     public FriendDTO(String friendUsername, Boolean isPending, Boolean isInvitation) {
         username = friendUsername;
