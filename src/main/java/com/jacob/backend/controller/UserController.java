@@ -1,5 +1,6 @@
 package com.jacob.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.jacob.backend.data.DTO.*;
+import com.jacob.backend.data.Model.User;
 import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
 import com.jacob.backend.responses.exceptions.UnauthorizedException;
@@ -38,6 +40,39 @@ public class UserController {
      */
     @Autowired
     private FriendService friendService;
+
+    @GetMapping
+    public ResponseEntity<String> getUsers(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
+        try {
+
+            // ensure the user at least has a session currently
+            sessionService.getUsernameById(sessionId);
+
+            // get all users
+            List<User> users = userService.findAll();
+
+            List<String> usernames = new ArrayList<String>();
+
+            for (User user : users) {
+                usernames.add(user.getUsername());
+            }
+
+            // return all users
+            return ResponseEntity.ok().body(JSONResponses.toJson("users", usernames));
+
+        } catch (UnauthorizedException e) {
+
+            // catch unauthorized - return 401
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
+
+        } catch (Exception e) {
+
+            // catch generic exception - return bad request
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+
+        }
+
+    }
 
     /**
      * Add or Confirm the Friend relation between the current User and the given

@@ -1,5 +1,6 @@
 package com.jacob.backend.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,16 @@ public class UserRepository implements UserRepositoryInterface {
             return query.setParameter("username", username).getResultList().size() > 0;
         } catch (Exception e) {
             log.error("Failed to get 'User' from database", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<User> getAll() {
+        try {
+            return entityManager.createNamedQuery("getAllUsers", User.class).getResultList();
+        } catch (Exception e) {
+            log.error("Failed to get 'Users' from database", e);
             throw e;
         }
     }

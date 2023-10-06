@@ -1,5 +1,6 @@
 package com.jacob.backend.repository.interfaces;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.jacob.backend.data.Model.User;
@@ -27,6 +28,11 @@ public interface UserRepositoryInterface {
      * @return true if a user exists, else false
      */
     public boolean userExists(String username);
+
+    /**
+     * @return a list of all users in the database
+     */
+    public List<User> getAll();
 
     /**
      * returns the user object associated with the given Id
