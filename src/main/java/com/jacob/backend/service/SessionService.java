@@ -70,20 +70,25 @@ public class SessionService {
      * @param sessionId the sessionId for which to update the associated username
      * @param username  the new username to associate with the given sessionId
      */
-    public void update(UUID sessionId, String username) {
+    public void update(UUID sessionId, Session sessionData) {
 
         Session session = sessionRepo.getById(sessionId);
 
-        session.setUsername(username);
-        sessionRepo.update(session);
+        String username = sessionData.getUsername();
+        if (username != null && username.length() > 0) {
+            session.setUsername(username);
+        }
 
-    }
+        UUID currentGameId = sessionData.getCurrentGameId();
+        if (currentGameId != null) {
+            session.setCurrentGameId(currentGameId);
+        }
 
-    public void update(UUID sessionId, Status status) {
+        Status onlineStatus = sessionData.getOnlineStatus();
+        if (onlineStatus != null) {
+            session.setOnlineStatus(onlineStatus);
+        }
 
-        Session session = sessionRepo.getById(sessionId);
-
-        session.setOnlineStatus(status);
         sessionRepo.update(session);
 
     }

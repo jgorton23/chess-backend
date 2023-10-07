@@ -2,7 +2,6 @@ package com.jacob.backend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,9 +204,11 @@ public class UserController {
             // get the username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
+            Session session = new Session();
+            session.setUsername(creds.getUsername());
+
             // Update the Session to store the new Username
-            sessionService.update(UUID.fromString(sessionId),
-                    Optional.ofNullable(creds.getUsername()).orElse(username));
+            sessionService.update(UUID.fromString(sessionId), session);
 
             // perform the Update
             userService.update(username, creds);
@@ -264,10 +265,16 @@ public class UserController {
     @PutMapping("/session")
     public ResponseEntity<String> setOnlineStatus(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
-            @RequestParam Status status) {
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) String currentGameId) {
         try {
 
-            sessionService.update(UUID.fromString(sessionId), status);
+            Session session = new Session();
+
+            session.setCurrentGameId(UUID.fromString(currentGameId));
+            session.setOnlineStatus(status);
+
+            sessionService.update(UUID.fromString(sessionId), session);
 
             return ResponseEntity.ok().body(JSONResponses.success());
 
