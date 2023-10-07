@@ -266,12 +266,13 @@ public class UserController {
     public ResponseEntity<String> setOnlineStatus(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @RequestParam(required = false) Status status,
-            @RequestParam(required = false) String currentGameId) {
+            @RequestParam(required = false, defaultValue = "") String currentGameId) {
         try {
 
             Session session = new Session();
 
-            session.setCurrentGameId(UUID.fromString(currentGameId));
+            if (currentGameId.length() > 0)
+                session.setCurrentGameId(UUID.fromString(currentGameId));
             session.setOnlineStatus(status);
 
             sessionService.update(UUID.fromString(sessionId), session);
