@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.DTO.FriendDTO;
 import com.jacob.backend.data.Model.Friend;
+import com.jacob.backend.data.Model.Session;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
 import com.jacob.backend.responses.exceptions.NotFoundException;
@@ -22,15 +23,27 @@ public class FriendService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    SessionService sessionService;
+
     public List<FriendDTO> findById(UUID id, Boolean includePending) {
         List<Friend> friends = friendRepo.getById(id);
         List<FriendDTO> friendProfiles = new ArrayList<FriendDTO>();
         for (Friend f : friends) {
             if (!f.getPending() || includePending) {
+
+                FriendDTO friendProfile = new FriendDTO();
+
                 UUID friendUUID = f.getUserAId().equals(id) ? f.getUserBId() : f.getUserAId();
                 User friend = userService.findById(friendUUID);
-                FriendDTO friendProfile = new FriendDTO(friend.getUsername(), f.getPending(),
-                        f.getPending() && f.getUserAId().equals(friendUUID));
+                friendProfile.setUsername(friend.getUsername());
+                friendProfile.setPending(f.getPending());
+                friendProfile.setInvitation(f.getPending() && f.getUserAId().equals(friendUUID));
+
+                Session session = sessionService.findByUsername(friend.getUsername());
+                friendProfile.setCurrentGameId(session.getCurrentGameId());
+                friendProfile.setOnlineStatus(session.getOnlineStatus());
+
                 friendProfiles.add(friendProfile);
             }
         }

@@ -25,6 +25,10 @@ public class SessionService {
         return sessionRepo.getById(sessionId);
     }
 
+    public Session findByUsername(String username) {
+        return sessionRepo.getByUsername(username);
+    }
+
     /**
      * Creates a new Session for the given username
      * 

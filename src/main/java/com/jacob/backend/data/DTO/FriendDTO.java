@@ -22,6 +22,9 @@ public class FriendDTO {
         invitation = isInvitation;
     }
 
+    public FriendDTO() {
+    }
+
     public String getUsername() {
         return username;
     }
