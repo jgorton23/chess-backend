@@ -46,4 +46,20 @@ public class FriendDTO {
         this.invitation = invitation;
     }
 
+    public UUID getCurrentGameId() {
+        return currentGameId;
+    }
+
+    public void setCurrentGameId(UUID gameId) {
+        currentGameId = gameId;
+    }
+
+    public Status getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(Status status) {
+        onlineStatus = status;
+    }
+
 }

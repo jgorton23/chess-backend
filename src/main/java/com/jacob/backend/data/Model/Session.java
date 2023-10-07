@@ -48,4 +48,12 @@ public class Session {
         this.currentGameId = id;
     }
 
+    public Status getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(Status status) {
+        this.onlineStatus = status;
+    }
+
 }
