@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.Model.Status;
 import com.jacob.backend.repository.interfaces.SessionRepositoryInterface;
 import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
@@ -74,6 +75,15 @@ public class SessionService {
         Session session = sessionRepo.getById(sessionId);
 
         session.setUsername(username);
+        sessionRepo.update(session);
+
+    }
+
+    public void update(UUID sessionId, Status status) {
+
+        Session session = sessionRepo.getById(sessionId);
+
+        session.setOnlineStatus(status);
         sessionRepo.update(session);
 
     }

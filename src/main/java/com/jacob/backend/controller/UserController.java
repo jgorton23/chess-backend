@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.jacob.backend.data.DTO.*;
+import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.Model.Status;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
@@ -258,4 +260,28 @@ public class UserController {
 
         }
     }
+
+    @PutMapping("/session")
+    public ResponseEntity<String> setOnlineStatus(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam Status status) {
+        try {
+
+            sessionService.update(UUID.fromString(sessionId), status);
+
+            return ResponseEntity.ok().body(JSONResponses.success());
+
+        } catch (UnauthorizedException e) {
+
+            // catch unauthorized - return 401
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
+
+        } catch (Exception e) {
+
+            // catch generic exception - return bad request
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+
+        }
+    }
+
 }
