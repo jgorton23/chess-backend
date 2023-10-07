@@ -25,6 +25,12 @@ public class SessionService {
         return sessionRepo.getById(sessionId);
     }
 
+    /**
+     * Gets a Session associated with the user with the given username
+     * 
+     * @param username the username of the user for which to get the Session
+     * @return A Session object containing info about the users session
+     */
     public Session findByUsername(String username) {
         return sessionRepo.getByUsername(username);
     }
