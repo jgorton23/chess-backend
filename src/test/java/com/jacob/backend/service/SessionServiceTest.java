@@ -112,9 +112,10 @@ public class SessionServiceTest {
 
         // ACT
         UUID id = UUID.randomUUID();
-        String username = "username";
+        Session session = new Session();
+        session.setUsername("username");
 
-        service.update(id, username);
+        service.update(id, session);
 
         // ASSERT
         verify(mockSessionRepo, times(1)).getById(id);
