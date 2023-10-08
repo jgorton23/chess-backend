@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "sessions")
 public class Session {
+
     @Id
     @GeneratedValue
     private UUID id;
@@ -17,6 +18,8 @@ public class Session {
     private String username;
 
     private UUID currentGameId;
+
+    private Status onlineStatus;
 
     public Session() {
     }
@@ -43,6 +46,14 @@ public class Session {
 
     public void setCurrentGameId(UUID id) {
         this.currentGameId = id;
+    }
+
+    public Status getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(Status status) {
+        this.onlineStatus = status;
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.Model.Status;
 import com.jacob.backend.repository.interfaces.SessionRepositoryInterface;
 import com.jacob.backend.responses.exceptions.UnauthorizedException;
 
@@ -23,6 +24,16 @@ public class SessionService {
      */
     public Session findById(UUID sessionId) {
         return sessionRepo.getById(sessionId);
+    }
+
+    /**
+     * Gets a Session associated with the user with the given username
+     * 
+     * @param username the username of the user for which to get the Session
+     * @return A Session object containing info about the users session
+     */
+    public Session findByUsername(String username) {
+        return sessionRepo.getByUsername(username);
     }
 
     /**
@@ -59,11 +70,25 @@ public class SessionService {
      * @param sessionId the sessionId for which to update the associated username
      * @param username  the new username to associate with the given sessionId
      */
-    public void update(UUID sessionId, String username) {
+    public void update(UUID sessionId, Session sessionData) {
 
         Session session = sessionRepo.getById(sessionId);
 
-        session.setUsername(username);
+        String username = sessionData.getUsername();
+        if (username != null && username.length() > 0) {
+            session.setUsername(username);
+        }
+
+        UUID currentGameId = sessionData.getCurrentGameId();
+        if (currentGameId != null) {
+            session.setCurrentGameId(currentGameId);
+        }
+
+        Status onlineStatus = sessionData.getOnlineStatus();
+        if (onlineStatus != null) {
+            session.setOnlineStatus(onlineStatus);
+        }
+
         sessionRepo.update(session);
 
     }

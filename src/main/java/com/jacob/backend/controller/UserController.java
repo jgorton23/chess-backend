@@ -2,7 +2,6 @@ package com.jacob.backend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.jacob.backend.data.DTO.*;
+import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.Model.Status;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.service.*;
 import com.jacob.backend.responses.JSONResponses;
@@ -41,6 +42,12 @@ public class UserController {
     @Autowired
     private FriendService friendService;
 
+    /**
+     * Gets the usernames of all users
+     * 
+     * @param sessionId the session id of the current user
+     * @return a list of all users' usernames
+     */
     @GetMapping
     public ResponseEntity<String> getUsers(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
@@ -197,9 +204,11 @@ public class UserController {
             // get the username - throws Unauthorized
             String username = sessionService.getUsernameById(sessionId);
 
+            Session session = new Session();
+            session.setUsername(creds.getUsername());
+
             // Update the Session to store the new Username
-            sessionService.update(UUID.fromString(sessionId),
-                    Optional.ofNullable(creds.getUsername()).orElse(username));
+            sessionService.update(UUID.fromString(sessionId), session);
 
             // perform the Update
             userService.update(username, creds);
@@ -252,4 +261,35 @@ public class UserController {
 
         }
     }
+
+    @PutMapping("/session")
+    public ResponseEntity<String> setOnlineStatus(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false, defaultValue = "") String currentGameId) {
+        try {
+
+            Session session = new Session();
+
+            if (currentGameId.length() > 0)
+                session.setCurrentGameId(UUID.fromString(currentGameId));
+            session.setOnlineStatus(status);
+
+            sessionService.update(UUID.fromString(sessionId), session);
+
+            return ResponseEntity.ok().body(JSONResponses.success());
+
+        } catch (UnauthorizedException e) {
+
+            // catch unauthorized - return 401
+            return ResponseEntity.status(401).body(JSONResponses.error(e.getMessage()));
+
+        } catch (Exception e) {
+
+            // catch generic exception - return bad request
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+
+        }
+    }
+
 }
