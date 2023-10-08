@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.jacob.backend.data.DTO.FriendDTO;
 import com.jacob.backend.data.Model.Friend;
 import com.jacob.backend.data.Model.Session;
+import com.jacob.backend.data.Model.Status;
 import com.jacob.backend.data.Model.User;
 import com.jacob.backend.repository.interfaces.FriendRepositoryInterface;
 import com.jacob.backend.responses.exceptions.NotFoundException;
@@ -41,8 +42,12 @@ public class FriendService {
                 friendProfile.setInvitation(f.getPending() && f.getUserAId().equals(friendUUID));
 
                 Session session = sessionService.findByUsername(friend.getUsername());
-                friendProfile.setCurrentGameId(session.getCurrentGameId());
-                friendProfile.setOnlineStatus(session.getOnlineStatus());
+                if (session != null) {
+                    friendProfile.setCurrentGameId(session.getCurrentGameId());
+                    friendProfile.setOnlineStatus(session.getOnlineStatus());
+                } else {
+                    friendProfile.setOnlineStatus(Status.OFFLINE);
+                }
 
                 friendProfiles.add(friendProfile);
             }
