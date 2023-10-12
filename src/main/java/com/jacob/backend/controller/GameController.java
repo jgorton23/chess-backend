@@ -1,6 +1,5 @@
 package com.jacob.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -243,7 +242,7 @@ public class GameController {
                     "/games/" + gameId + "/states",
                     "GET"));
 
-            List<Game> gameStates = gameService.getGameStates();
+            List<Game> gameStates = gameService.getGameStates(gameId);
 
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameStates)));
 
