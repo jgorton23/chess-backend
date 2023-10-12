@@ -442,7 +442,21 @@ public class GameService {
 
     public List<Game> getGameStates(String gameId) {
 
+        Game game = findById(UUID.fromString(gameId));
+
         List<Game> gameStates = new ArrayList<>();
+
+        Game currentState = new Game();
+
+        gameStates.add(currentState);
+
+        for (String move : game.getMoves().split(" ")) {
+
+            currentState = doMoveOnGame(game, MoveDTO.fromString(move));
+
+            gameStates.add(currentState);
+
+        }
 
         return gameStates;
     }
