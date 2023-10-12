@@ -320,6 +320,14 @@ public class GameService {
 
     }
 
+    public Game doMoveOnGame(Game game, MoveDTO move) {
+
+        Game gameAfterMove = new Game();
+
+        return gameAfterMove;
+
+    }
+
     /**
      * Gets all the valid moves for the curent position of the Game with the given
      * UUID
@@ -430,6 +438,13 @@ public class GameService {
 
         return moves;
 
+    }
+
+    public List<Game> getGameStates(String gameId) {
+
+        List<Game> gameStates = new ArrayList<>();
+
+        return gameStates;
     }
 
     // #endregion
