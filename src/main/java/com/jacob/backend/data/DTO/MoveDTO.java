@@ -276,4 +276,8 @@ public class MoveDTO {
         }
         return move;
     }
+
+    public static MoveDTO fromString(String moveString) {
+        return null;
+    }
 }
