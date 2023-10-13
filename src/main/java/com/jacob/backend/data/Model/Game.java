@@ -84,7 +84,7 @@ public class Game {
     public Game() {
         date = new Date();
         result = "*";
-        moves = "1. ";
+        moves = "";
         moveTimes = "";
     }
 

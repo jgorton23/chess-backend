@@ -253,14 +253,11 @@ public class GameService {
         }
 
         String playerColor = "";
-        String opponentColor = "";
         // Ensure the User doing the move is one of the players
         if (username.equals(game.getBlackPlayerUsername())) {
             playerColor = "b";
-            opponentColor = "w";
         } else if (username.equals(game.getWhitePlayerUsername())) {
             playerColor = "w";
-            opponentColor = "b";
         } else {
             throw new UnauthorizedException();
         }
@@ -272,6 +269,17 @@ public class GameService {
         if (!validMoves.contains(move.toString())) {
             throw new RuntimeException("Attempting to perform an Invalid Move");
         }
+
+        doMoveOnGame(game, move);
+
+        // Update the Game in the db
+        update(username, game);
+
+    }
+
+    public void doMoveOnGame(Game game, MoveDTO move) {
+
+        String opponentColor = new String[] { "w", "b" }[game.getMoves().split(" ").length % 2];
 
         // Get the grid to perform the move on
         String[][] grid = FENToGrid(game.getFEN());
@@ -310,21 +318,10 @@ public class GameService {
         game.setMoves((game.getMoves() + " " + move.toString()).trim());
         game.setMoveTimes((game.getMoveTimes() + " " + move.getMiliseconds()).trim());
         if (move.getIsMate()) {
-            game.setResult(playerColor.equals("w") ? "1-0" : "0-1");
+            game.setResult(game.getMoves().split(" ").length % 2 == 0 ? "1-0" : "0-1");
         } else if (move.getIsStalemate()) {
             game.setResult("1/2-1/2");
         }
-
-        // Update the Game in the db
-        update(username, game);
-
-    }
-
-    public Game doMoveOnGame(Game game, MoveDTO move) {
-
-        Game gameAfterMove = new Game();
-
-        return gameAfterMove;
 
     }
 
@@ -444,6 +441,10 @@ public class GameService {
 
         Game game = findById(UUID.fromString(gameId));
 
+        if (game == null) {
+            throw new NotFoundException("Game", "gameId: " + gameId);
+        }
+
         List<Game> gameStates = new ArrayList<>();
 
         Game currentState = new Game();
@@ -452,7 +453,12 @@ public class GameService {
 
         for (String move : game.getMoves().split(" ")) {
 
-            currentState = doMoveOnGame(game, MoveDTO.fromString(move));
+            doMoveOnGame(currentState, MoveDTO.fromString(move));
+
+            currentState = new Game();
+
+            currentState.setFEN(game.getFEN());
+            currentState.setMoves(game.getMoves());
 
             gameStates.add(currentState);
 
