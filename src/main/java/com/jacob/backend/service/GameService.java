@@ -447,18 +447,18 @@ public class GameService {
 
         List<Game> gameStates = new ArrayList<>();
 
-        Game currentState = new Game();
+        Game newGame = new Game();
 
-        gameStates.add(currentState);
+        gameStates.add(newGame);
 
         for (String move : game.getMoves().split(" ")) {
 
-            doMoveOnGame(currentState, MoveDTO.fromString(move));
+            doMoveOnGame(newGame, MoveDTO.fromString(move));
 
-            currentState = new Game();
+            Game currentState = new Game();
 
-            currentState.setFEN(game.getFEN());
-            currentState.setMoves(game.getMoves());
+            currentState.setFEN(newGame.getFEN());
+            currentState.setMoves(newGame.getMoves());
 
             gameStates.add(currentState);
 
