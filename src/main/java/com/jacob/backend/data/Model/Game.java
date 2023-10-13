@@ -86,6 +86,7 @@ public class Game {
         result = "*";
         moves = "";
         moveTimes = "";
+        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
     }
 
     // #region getters/setters
