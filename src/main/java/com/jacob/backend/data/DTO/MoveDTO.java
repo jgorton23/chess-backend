@@ -276,4 +276,37 @@ public class MoveDTO {
         }
         return move;
     }
+
+    public static MoveDTO fromString(String moveString) {
+
+        MoveDTO move = new MoveDTO();
+
+        move.setIsCapture(moveString.contains("x"));
+        moveString = moveString.replace("x", "");
+
+        move.setIsMate(moveString.contains("#"));
+        moveString = moveString.replace("#", "");
+
+        move.setIsCheck(moveString.contains("+"));
+        moveString = moveString.replace("+", "");
+
+        move.setIsStalemate(moveString.contains("$"));
+        moveString = moveString.replace("$", "");
+
+        move.setPiece(moveString.substring(0, 1));
+        moveString = moveString.substring(1);
+
+        int[] startSquare = new int[] { (int) moveString.charAt(0) - (int) 'a',
+                Math.abs(Integer.parseInt(moveString.substring(1, 2)) - 8) };
+        move.setStartSquare(startSquare);
+        moveString = moveString.substring(2);
+
+        int[] destSquare = new int[] { (int) moveString.charAt(0) - (int) 'a',
+                Math.abs(Integer.parseInt(moveString.substring(1, 2)) - 8) };
+        move.setDestSquare(destSquare);
+        moveString = moveString.substring(2);
+
+        return move;
+
+    }
 }

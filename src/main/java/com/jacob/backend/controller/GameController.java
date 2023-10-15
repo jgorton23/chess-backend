@@ -231,6 +231,44 @@ public class GameController {
         }
     }
 
+    @GetMapping("/{gameId}/states")
+    public ResponseEntity<String> getGameStates(
+            @CookieValue(name = "session-id", defaultValue = "") String sessionId,
+            @PathVariable String gameId) {
+
+        try {
+
+            log.info(String.format("HTTP request received | URL: '%s', Method: '%s'",
+                    "/games/" + gameId + "/states",
+                    "GET"));
+
+            List<Game> gameStates = gameService.getGameStates(gameId);
+
+            log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameStates)));
+
+            return ResponseEntity.ok().body(JSONResponses.toJson("gameStates", gameStates));
+
+        } catch (UnauthorizedException e) {
+
+            log.error("Failed to get game states", e);
+
+            return ResponseEntity.status(401).build();
+
+        } catch (NotFoundException e) {
+
+            log.error("Failed to get game states", e);
+
+            return ResponseEntity.notFound().build();
+
+        } catch (Exception e) {
+
+            log.error("Failed to get game states", e);
+
+            return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
+
+        }
+    }
+
     @GetMapping("/board/validMoves")
     public ResponseEntity<String> getValidMovesFromFen(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
