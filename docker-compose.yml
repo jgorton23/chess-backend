@@ -1,17 +1,22 @@
-version: '3.9'
+version: "3.9"
 services:
-
   postgres:
     container_name: chessdb
     image: postgres
     volumes:
       - pg-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'pass'
-      POSTGRES_DB: 'postgres'
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "postgres"
     ports:
       - 6543:5432
+
+  backend:
+    container_name: chessbackend
+    image: chess-backend
+    ports:
+      - 8080:8080
 
 volumes:
   pg-data:
