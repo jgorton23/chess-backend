@@ -264,6 +264,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Get the game state history for the game with the given UUID
+     * 
+     * @param sessionId the sessionId of the user who made the request
+     * @param gameId    the UUID of the game for which to return previous game
+     *                  states
+     * @return a list of Games, representing the state of the game after each move
+     */
     @GetMapping("/{gameId}/states")
     public ResponseEntity<String> getGameStates(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
@@ -271,37 +279,59 @@ public class GameController {
 
         try {
 
+            // log the request start
             log.info(String.format("HTTP request received | URL: '%s', Method: '%s'",
                     "/games/" + gameId + "/states",
                     "GET"));
 
+            // get the game states
             List<Game> gameStates = gameService.getGameStates(gameId);
 
+            // log the successful response
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameStates)));
 
+            // return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("gameStates", gameStates));
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to get game states", e);
 
+            // catch unauthorized, return 401
             return ResponseEntity.status(401).build();
 
         } catch (NotFoundException e) {
 
+            // log the exception
             log.error("Failed to get game states", e);
 
+            // catch not found, return 404
             return ResponseEntity.notFound().build();
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to get game states", e);
 
+            // catch generic exception, return bad request
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
     }
 
+    /**
+     * Get the valid moves for the given board
+     * 
+     * @param sessionId      the session id of the user making the request
+     * @param startingSquare the optional starting square on which to filter the
+     *                       valid moves
+     * @param playerColor    the optional player color on which to filter the valid
+     *                       moves
+     * @param fen            the FEN of the current game state, used to determine
+     *                       what the valid moves are
+     * @return a list of the valid moves for the given game state
+     */
     @GetMapping("/board/validMoves")
     public ResponseEntity<String> getValidMovesFromFen(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
@@ -310,13 +340,17 @@ public class GameController {
             @RequestParam String fen) {
         try {
 
+            // log the request start
             log.info("HTTP request received | URL: '/games/board/validMoves', Method: 'GET'");
 
+            // ensure the session is valid
             sessionService.validateSessionId(sessionId);
 
+            // get the list of valid moves
             List<String> moves = gameService.getValidMoves(fen, Optional.ofNullable(null),
                     Optional.ofNullable(startingSquare), Optional.ofNullable(playerColor));
 
+            // log the successful response
             log.info("HTTP response sent | Status: 200");
 
             // Return successful
@@ -324,6 +358,7 @@ public class GameController {
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to get valid moves", e);
 
             // Catch Unauthorized - return 401
@@ -331,6 +366,7 @@ public class GameController {
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
