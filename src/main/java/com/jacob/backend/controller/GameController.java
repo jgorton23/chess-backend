@@ -51,6 +51,7 @@ public class GameController {
             @RequestBody Game game) {
         try {
 
+            // log the method start
             log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
                     "/games/new",
                     "POST",
@@ -67,6 +68,7 @@ public class GameController {
             // perform Create
             String gameId = gameService.create(username, game);
 
+            // log the successful resoponse
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(gameId)));
 
             // return gameId
@@ -74,6 +76,7 @@ public class GameController {
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to create a new 'Game'", e);
 
             // catch Unauthorized - return 401
@@ -81,6 +84,7 @@ public class GameController {
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to create a new 'Game'", e);
 
             // catch generic Exception - return badRequest
@@ -134,44 +138,63 @@ public class GameController {
         }
     }
 
+    /**
+     * Gets the game with the given UUID
+     * 
+     * @param sessionId the session if of the user who is making the request
+     * @param gameId    the id of the game being requested
+     * @return the found Game if one exists, otherwise an exception
+     */
     @GetMapping("/{gameId}")
     public ResponseEntity<String> getGame(
             @CookieValue(name = "session-id", defaultValue = "") String sessionId,
             @PathVariable String gameId) {
         try {
 
+            // log the request start
             log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
                     "/games/" + gameId,
                     "GET", ""));
 
+            // validate the session id
             sessionService.validateSessionId(sessionId);
 
+            // get the game with the given UUID
             Game game = gameService.findById(UUID.fromString(gameId));
 
+            // throw an exception if not found
             if (game == null) {
                 throw new NotFoundException("Game", "ID: " + gameId);
             }
 
+            // log the successful response
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(game)));
 
+            // return successful
             return ResponseEntity.ok().body(JSONResponses.toJson("game", game));
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to get 'Game'", e);
 
+            // catch unauthorized, return 401
             return ResponseEntity.status(401).body(JSONResponses.unauthorized());
 
         } catch (NotFoundException e) {
 
+            // log the exception
             log.error("Failed to get 'Game'", e);
 
+            // catch NotFound, return 404
             return ResponseEntity.status(404).body(JSONResponses.error(e.getMessage()));
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to get 'Game'", e);
 
+            // catch generic exception, return bad request
             return ResponseEntity.badRequest().body(JSONResponses.error(e.getMessage()));
 
         }
@@ -179,12 +202,13 @@ public class GameController {
     }
 
     /**
-     * Get the valid moves
+     * Get the current valid moves for the game with the given UUID
      * 
-     * @param sessionId
-     * @param startingSquare
-     * @param gameId
-     * @return
+     * @param sessionId      the session id of the user making the request
+     * @param startingSquare the optional starting square to filter the moves by
+     * @param playerColor    the optional player color to filter the moves by
+     * @param gameId         the UUID of the game for which to get valid moves
+     * @return a list of valid moves for the given game
      */
     @GetMapping("/{gameId}/validMoves")
     public ResponseEntity<String> getValidMoves(
@@ -194,6 +218,7 @@ public class GameController {
             @PathVariable String gameId) {
         try {
 
+            // log the request start
             log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'",
                     "/games/" + gameId + "/validMoves",
                     "GET",
@@ -206,6 +231,7 @@ public class GameController {
             List<String> moves = gameService.getValidMoves(username, gameId, Optional.ofNullable(startingSquare),
                     Optional.ofNullable(playerColor));
 
+            // log the successful response
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(moves)));
 
             // Return successful
@@ -213,6 +239,7 @@ public class GameController {
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to get valid moves", e);
 
             // Catch Unauthorized - return 401
@@ -220,6 +247,7 @@ public class GameController {
 
         } catch (NotFoundException e) {
 
+            // log the exception
             log.error("Failed to get valid moves", e);
 
             // Catch NotFound - return 404
@@ -227,6 +255,7 @@ public class GameController {
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to get valid moves", e);
 
             // Catch Generic Exception - return BadRequest
