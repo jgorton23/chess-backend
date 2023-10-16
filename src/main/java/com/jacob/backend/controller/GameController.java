@@ -100,6 +100,7 @@ public class GameController {
     public ResponseEntity<String> getGames(@CookieValue(name = "session-id", defaultValue = "") String sessionId) {
         try {
 
+            // log the method start
             log.info(String.format("HTTP request received | URL: '%s', Method: '%s', Data: '%s'", "/games", "GET", ""));
 
             // get the Username - throws Unauthorized
@@ -108,6 +109,7 @@ public class GameController {
             // perform the Get
             List<Game> games = gameService.findAllByUsername(username);
 
+            // log the successful response
             log.info(String.format("HTTP response sent | Data: '%s'", JSONResponses.toJson(games)));
 
             // return successful
@@ -115,6 +117,7 @@ public class GameController {
 
         } catch (UnauthorizedException e) {
 
+            // log the exception
             log.error("Failed to get 'Games'", e);
 
             // catch Unauthorized - return 401
@@ -122,6 +125,7 @@ public class GameController {
 
         } catch (Exception e) {
 
+            // log the exception
             log.error("Failed to get 'Games'", e);
 
             // catch generic Exception - return badRequest
