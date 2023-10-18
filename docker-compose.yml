@@ -18,5 +18,11 @@ services:
     ports:
       - 8080:8080
 
+  frontend:
+    container_name: chessfrontend
+    image: chess-frontend
+    ports:
+      - 4200:80
+
 volumes:
   pg-data:

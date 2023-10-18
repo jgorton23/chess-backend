@@ -8,5 +8,5 @@ FROM openjdk:latest
 
 WORKDIR /app
 COPY --from=BUILD . .
-EXPOSE 8080
+# EXPOSE 8080
 ENTRYPOINT [ "java", "-jar", "app/build/libs/backend-0.0.1-SNAPSHOT.jar" ]
