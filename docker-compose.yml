@@ -36,4 +36,6 @@ volumes:
 
 networks:
   api:
+    name: api-network
+    external: true
   database:
